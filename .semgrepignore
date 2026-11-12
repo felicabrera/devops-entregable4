@@ -1,0 +1,9 @@
+reports/
+backend/.venv/
+.git/
+jenkins/home/
+# Politicas de Kyverno: Semgrep interpreta los bloques spec: de los patrones de validacion
+# como si fueran un PodSpec (falso positivo, no despliegan contenedores)
+kyverno/policies/
+# Manifiestos de prueba deliberadamente no conformes para verificar que Kyverno los rechace
+kyverno/test/

@@ -1,0 +1,104 @@
+name: Seguridad
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    - cron: "0 6 * * 1"   # lunes 06:00 UTC: detecta CVEs nuevos aunque no haya cambios
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  semgrep:
+    name: Semgrep (SAST)
+    runs-on: ubuntu-latest
+    container:
+      image: semgrep/semgrep:1.185.0
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Analisis estatico (reglas propias + registro)
+        run: |
+          semgrep scan --config .semgrep --config p/python --config p/dockerfile --config p/kubernetes \
+            --config p/secrets --config p/owasp-top-ten --metrics=off --error \
+            --sarif-output semgrep.sarif --text
+      - uses: github/codeql-action/upload-sarif@33d7b85da1a04171e211befe2c739303b9a4c066 # v4
+        if: always()
+        with:
+          sarif_file: semgrep.sarif
+          category: semgrep
+
+  snyk:
+    name: Snyk (dependencias)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7
+        with:
+          python-version: "3.13"
+      - run: pip install -r backend/requirements.txt
+      - name: Snyk test (falla con HIGH o CRITICAL)
+        uses: snyk/actions/python@11b673cfb4b0dc0d860a1323caa199d54950dcce # master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          command: test
+          args: --file=backend/requirements.txt --package-manager=pip --severity-threshold=high --sarif-file-output=snyk.sarif
+      - uses: github/codeql-action/upload-sarif@33d7b85da1a04171e211befe2c739303b9a4c066 # v4
+        if: always() && hashFiles('snyk.sarif') != ''
+        with:
+          sarif_file: snyk.sarif
+          category: snyk
+      - name: pip-audit (segunda opinion sobre las dependencias)
+        if: always()
+        run: pipx run pip-audit -r backend/requirements.txt --strict
+
+  trivy:
+    name: Trivy (imagenes y configuracion)
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        component: [backend, frontend]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Construir imagen
+        run: docker build -t notes-${{ matrix.component }}:scan ${{ matrix.component }}
+      - name: Trivy (informe HIGH y CRITICAL)
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
+        with:
+          image-ref: notes-${{ matrix.component }}:scan
+          format: sarif
+          output: trivy-${{ matrix.component }}.sarif
+          severity: HIGH,CRITICAL
+          ignore-unfixed: true
+      - uses: github/codeql-action/upload-sarif@33d7b85da1a04171e211befe2c739303b9a4c066 # v4
+        if: always()
+        with:
+          sarif_file: trivy-${{ matrix.component }}.sarif
+          category: trivy-${{ matrix.component }}
+      - name: Trivy (bloquea con CRITICAL que tenga parche disponible)
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
+        with:
+          image-ref: notes-${{ matrix.component }}:scan
+          format: table
+          severity: CRITICAL
+          ignore-unfixed: true
+          exit-code: "1"
+          skip-setup-trivy: true
+
+  trivy-config:
+    name: Trivy (IaC: Dockerfiles, Helm, Kubernetes)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
+        with:
+          scan-type: config
+          scan-ref: .
+          severity: HIGH,CRITICAL
+          exit-code: "1"
+          skip-dirs: reports,jenkins/home

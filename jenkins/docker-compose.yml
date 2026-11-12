@@ -1,0 +1,41 @@
+# Jenkins + registry local para correr el pipeline en la maquina del desarrollador.
+# Levantar con scripts/start-jenkins.sh (prepara el kubeconfig y las variables).
+services:
+  jenkins:
+    build:
+      context: .
+      args:
+        DOCKER_GID: ${DOCKER_GID:-999}
+    image: notes-jenkins:lts
+    container_name: notes-jenkins
+    user: root   # necesario para usar el socket de Docker Desktop en macOS
+    ports:
+      - "8081:8080"
+    environment:
+      JENKINS_ADMIN_PASSWORD: ${JENKINS_ADMIN_PASSWORD:-admin}
+      SNYK_TOKEN: ${SNYK_TOKEN:-}
+      GHCR_USER: ${GHCR_USER:-felicabrera}
+      GHCR_TOKEN: ${GHCR_TOKEN:-}
+      JAVA_OPTS: -Djenkins.install.runSetupWizard=false
+      CASC_JENKINS_CONFIG: /var/jenkins_config/casc.yaml
+    volumes:
+      - jenkins-home:/var/jenkins_home
+      - ./casc.yaml:/var/jenkins_config/casc.yaml:ro
+      - ./jobs.groovy:/var/jenkins_config/jobs.groovy:ro
+      - ./home/kubeconfig:/var/jenkins_secrets/kubeconfig-dev:ro
+      - ${KUBECONFIG_PROD_FILE:-./home/kubeconfig}:/var/jenkins_secrets/kubeconfig-prod:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+    depends_on:
+      - registry
+
+  registry:
+    image: registry:3.1.2
+    container_name: notes-registry
+    ports:
+      - "5001:5000"
+    volumes:
+      - registry-data:/var/lib/registry
+
+volumes:
+  jenkins-home:
+  registry-data:

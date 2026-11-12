@@ -1,0 +1,32 @@
+name: Release del chart
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+  packages: write
+
+jobs:
+  chart:
+    name: Empaquetar y publicar el Helm chart en GHCR (OCI)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # 3d3c42e5aac5ba805825da76410c181273ba90b1 # 3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: azure/setup-helm@2f5e7bc67f1f9972ab16657bb795f36d8f04de0e # 2f5e7bc67f1f9972ab16657bb795f36d8f04de0e # 2f5e7bc67f1f9972ab16657bb795f36d8f04de0e # v5.1.0
+        with:
+          version: v3.19.0
+      - run: helm lint helm-chart
+      - name: helm package
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          helm package helm-chart --version "$VERSION" --app-version "$VERSION" -d dist
+      - name: helm push (oci://ghcr.io)
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" | helm registry login ghcr.io -u "${{ github.actor }}" --password-stdin
+          helm push dist/*.tgz "oci://ghcr.io/${{ github.repository }}/charts"
+      - uses: softprops/action-gh-release@8a0cd651e5b2365bd640854a3fa5dfc70e4875f3 # 8a0cd651e5b2365bd640854a3fa5dfc70e4875f3 # 8a0cd651e5b2365bd640854a3fa5dfc70e4875f3 # v3
+        with:
+          files: dist/*.tgz
+          generate_release_notes: true

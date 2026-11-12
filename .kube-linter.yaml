@@ -1,0 +1,27 @@
+checks:
+  # Todos los checks por defecto mas algunos adicionales
+  doNotAutoAddDefaults: false
+  include:
+    - "no-anti-affinity"
+    - "no-read-only-root-fs"
+    - "drop-net-raw-capability"
+    - "privilege-escalation-container"
+    - "run-as-non-root"
+    - "latest-tag"
+    - "unset-cpu-requirements"
+    - "unset-memory-requirements"
+    - "no-liveness-probe"
+    - "no-readiness-probe"
+    - "pdb-min-available"
+    - "pdb-max-unavailable"
+    - "read-secret-from-env-var"
+    - "default-service-account"
+    - "use-namespace"
+    - "hpa-minimum-three-replicas"
+  exclude:
+    # Prometheus y Grafana corren con una sola replica (almacenamiento local, Recreate)
+    - "minimum-three-replicas"
+    # Grafana lee usuario y contrasena del Secret con secretKeyRef: es el mecanismo estandar
+    - "read-secret-from-env-var"
+    # Los manifiestos los renderiza Helm con --namespace
+    - "use-namespace"

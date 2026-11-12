@@ -1,0 +1,81 @@
+rules:
+  - id: notes-python-no-eval-exec
+    languages: [python]
+    severity: ERROR
+    message: >-
+      No usar eval() ni exec(): ejecutan codigo arbitrario. Si el valor proviene
+      de una peticion HTTP, es una inyeccion de codigo remota.
+    metadata:
+      category: security
+      cwe: "CWE-95: Improper Neutralization of Directives in Dynamically Evaluated Code"
+      owasp: "A03:2021 Injection"
+      technology: [python]
+    patterns:
+      - pattern-either:
+          - pattern: eval(...)
+          - pattern: exec(...)
+
+  - id: notes-python-subprocess-shell-true
+    languages: [python]
+    severity: ERROR
+    message: >-
+      subprocess con shell=True interpreta el comando en una shell: si parte del
+      comando viene del usuario es una inyeccion de comandos. Pasar una lista de
+      argumentos y shell=False.
+    metadata:
+      category: security
+      cwe: "CWE-78: OS Command Injection"
+      owasp: "A03:2021 Injection"
+      technology: [python]
+    pattern-either:
+      - pattern: subprocess.$FUNC(..., shell=True, ...)
+      - pattern: os.system(...)
+      - pattern: os.popen(...)
+
+  - id: notes-fastapi-cors-wildcard-with-credentials
+    languages: [python]
+    severity: ERROR
+    message: >-
+      CORSMiddleware con allow_origins=["*"] y allow_credentials=True permite que
+      cualquier origen envie cookies o cabeceras de autenticacion al API.
+    metadata:
+      category: security
+      cwe: "CWE-942: Permissive Cross-domain Policy with Untrusted Domains"
+      technology: [fastapi]
+    pattern: |
+      $APP.add_middleware(CORSMiddleware, ..., allow_origins=["*"], ..., allow_credentials=True, ...)
+
+  - id: notes-fastapi-path-from-user-input
+    languages: [python]
+    severity: WARNING
+    message: >-
+      Se construye una ruta del filesystem a partir de un parametro de la peticion.
+      Validar el valor (sin ".." ni separadores) para evitar path traversal.
+    metadata:
+      category: security
+      cwe: "CWE-22: Path Traversal"
+      technology: [fastapi]
+    patterns:
+      - pattern-inside: |
+          @$APP.$METHOD(...)
+          def $FUNC(..., $PARAM, ...):
+            ...
+      - pattern-either:
+          - pattern: open($PARAM, ...)
+          - pattern: open(... + $PARAM, ...)
+          - pattern: Path(...) / $PARAM
+          - pattern: os.path.join(..., $PARAM, ...)
+
+  - id: notes-python-insecure-hash
+    languages: [python]
+    severity: WARNING
+    message: >-
+      MD5 y SHA1 no son seguros para contrasenas ni firmas. Usar hashlib.sha256 o
+      una funcion de derivacion de claves (bcrypt, argon2).
+    metadata:
+      category: security
+      cwe: "CWE-328: Use of Weak Hash"
+      technology: [python]
+    pattern-either:
+      - pattern: hashlib.md5(...)
+      - pattern: hashlib.sha1(...)

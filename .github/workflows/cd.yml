@@ -1,0 +1,129 @@
+name: CD
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - "reports/**"
+      - "docs/**"
+      - "README.md"
+  workflow_dispatch:
+    inputs:
+      deploy:
+        description: Desplegar en el cluster de la facultad
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+  packages: write
+  id-token: write
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_PREFIX: ghcr.io/${{ github.repository }}
+
+jobs:
+  build-publish:
+    name: Imagen ${{ matrix.component }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        component: [backend, frontend]
+    outputs:
+      tag: ${{ steps.meta.outputs.tag }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - id: meta
+        run: echo "tag=sha-${GITHUB_SHA::12}" >> "$GITHUB_OUTPUT"
+      - uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4
+      - uses: docker/login-action@8aa5831fb8d48d8f76594c7ddde61ae58019f550 # v4
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build (sin publicar) para escanear
+        uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7
+        with:
+          context: ${{ matrix.component }}
+          platforms: linux/amd64
+          load: true
+          tags: ${{ env.IMAGE_PREFIX }}/${{ matrix.component }}:${{ steps.meta.outputs.tag }}
+          build-args: APP_VERSION=${{ steps.meta.outputs.tag }}
+          cache-from: type=gha,scope=${{ matrix.component }}
+          cache-to: type=gha,scope=${{ matrix.component }},mode=max
+      - name: Trivy bloquea la publicacion si hay CRITICAL con parche disponible
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
+        with:
+          image-ref: ${{ env.IMAGE_PREFIX }}/${{ matrix.component }}:${{ steps.meta.outputs.tag }}
+          format: table
+          severity: CRITICAL
+          ignore-unfixed: true
+          exit-code: "1"
+      - name: Publicar en GHCR
+        uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7
+        with:
+          context: ${{ matrix.component }}
+          platforms: linux/amd64
+          push: true
+          tags: |
+            ${{ env.IMAGE_PREFIX }}/${{ matrix.component }}:${{ steps.meta.outputs.tag }}
+            ${{ env.IMAGE_PREFIX }}/${{ matrix.component }}:latest
+          build-args: APP_VERSION=${{ steps.meta.outputs.tag }}
+          cache-from: type=gha,scope=${{ matrix.component }}
+          labels: |
+            org.opencontainers.image.revision=${{ github.sha }}
+            org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}
+
+  deploy:
+    name: Despliegue con Helm (cluster de la facultad)
+    needs: build-publish
+    if: github.event_name == 'push' || inputs.deploy
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: https://notes-team9.reto-ucu.net
+    concurrency:
+      group: deploy-production
+      cancel-in-progress: false
+    env:
+      NAMESPACE: alumno-team9
+      RELEASE: notes
+      TAG: ${{ needs.build-publish.outputs.tag }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: azure/setup-helm@2f5e7bc67f1f9972ab16657bb795f36d8f04de0e # v5.1.0
+        with:
+          version: v3.19.0
+      - name: Configurar kubeconfig
+        run: |
+          mkdir -p ~/.kube
+          echo "${{ secrets.KUBECONFIG_PROD }}" | base64 -d > ~/.kube/config
+          chmod 600 ~/.kube/config
+          kubectl config current-context
+          kubectl auth whoami
+      - name: helm upgrade --install
+        run: |
+          helm upgrade --install "$RELEASE" helm-chart \
+            --namespace "$NAMESPACE" \
+            --values helm-chart/values-prod.yaml \
+            --set backend.image.tag="$TAG" \
+            --set frontend.image.tag="$TAG" \
+            --set monitoring.grafana.adminPassword="${{ secrets.GRAFANA_ADMIN_PASSWORD || 'admin' }}" \
+            --wait --timeout 5m
+      - name: Estado del despliegue
+        run: |
+          kubectl -n "$NAMESPACE" rollout status deployment/notes-backend --timeout=180s
+          kubectl -n "$NAMESPACE" get pods,svc,apisixroute -l app.kubernetes.io/instance="$RELEASE"
+      - name: helm test
+        run: helm test "$RELEASE" -n "$NAMESPACE" --logs
+      - name: Prueba de humo publica
+        run: |
+          for i in $(seq 1 20); do
+            if curl -fsS --max-time 10 https://notes-team9.reto-ucu.net/api/health; then echo; exit 0; fi
+            sleep 6
+          done
+          echo "la app no respondio por APISIX"; exit 1
+      - name: Rollback automatico si fallo el despliegue
+        if: failure()
+        run: helm rollback "$RELEASE" -n "$NAMESPACE" --wait || true
