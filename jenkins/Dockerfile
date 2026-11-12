@@ -3,6 +3,7 @@
 FROM jenkins/jenkins:2.580.2-lts-jdk21
 
 USER root
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 ARG TARGETARCH
 ARG KUBECTL_VERSION=v1.34.1
 ARG HELM_VERSION=v3.19.0

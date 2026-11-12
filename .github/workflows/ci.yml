@@ -21,8 +21,8 @@ jobs:
       run:
         working-directory: backend
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # 3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # 6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7
         with:
           python-version: "3.13"
           cache: pip
@@ -31,7 +31,7 @@ jobs:
       - run: ruff check .
       - run: ruff format --check .
       - run: pytest -q --junitxml=pytest.xml
-      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
         if: always()
         with:
           name: pytest-results
@@ -41,7 +41,7 @@ jobs:
     name: Frontend (nginx config)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # 3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - name: Construir y validar la configuracion de nginx
         run: |
           docker build -t notes-frontend:ci frontend
@@ -52,16 +52,16 @@ jobs:
     name: Dockerfiles (hadolint)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-      - uses: hadolint/hadolint-action@06be81baf89a55ffd0e24b8f04a4185738dd3387 # v3.5.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # 3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: hadolint/hadolint-action@06be81baf89a55ffd0e24b8f04a4185738dd3387 # 06be81baf89a55ffd0e24b8f04a4185738dd3387 # v3.5.0
         with:
           dockerfile: backend/Dockerfile
           failure-threshold: warning
-      - uses: hadolint/hadolint-action@06be81baf89a55ffd0e24b8f04a4185738dd3387 # v3.5.0
+      - uses: hadolint/hadolint-action@06be81baf89a55ffd0e24b8f04a4185738dd3387 # 06be81baf89a55ffd0e24b8f04a4185738dd3387 # v3.5.0
         with:
           dockerfile: frontend/Dockerfile
           failure-threshold: warning
-      - uses: hadolint/hadolint-action@06be81baf89a55ffd0e24b8f04a4185738dd3387 # v3.5.0
+      - uses: hadolint/hadolint-action@06be81baf89a55ffd0e24b8f04a4185738dd3387 # 06be81baf89a55ffd0e24b8f04a4185738dd3387 # v3.5.0
         with:
           dockerfile: jenkins/Dockerfile
           failure-threshold: warning
@@ -71,15 +71,15 @@ jobs:
     name: Scripts (shellcheck)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # 3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - run: shellcheck -x -P SCRIPTDIR scripts/*.sh
 
   helm:
     name: Helm chart (lint, kube-linter, Kyverno)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-      - uses: azure/setup-helm@2f5e7bc67f1f9972ab16657bb795f36d8f04de0e # v5.1.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # 3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: azure/setup-helm@2f5e7bc67f1f9972ab16657bb795f36d8f04de0e # 2f5e7bc67f1f9972ab16657bb795f36d8f04de0e # v5.1.0
         with:
           version: v3.19.0
       - name: helm lint
@@ -98,12 +98,12 @@ jobs:
           helm template notes helm-chart -f helm-chart/values-dev.yaml > rendered/dev.yaml
           helm template notes helm-chart -f helm-chart/values-prod.yaml --set backend.image.tag=ci,frontend.image.tag=ci > rendered/prod.yaml
       - name: kube-linter
-        uses: stackrox/kube-linter-action@87802a2f4e01abebb3ee3c67a3002fea71f6eae5 # v1.0.7
+        uses: stackrox/kube-linter-action@87802a2f4e01abebb3ee3c67a3002fea71f6eae5 # 87802a2f4e01abebb3ee3c67a3002fea71f6eae5 # v1.0.7
         with:
           directory: rendered
           config: .kube-linter.yaml
       - name: Instalar el CLI de Kyverno
-        uses: kyverno/action-install-cli@fcee92fca5c883169ef9927acf543e0b5fc58289 # v0.2.0
+        uses: kyverno/action-install-cli@fcee92fca5c883169ef9927acf543e0b5fc58289 # fcee92fca5c883169ef9927acf543e0b5fc58289 # v0.2.0
         with:
           release: v1.19.2
       - name: Politicas de Kyverno sobre los manifiestos renderizados
@@ -112,7 +112,7 @@ jobs:
           kyverno apply kyverno/policies/ --resource rendered/prod.yaml
       - name: Pruebas unitarias de las politicas (kyverno test)
         run: kyverno test kyverno/test
-      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
         with:
           name: rendered-manifests
           path: rendered/
@@ -121,7 +121,7 @@ jobs:
     name: Jenkinsfile (declarative linter)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # 3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - name: Levantar Jenkins con el plugin de pipeline
         run: |
           docker run -d --name jenkins -p 8080:8080 -e JAVA_OPTS=-Djenkins.install.runSetupWizard=false \
