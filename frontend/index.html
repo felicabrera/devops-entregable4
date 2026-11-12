@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Notes</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <main class="container">
+    <header>
+      <h1>Notes</h1>
+      <p id="status" class="muted">Conectando con la API...</p>
+    </header>
+
+    <form id="note-form" autocomplete="off">
+      <input id="note-text" name="text" type="text" maxlength="500" placeholder="Escribir una nota" required>
+      <button type="submit">Agregar</button>
+    </form>
+
+    <section>
+      <div class="row">
+        <h2>Notas <span id="count" class="pill">0</span></h2>
+        <button id="refresh" type="button" class="secondary">Actualizar</button>
+      </div>
+      <ul id="notes" class="notes"></ul>
+      <p id="empty" class="muted">Todavia no hay notas.</p>
+    </section>
+  </main>
+  <script src="/app.js"></script>
+</body>
+</html>

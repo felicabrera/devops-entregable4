@@ -1,0 +1,13 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+.venv/
+*.egg-info/
+.playwright-mcp/
+jenkins/.env
+jenkins/home/
+*.kubeconfig
+kubeconfig*
+!kubeconfig.example
+.DS_Store

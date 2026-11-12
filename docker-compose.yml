@@ -1,0 +1,73 @@
+# Stack local sin Kubernetes: app, frontend, Prometheus y Grafana.
+# Para Kubernetes usar el Helm chart (scripts/init.sh).
+services:
+  backend:
+    build:
+      context: ./backend
+      args:
+        APP_VERSION: compose
+    image: notes-backend:compose
+    environment:
+      APP_ENV: compose
+      WELCOME_MESSAGE: Notes API (compose)
+    volumes:
+      - notes-data:/data
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
+    cap_drop: [ALL]
+
+  frontend:
+    build: ./frontend
+    image: notes-frontend:compose
+    environment:
+      BACKEND_HOST: backend
+      BACKEND_PORT: "8000"
+    ports:
+      - "8080:8080"
+    depends_on:
+      - backend
+    read_only: true
+    tmpfs:
+      - /tmp
+      - /var/cache/nginx
+      - /etc/nginx/conf.d
+    security_opt:
+      - no-new-privileges:true
+    cap_drop: [ALL]
+
+  prometheus:
+    image: prom/prometheus:v3.16.0
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.path=/prometheus
+      - --storage.tsdb.retention.time=2d
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./monitoring/alerts.yml:/etc/prometheus/alerts.yml:ro
+      - prometheus-data:/prometheus
+    ports:
+      - "9091:9090"
+    depends_on:
+      - backend
+
+  grafana:
+    image: grafana/grafana:13.3.1
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: admin
+      GF_ANALYTICS_REPORTING_ENABLED: "false"
+      GF_USERS_ALLOW_SIGN_UP: "false"
+    volumes:
+      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./grafana:/var/lib/grafana/dashboards:ro
+      - grafana-data:/var/lib/grafana
+    ports:
+      - "3001:3000"
+    depends_on:
+      - prometheus
+
+volumes:
+  notes-data:
+  prometheus-data:
+  grafana-data:

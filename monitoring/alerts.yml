@@ -1,0 +1,33 @@
+groups:
+  - name: notes-backend
+    rules:
+      - alert: BackendCaido
+        expr: up{job="notes-backend"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "El backend no responde"
+      - alert: MuchasNotasCreadas
+        expr: sum(increase(notes_created_total[5m])) > 10
+        labels:
+          severity: warning
+        annotations:
+          summary: "Se crearon mas de 10 notas en 5 minutos"
+          description: "Notas creadas en la ventana: {{ $value }}"
+      - alert: LatenciaAlta
+        expr: histogram_quantile(0.95, sum by (le) (rate(http_request_duration_seconds_bucket[5m]))) > 0.5
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Latencia p95 por encima de 500 ms"
+      - alert: TasaDeErrores
+        expr: >
+          100 * sum(rate(http_request_duration_seconds_count{status=~"5.."}[5m]))
+          / sum(rate(http_request_duration_seconds_count[5m])) > 5
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Mas del 5% de las respuestas son 5xx"
