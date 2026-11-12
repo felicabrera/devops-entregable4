@@ -1,0 +1,52 @@
+# Entorno productivo: cluster de la facultad (namespace alumno-team9).
+# Restricciones del namespace: sin LoadBalancer (quota services.loadbalancers=0),
+# 15 pods, 2 CPU / 3Gi de requests, 4 CPU / 6Gi de limits, 3 PVC de hasta 5Gi en total.
+environment: prod
+
+image:
+  registry: ghcr.io/felicabrera/devops-entregable4
+  pullPolicy: Always
+
+backend:
+  replicas: 2
+  image:
+    repository: backend
+    tag: ""          # lo fija el pipeline con --set backend.image.tag=<sha>
+  config:
+    welcomeMessage: Notes API (prod)
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 256Mi
+  podDisruptionBudget:
+    enabled: true
+    minAvailable: 1
+
+frontend:
+  replicas: 2
+  image:
+    repository: frontend
+    tag: ""
+
+apisix:
+  enabled: true
+  hosts:
+    app: notes-team9.reto-ucu.net
+    grafana: grafana-team9.reto-ucu.net
+    prometheus: prometheus-team9.reto-ucu.net
+
+monitoring:
+  prometheus:
+    retention: 7d
+    persistence:
+      enabled: true
+      size: 2Gi
+  grafana:
+    rootUrl: https://grafana-team9.reto-ucu.net
+    adminPassword: admin   # se sobreescribe con --set monitoring.grafana.adminPassword desde un secreto
+
+networkPolicy:
+  enabled: true

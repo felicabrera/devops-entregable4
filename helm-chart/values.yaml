@@ -1,0 +1,149 @@
+# Valores por defecto del chart. values-dev.yaml y values-prod.yaml los sobreescriben.
+
+nameOverride: ""
+fullnameOverride: ""
+
+# Etiquetas comunes que se agregan a todos los recursos
+commonLabels: {}
+
+# Entorno que reporta la API en / y /health
+environment: local
+
+image:
+  registry: ""
+  pullPolicy: IfNotPresent
+  pullSecrets: []
+
+backend:
+  enabled: true
+  image:
+    repository: notes-backend
+    tag: ""            # vacio: usa Chart.appVersion
+  replicas: 2
+  port: 8000
+  service:
+    type: ClusterIP
+    port: 8000
+  config:
+    apiTitle: Notes API
+    welcomeMessage: Notes API is enabled and working
+    healthParam: default
+    maxNoteLength: "500"
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 256Mi
+  podAnnotations: {}
+  probes:
+    readiness:
+      initialDelaySeconds: 3
+      periodSeconds: 5
+    liveness:
+      initialDelaySeconds: 10
+      periodSeconds: 10
+  autoscaling:
+    enabled: false
+    minReplicas: 2
+    maxReplicas: 5
+    targetCPUUtilizationPercentage: 70
+  podDisruptionBudget:
+    enabled: false
+    minAvailable: 1
+
+frontend:
+  enabled: true
+  image:
+    repository: notes-frontend
+    tag: ""
+  replicas: 1
+  port: 8080
+  service:
+    type: ClusterIP
+    port: 80
+  resources:
+    requests:
+      cpu: 50m
+      memory: 32Mi
+    limits:
+      cpu: 200m
+      memory: 64Mi
+
+# Exposicion externa. Solo una de las dos opciones suele estar activa.
+ingress:
+  enabled: false
+  className: nginx
+  annotations: {}
+  host: notes.local
+  tls: []
+
+# ApisixRoute (cluster de la facultad, ingress-apisix)
+apisix:
+  enabled: false
+  hosts:
+    app: notes.example.com
+    grafana: grafana.example.com
+    prometheus: prometheus.example.com
+
+monitoring:
+  prometheus:
+    enabled: true
+    image:
+      repository: prom/prometheus
+      tag: v3.16.0
+    scrapeInterval: 5s
+    retention: 7d
+    service:
+      type: ClusterIP
+      port: 9090
+    persistence:
+      enabled: false
+      size: 1Gi
+      storageClass: ""
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
+      limits:
+        cpu: 500m
+        memory: 512Mi
+    alerts:
+      notesCreatedThreshold: 10
+      notesCreatedWindow: 5m
+      latencyP95Seconds: 0.5
+      errorRatePercent: 5
+  grafana:
+    enabled: true
+    image:
+      repository: grafana/grafana
+      tag: 13.3.1
+    adminUser: admin
+    adminPassword: admin
+    service:
+      type: ClusterIP
+      port: 3000
+    rootUrl: ""
+    resources:
+      requests:
+        cpu: 100m
+        memory: 128Mi
+      limits:
+        cpu: 500m
+        memory: 384Mi
+
+# Contexto de seguridad compartido: sin root, sin escalado de privilegios, sin capabilities
+securityContext:
+  pod:
+    runAsNonRoot: true
+    seccompProfile:
+      type: RuntimeDefault
+  container:
+    allowPrivilegeEscalation: false
+    readOnlyRootFilesystem: true
+    capabilities:
+      drop: ["ALL"]
+
+networkPolicy:
+  enabled: false

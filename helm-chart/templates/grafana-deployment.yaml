@@ -1,0 +1,127 @@
+{{- if .Values.monitoring.grafana.enabled }}
+{{- $name := include "notes.componentName" (dict "root" . "component" "grafana") }}
+{{- $g := .Values.monitoring.grafana }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $name }}
+  labels:
+    {{- include "notes.labels" . | nindent 4 }}
+    app.kubernetes.io/component: grafana
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      {{- include "notes.selectorLabels" (dict "root" . "component" "grafana") | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "notes.labels" . | nindent 8 }}
+        app.kubernetes.io/component: grafana
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/grafana-configmap.yaml") . | sha256sum }}
+    spec:
+      automountServiceAccountToken: false
+      securityContext:
+        {{- toYaml .Values.securityContext.pod | nindent 8 }}
+        runAsUser: 472
+        runAsGroup: 472
+        fsGroup: 472
+      containers:
+        - name: grafana
+          image: {{ $g.image.repository }}:{{ $g.image.tag }}
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: GF_SECURITY_ADMIN_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $name }}
+                  key: admin-user
+            - name: GF_SECURITY_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $name }}
+                  key: admin-password
+            - name: GF_ANALYTICS_REPORTING_ENABLED
+              value: "false"
+            - name: GF_ANALYTICS_CHECK_FOR_UPDATES
+              value: "false"
+            - name: GF_USERS_ALLOW_SIGN_UP
+              value: "false"
+            {{- with $g.rootUrl }}
+            - name: GF_SERVER_ROOT_URL
+              value: {{ . | quote }}
+            {{- end }}
+          ports:
+            - name: http
+              containerPort: 3000
+              protocol: TCP
+          securityContext:
+            {{- toYaml .Values.securityContext.container | nindent 12 }}
+          resources:
+            {{- toYaml $g.resources | nindent 12 }}
+          readinessProbe:
+            httpGet:
+              path: /api/health
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /api/health
+              port: http
+            initialDelaySeconds: 20
+            periodSeconds: 10
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/grafana
+            - name: tmp
+              mountPath: /tmp
+            - name: provisioning
+              mountPath: /etc/grafana/provisioning/datasources
+              subPath: datasources
+            - name: provisioning
+              mountPath: /etc/grafana/provisioning/dashboards
+              subPath: dashboards
+            - name: dashboards
+              mountPath: /var/lib/grafana/dashboards
+              readOnly: true
+      initContainers:
+        # Copia los archivos de provisioning a subdirectorios separados del mismo volumen
+        - name: provisioning
+          image: {{ $g.image.repository }}:{{ $g.image.tag }}
+          imagePullPolicy: IfNotPresent
+          command: ["sh", "-c"]
+          args:
+            - mkdir -p /out/datasources /out/dashboards &&
+              cp /in/datasource.yml /out/datasources/datasource.yml &&
+              cp /in/dashboards.yml /out/dashboards/dashboards.yml
+          securityContext:
+            {{- toYaml .Values.securityContext.container | nindent 12 }}
+          resources:
+            requests:
+              cpu: 10m
+              memory: 16Mi
+            limits:
+              cpu: 50m
+              memory: 32Mi
+          volumeMounts:
+            - name: provisioning-src
+              mountPath: /in
+              readOnly: true
+            - name: provisioning
+              mountPath: /out
+      volumes:
+        - name: data
+          emptyDir: {}
+        - name: tmp
+          emptyDir: {}
+        - name: provisioning
+          emptyDir: {}
+        - name: provisioning-src
+          configMap:
+            name: {{ $name }}-provisioning
+        - name: dashboards
+          configMap:
+            name: {{ $name }}-dashboards
+{{- end }}

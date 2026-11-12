@@ -1,0 +1,79 @@
+{{- if .Values.monitoring.prometheus.enabled }}
+{{- $name := include "notes.componentName" (dict "root" . "component" "prometheus") }}
+{{- $p := .Values.monitoring.prometheus }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $name }}
+  labels:
+    {{- include "notes.labels" . | nindent 4 }}
+    app.kubernetes.io/component: prometheus
+spec:
+  replicas: 1
+  # Dos instancias no pueden compartir el mismo directorio de datos
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      {{- include "notes.selectorLabels" (dict "root" . "component" "prometheus") | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "notes.labels" . | nindent 8 }}
+        app.kubernetes.io/component: prometheus
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/prometheus-configmap.yaml") . | sha256sum }}
+    spec:
+      automountServiceAccountToken: false
+      securityContext:
+        {{- toYaml .Values.securityContext.pod | nindent 8 }}
+        runAsUser: 65534
+        runAsGroup: 65534
+        fsGroup: 65534
+      containers:
+        - name: prometheus
+          image: {{ $p.image.repository }}:{{ $p.image.tag }}
+          imagePullPolicy: IfNotPresent
+          args:
+            - --config.file=/etc/prometheus/prometheus.yml
+            - --storage.tsdb.path=/prometheus
+            - --storage.tsdb.retention.time={{ $p.retention }}
+            - --web.enable-lifecycle
+          ports:
+            - name: http
+              containerPort: 9090
+              protocol: TCP
+          securityContext:
+            {{- toYaml .Values.securityContext.container | nindent 12 }}
+          resources:
+            {{- toYaml $p.resources | nindent 12 }}
+          readinessProbe:
+            httpGet:
+              path: /-/ready
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /-/healthy
+              port: http
+            initialDelaySeconds: 15
+            periodSeconds: 10
+          volumeMounts:
+            - name: config
+              mountPath: /etc/prometheus
+              readOnly: true
+            - name: data
+              mountPath: /prometheus
+      volumes:
+        - name: config
+          configMap:
+            name: {{ $name }}
+        - name: data
+          {{- if $p.persistence.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ $name }}
+          {{- else }}
+          emptyDir: {}
+          {{- end }}
+{{- end }}

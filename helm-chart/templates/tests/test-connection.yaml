@@ -1,0 +1,56 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: {{ include "notes.fullname" . }}-test
+  labels:
+    {{- include "notes.labels" . | nindent 4 }}
+    app.kubernetes.io/component: test
+  annotations:
+    helm.sh/hook: test
+    helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+    ignore-check.kube-linter.io/no-liveness-probe: "pod de prueba de corta duracion (helm test)"
+    ignore-check.kube-linter.io/no-readiness-probe: "pod de prueba de corta duracion (helm test)"
+spec:
+  restartPolicy: Never
+  automountServiceAccountToken: false
+  securityContext:
+    runAsNonRoot: true
+    runAsUser: 100
+    runAsGroup: 101
+    seccompProfile:
+      type: RuntimeDefault
+  containers:
+    - name: curl
+      image: curlimages/curl:8.23.0
+      imagePullPolicy: IfNotPresent
+      command: ["sh", "-ec"]
+      args:
+        - |
+          BACKEND=http://{{ include "notes.componentName" (dict "root" . "component" "backend") }}:{{ .Values.backend.service.port }}
+          echo "GET $BACKEND/health"; curl -fsS "$BACKEND/health"; echo
+          echo "GET $BACKEND/metrics"; curl -fsS "$BACKEND/metrics" | grep -c '^http_request_duration_seconds'
+          {{- if .Values.frontend.enabled }}
+          FRONTEND=http://{{ include "notes.componentName" (dict "root" . "component" "frontend") }}:{{ .Values.frontend.service.port }}
+          echo "GET $FRONTEND/healthz"; curl -fsS "$FRONTEND/healthz"
+          echo "GET $FRONTEND/api/stats"; curl -fsS "$FRONTEND/api/stats"; echo
+          {{- end }}
+          {{- if .Values.monitoring.prometheus.enabled }}
+          PROM=http://{{ include "notes.componentName" (dict "root" . "component" "prometheus") }}:{{ .Values.monitoring.prometheus.service.port }}
+          echo "GET $PROM/-/ready"; curl -fsS "$PROM/-/ready"
+          {{- end }}
+          {{- if .Values.monitoring.grafana.enabled }}
+          GRAFANA=http://{{ include "notes.componentName" (dict "root" . "component" "grafana") }}:{{ .Values.monitoring.grafana.service.port }}
+          echo "GET $GRAFANA/api/health"; curl -fsS "$GRAFANA/api/health"; echo
+          {{- end }}
+      securityContext:
+        allowPrivilegeEscalation: false
+        readOnlyRootFilesystem: true
+        capabilities:
+          drop: ["ALL"]
+      resources:
+        requests:
+          cpu: 10m
+          memory: 16Mi
+        limits:
+          cpu: 100m
+          memory: 64Mi

@@ -1,0 +1,15 @@
+apiVersion: v2
+name: notes
+description: Notes API (FastAPI) con frontend, Prometheus y Grafana
+type: application
+version: 1.0.0
+appVersion: "4.0.0"
+keywords:
+  - notes
+  - fastapi
+  - prometheus
+  - grafana
+sources:
+  - https://github.com/felicabrera/devops-entregable4
+maintainers:
+  - name: Felipe Cabrera

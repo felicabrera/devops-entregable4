@@ -1,0 +1,15 @@
+{{- if and .Values.backend.enabled .Values.backend.podDisruptionBudget.enabled }}
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "notes.componentName" (dict "root" . "component" "backend") }}
+  labels:
+    {{- include "notes.labels" . | nindent 4 }}
+    app.kubernetes.io/component: backend
+spec:
+  minAvailable: {{ .Values.backend.podDisruptionBudget.minAvailable }}
+  unhealthyPodEvictionPolicy: AlwaysAllow
+  selector:
+    matchLabels:
+      {{- include "notes.selectorLabels" (dict "root" . "component" "backend") | nindent 6 }}
+{{- end }}

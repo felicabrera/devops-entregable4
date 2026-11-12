@@ -1,0 +1,42 @@
+# Entorno de desarrollo: Kubernetes de Docker Desktop.
+# Las imagenes se construyen localmente (docker build) y el cluster comparte el daemon,
+# por eso no hay registry y pullPolicy es IfNotPresent.
+environment: dev
+
+image:
+  registry: ""
+  pullPolicy: IfNotPresent
+
+backend:
+  replicas: 2
+  image:
+    repository: notes-backend
+    tag: dev
+  config:
+    welcomeMessage: Notes API (dev)
+
+frontend:
+  image:
+    repository: notes-frontend
+    tag: dev
+  service:
+    type: LoadBalancer   # Docker Desktop lo expone en localhost:80
+    port: 80
+
+monitoring:
+  prometheus:
+    retention: 2d
+    service:
+      type: LoadBalancer
+      port: 9091
+    persistence:
+      enabled: true
+      size: 1Gi
+  grafana:
+    service:
+      type: LoadBalancer
+      port: 3001
+    rootUrl: http://localhost:3001
+
+networkPolicy:
+  enabled: true

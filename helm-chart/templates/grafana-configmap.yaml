@@ -1,0 +1,41 @@
+{{- if .Values.monitoring.grafana.enabled }}
+{{- $prometheus := include "notes.componentName" (dict "root" . "component" "prometheus") }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "notes.componentName" (dict "root" . "component" "grafana") }}-provisioning
+  labels:
+    {{- include "notes.labels" . | nindent 4 }}
+    app.kubernetes.io/component: grafana
+data:
+  datasource.yml: |
+    apiVersion: 1
+    datasources:
+      - name: Prometheus
+        uid: prometheus
+        type: prometheus
+        access: proxy
+        url: http://{{ $prometheus }}:{{ .Values.monitoring.prometheus.service.port }}
+        isDefault: true
+        editable: false
+  dashboards.yml: |
+    apiVersion: 1
+    providers:
+      - name: notes
+        folder: Notes
+        type: file
+        disableDeletion: true
+        options:
+          path: /var/lib/grafana/dashboards
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "notes.componentName" (dict "root" . "component" "grafana") }}-dashboards
+  labels:
+    {{- include "notes.labels" . | nindent 4 }}
+    app.kubernetes.io/component: grafana
+data:
+  notes.json: |-
+{{ .Files.Get "files/dashboard.json" | indent 4 }}
+{{- end }}

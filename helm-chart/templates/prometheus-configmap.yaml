@@ -1,0 +1,79 @@
+{{- if .Values.monitoring.prometheus.enabled }}
+{{- $backend := include "notes.componentName" (dict "root" . "component" "backend") }}
+{{- $grafana := include "notes.componentName" (dict "root" . "component" "grafana") }}
+{{- $alerts := .Values.monitoring.prometheus.alerts }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "notes.componentName" (dict "root" . "component" "prometheus") }}
+  labels:
+    {{- include "notes.labels" . | nindent 4 }}
+    app.kubernetes.io/component: prometheus
+data:
+  prometheus.yml: |
+    global:
+      scrape_interval: {{ .Values.monitoring.prometheus.scrapeInterval }}
+      evaluation_interval: {{ .Values.monitoring.prometheus.scrapeInterval }}
+      external_labels:
+        environment: {{ .Values.environment }}
+        release: {{ .Release.Name }}
+    rule_files:
+      - /etc/prometheus/alerts.yml
+    scrape_configs:
+      # Cada pod del backend es un target: el servicio headless publica un registro A por replica
+      - job_name: notes-backend
+        metrics_path: /metrics
+        dns_sd_configs:
+          - names: [{{ $backend }}-headless.{{ .Release.Namespace }}.svc.cluster.local]
+            type: A
+            port: {{ .Values.backend.port }}
+            refresh_interval: 10s
+        relabel_configs:
+          - replacement: backend
+            target_label: component
+      - job_name: prometheus
+        static_configs:
+          - targets: ["localhost:9090"]
+      {{- if .Values.monitoring.grafana.enabled }}
+      - job_name: grafana
+        static_configs:
+          - targets: ["{{ $grafana }}:{{ .Values.monitoring.grafana.service.port }}"]
+      {{- end }}
+  alerts.yml: |
+    groups:
+      - name: notes-backend
+        rules:
+          - alert: BackendCaido
+            expr: up{job="notes-backend"} == 0
+            for: 1m
+            labels:
+              severity: critical
+            annotations:
+              summary: "Una replica del backend no responde"
+              description: "La instancia {{ "{{ $labels.instance }}" }} lleva 1 minuto sin responder al scrape."
+          - alert: MuchasNotasCreadas
+            expr: sum(increase(notes_created_total[{{ $alerts.notesCreatedWindow }}])) > {{ $alerts.notesCreatedThreshold }}
+            labels:
+              severity: warning
+            annotations:
+              summary: "Se crearon mas de {{ $alerts.notesCreatedThreshold }} notas en {{ $alerts.notesCreatedWindow }}"
+              description: "Notas creadas en la ventana: {{ "{{ $value }}" }}"
+          - alert: LatenciaAlta
+            expr: histogram_quantile(0.95, sum by (le) (rate(http_request_duration_seconds_bucket[5m]))) > {{ $alerts.latencyP95Seconds }}
+            for: 2m
+            labels:
+              severity: warning
+            annotations:
+              summary: "Latencia p95 por encima de {{ $alerts.latencyP95Seconds }}s"
+              description: "p95 actual: {{ "{{ $value }}" }}s"
+          - alert: TasaDeErrores
+            expr: >
+              100 * sum(rate(http_request_duration_seconds_count{status=~"5.."}[5m]))
+              / sum(rate(http_request_duration_seconds_count[5m])) > {{ $alerts.errorRatePercent }}
+            for: 2m
+            labels:
+              severity: critical
+            annotations:
+              summary: "Mas del {{ $alerts.errorRatePercent }}% de las respuestas son 5xx"
+              description: "Porcentaje actual: {{ "{{ $value }}" }}"
+{{- end }}

@@ -1,0 +1,42 @@
+{{- if .Values.apisix.enabled }}
+# Rutas para el ingress APISIX del cluster de la facultad (*.reto-ucu.net con TLS wildcard)
+apiVersion: apisix.apache.org/v2
+kind: ApisixRoute
+metadata:
+  name: {{ include "notes.fullname" . }}
+  labels:
+    {{- include "notes.labels" . | nindent 4 }}
+spec:
+  http:
+    - name: app
+      match:
+        hosts:
+          - {{ .Values.apisix.hosts.app }}
+        paths:
+          - /*
+      backends:
+        - serviceName: {{ include "notes.componentName" (dict "root" . "component" "frontend") }}
+          servicePort: {{ .Values.frontend.service.port }}
+    {{- if .Values.monitoring.grafana.enabled }}
+    - name: grafana
+      match:
+        hosts:
+          - {{ .Values.apisix.hosts.grafana }}
+        paths:
+          - /*
+      backends:
+        - serviceName: {{ include "notes.componentName" (dict "root" . "component" "grafana") }}
+          servicePort: {{ .Values.monitoring.grafana.service.port }}
+    {{- end }}
+    {{- if .Values.monitoring.prometheus.enabled }}
+    - name: prometheus
+      match:
+        hosts:
+          - {{ .Values.apisix.hosts.prometheus }}
+        paths:
+          - /*
+      backends:
+        - serviceName: {{ include "notes.componentName" (dict "root" . "component" "prometheus") }}
+          servicePort: {{ .Values.monitoring.prometheus.service.port }}
+    {{- end }}
+{{- end }}
