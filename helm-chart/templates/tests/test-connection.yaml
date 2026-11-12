@@ -7,7 +7,7 @@ metadata:
     app.kubernetes.io/component: test
   annotations:
     helm.sh/hook: test
-    helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+    helm.sh/hook-delete-policy: before-hook-creation
     ignore-check.kube-linter.io/no-liveness-probe: "pod de prueba de corta duracion (helm test)"
     ignore-check.kube-linter.io/no-readiness-probe: "pod de prueba de corta duracion (helm test)"
 spec:
