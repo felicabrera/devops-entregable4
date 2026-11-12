@@ -97,7 +97,7 @@ pipeline {
           docker buildx build --platform "$PLATFORM" --load \
             --build-arg APP_VERSION="$IMAGE_TAG" -t "$BACKEND_IMAGE" backend
           docker buildx build --platform "$PLATFORM" --load -t "$FRONTEND_IMAGE" frontend
-          docker image ls "$BACKEND_IMAGE" "$FRONTEND_IMAGE"
+          docker image inspect --format '{{index .RepoTags 0}} {{.Size}}' "$BACKEND_IMAGE" "$FRONTEND_IMAGE"
         '''
       }
     }
