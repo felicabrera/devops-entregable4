@@ -44,9 +44,13 @@ pipeline {
       steps {
         sh '''
           mkdir -p reports/jenkins
+          # --error devuelve 1 si hay hallazgos; el codigo se guarda antes de mostrar el reporte
+          rc=0
           semgrep scan --config .semgrep --config p/python --config p/dockerfile --config p/kubernetes \
             --config p/secrets --metrics=off --error --text \
-            --sarif-output reports/jenkins/semgrep.sarif 2>&1 | tee reports/jenkins/semgrep.txt
+            --sarif-output reports/jenkins/semgrep.sarif > reports/jenkins/semgrep.txt 2>&1 || rc=$?
+          cat reports/jenkins/semgrep.txt
+          exit "$rc"
         '''
       }
     }
@@ -54,16 +58,27 @@ pipeline {
     stage('Dependencias (Snyk)') {
       steps {
         withCredentials([string(credentialsId: 'snyk-token', variable: 'SNYK_TOKEN')]) {
-          sh '''
-            python3 -m venv .venv-snyk
-            .venv-snyk/bin/pip install -q -r backend/requirements.txt
-            cd backend
-            # Falla si hay vulnerabilidades HIGH o CRITICAL en las dependencias
-            snyk test --file=requirements.txt --package-manager=pip --command=../.venv-snyk/bin/python \
-              --severity-threshold=high 2>&1 | tee ../reports/jenkins/snyk.txt
-            snyk monitor --file=requirements.txt --package-manager=pip --command=../.venv-snyk/bin/python \
-              --project-name=devops-entregable4-backend || true
-          '''
+          script {
+            if (!env.SNYK_TOKEN?.trim()) {
+              writeFile file: 'reports/jenkins/snyk.txt', text: 'SNYK_TOKEN vacio: analisis de Snyk omitido\n'
+              unstable('SNYK_TOKEN vacio: se omite Snyk. Cargar el token en jenkins/.env')
+              return
+            }
+            sh '''
+              python3 -m venv .venv-snyk
+              .venv-snyk/bin/pip install -q -r backend/requirements.txt
+              cd backend
+              # Falla si hay vulnerabilidades HIGH o CRITICAL (exit 1) o si Snyk no puede analizar (exit 2 o 3).
+              # Se guarda el codigo de salida antes de mostrar el reporte para que no lo oculte un pipe.
+              rc=0
+              snyk test --file=requirements.txt --package-manager=pip --command=../.venv-snyk/bin/python \
+                --severity-threshold=high > ../reports/jenkins/snyk.txt 2>&1 || rc=$?
+              cat ../reports/jenkins/snyk.txt
+              if [ "$rc" -ne 0 ]; then exit "$rc"; fi
+              snyk monitor --file=requirements.txt --package-manager=pip --command=../.venv-snyk/bin/python \
+                --project-name=devops-entregable4-backend || true
+            '''
+          }
         }
       }
     }

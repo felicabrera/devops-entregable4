@@ -277,7 +277,7 @@ chart son identicos.
 |---|---|---|---|
 | Checkout | git | Clona el repositorio y fija `IMAGE_TAG=<sha>` | |
 | Analisis estatico | Semgrep 1.185 | `.semgrep/` + `p/python`, `p/dockerfile`, `p/kubernetes`, `p/secrets`; guarda texto y SARIF | hay hallazgos (`--error`) |
-| Dependencias | Snyk | `snyk test` sobre `requirements.txt` y `snyk monitor` | HIGH o CRITICAL |
+| Dependencias | Snyk | `snyk test` sobre `requirements.txt` y `snyk monitor` | HIGH o CRITICAL, o error de Snyk. Sin `SNYK_TOKEN` se omite y el build queda UNSTABLE |
 | Build y test | ruff, pytest, helm, kyverno | lint + formato, tests con JUnit, `helm lint`, `kyverno apply` y `kyverno test` | falla un test o una politica |
 | Imagen Docker | buildx | `linux/amd64` por defecto (los nodos de la facultad) | |
 | Escaneo de imagen | Trivy | HIGH/CRITICAL con parche en el log; bloquea con CRITICAL que tenga parche | CRITICAL con parche |
