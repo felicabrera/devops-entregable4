@@ -91,7 +91,7 @@ jobs:
           skip-setup-trivy: true
 
   trivy-config:
-    name: Trivy (IaC: Dockerfiles, Helm, Kubernetes)
+    name: Trivy IaC (Dockerfiles, Helm, Kubernetes)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7

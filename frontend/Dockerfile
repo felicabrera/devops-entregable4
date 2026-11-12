@@ -3,7 +3,7 @@
 FROM alpine:3.24.4 AS builder
 WORKDIR /site
 COPY index.html styles.css app.js ./
-RUN apk add --no-cache gzip \
+RUN apk add --no-cache gzip=1.15-r0 \
     && for f in index.html styles.css app.js; do gzip -9 -k "$f"; done \
     && ls -l
 

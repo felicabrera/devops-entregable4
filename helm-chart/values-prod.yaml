@@ -21,9 +21,9 @@ backend:
     limits:
       cpu: 500m
       memory: 256Mi
+  # La cuenta del equipo no puede crear PodDisruptionBudgets en el cluster de la facultad
   podDisruptionBudget:
-    enabled: true
-    minAvailable: 1
+    enabled: false
 
 frontend:
   replicas: 2

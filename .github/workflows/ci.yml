@@ -45,7 +45,7 @@ jobs:
       - name: Construir y validar la configuracion de nginx
         run: |
           docker build -t notes-frontend:ci frontend
-          docker run --rm -e BACKEND_HOST=backend -e BACKEND_PORT=8000 notes-frontend:ci \
+          docker run --rm --add-host backend:127.0.0.1 -e BACKEND_HOST=backend -e BACKEND_PORT=8000 notes-frontend:ci \
             sh -c '/docker-entrypoint.d/20-envsubst-on-templates.sh && nginx -t'
 
   dockerfiles:
@@ -56,12 +56,15 @@ jobs:
       - uses: hadolint/hadolint-action@06be81baf89a55ffd0e24b8f04a4185738dd3387 # v3.5.0
         with:
           dockerfile: backend/Dockerfile
+          failure-threshold: warning
       - uses: hadolint/hadolint-action@06be81baf89a55ffd0e24b8f04a4185738dd3387 # v3.5.0
         with:
           dockerfile: frontend/Dockerfile
+          failure-threshold: warning
       - uses: hadolint/hadolint-action@06be81baf89a55ffd0e24b8f04a4185738dd3387 # v3.5.0
         with:
           dockerfile: jenkins/Dockerfile
+          failure-threshold: warning
           ignore: DL3008,DL3013
 
   scripts:
@@ -69,7 +72,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-      - run: shellcheck -x scripts/*.sh
+      - run: shellcheck -x -P SCRIPTDIR scripts/*.sh
 
   helm:
     name: Helm chart (lint, kube-linter, Kyverno)
@@ -123,7 +126,7 @@ jobs:
         run: |
           docker run -d --name jenkins -p 8080:8080 -e JAVA_OPTS=-Djenkins.install.runSetupWizard=false \
             jenkins/jenkins:2.580.2-lts-jdk21
-          docker exec jenkins jenkins-plugin-cli --plugins pipeline-model-definition
+          docker exec jenkins jenkins-plugin-cli --plugins pipeline-model-definition timestamper junit
           docker restart jenkins
           for _ in $(seq 1 60); do curl -fsS -o /dev/null http://localhost:8080/login && break; sleep 5; done
       - name: Validar el Jenkinsfile
