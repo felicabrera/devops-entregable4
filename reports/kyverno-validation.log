@@ -1,0 +1,60 @@
+# Validacion de politicas de Kyverno
+# Fecha: 2026-11-12T00:02:53Z | contexto: docker-desktop | namespace: notes
+# Kyverno: reg.kyverno.io/kyverno/kyverno:v1.20.0
+
+## Politicas instaladas
+NAME                             AGE   READY
+disallow-latest-tag              10m   true
+disallow-privileged-containers   10m   true
+disallow-root-containers         10m   true
+require-probes                   10m   true
+require-requests-limits          10m   true
+
+## Pruebas unitarias con el CLI (kyverno test)
+
+Test Summary: 29 tests passed and 0 tests failed
+
+
+## Admision en el cluster (kubectl apply)
+
+$ kubectl apply -n notes -f kyverno/test/pod-no-conforme.yaml
+Error from server: error when creating "/Users/felipe/dev/university/ucudal-2026-sem2-devops/devops-entregable4/kyverno/test/pod-no-conforme.yaml": admission webhook "vpol.validate.kyverno.svc-fail-finegrained-disallow-privileged-containers" denied the request: Policy disallow-privileged-containers failed: No se permite hostPID, hostIPC ni hostNetwork.
+RESULTADO: RECHAZADO
+
+$ kubectl apply -n notes -f kyverno/test/pod-latest.yaml
+Error from server: error when creating "/Users/felipe/dev/university/ucudal-2026-sem2-devops/devops-entregable4/kyverno/test/pod-latest.yaml": admission webhook "vpol.validate.kyverno.svc-fail-finegrained-disallow-latest-tag" denied the request: Policy disallow-latest-tag failed: No se permite usar la etiqueta latest en las imagenes.
+RESULTADO: RECHAZADO
+
+$ kubectl apply -n notes -f kyverno/test/pod-sin-limites.yaml
+Error from server: error when creating "/Users/felipe/dev/university/ucudal-2026-sem2-devops/devops-entregable4/kyverno/test/pod-sin-limites.yaml": admission webhook "vpol.validate.kyverno.svc-fail-finegrained-require-requests-limits" denied the request: Policy require-requests-limits failed: Todos los contenedores deben definir resources.requests y resources.limits de cpu y memory.
+RESULTADO: RECHAZADO
+
+$ kubectl apply -n notes -f kyverno/test/pod-root.yaml
+Error from server: error when creating "/Users/felipe/dev/university/ucudal-2026-sem2-devops/devops-entregable4/kyverno/test/pod-root.yaml": admission webhook "vpol.validate.kyverno.svc-fail-finegrained-disallow-root-containers" denied the request: Policy disallow-root-containers failed: Los contenedores no pueden ejecutarse como root: defina securityContext.runAsNonRoot: true.
+RESULTADO: RECHAZADO
+
+$ kubectl apply -n notes -f kyverno/test/pod-privilegiado.yaml
+Error from server: error when creating "/Users/felipe/dev/university/ucudal-2026-sem2-devops/devops-entregable4/kyverno/test/pod-privilegiado.yaml": admission webhook "vpol.validate.kyverno.svc-fail-finegrained-disallow-privileged-containers" denied the request: Policy disallow-privileged-containers failed: No se permite hostPID, hostIPC ni hostNetwork.
+RESULTADO: RECHAZADO
+
+$ kubectl apply -n notes -f kyverno/test/pod-init-no-conforme.yaml
+Error from server: error when creating "/Users/felipe/dev/university/ucudal-2026-sem2-devops/devops-entregable4/kyverno/test/pod-init-no-conforme.yaml": admission webhook "vpol.validate.kyverno.svc-fail-finegrained-disallow-latest-tag" denied the request: Policy disallow-latest-tag failed: No se permite usar la etiqueta latest en las imagenes.
+RESULTADO: RECHAZADO
+
+$ kubectl apply -n notes -f kyverno/test/deployment-sin-probes.yaml
+Error from server: error when creating "/Users/felipe/dev/university/ucudal-2026-sem2-devops/devops-entregable4/kyverno/test/deployment-sin-probes.yaml": admission webhook "vpol.validate.kyverno.svc-fail-finegrained-require-probes" denied the request: Policy require-probes failed: Todos los contenedores deben definir readinessProbe y livenessProbe.
+RESULTADO: RECHAZADO
+
+$ kubectl apply -n notes -f kyverno/test/pod-conforme.yaml
+pod/pod-conforme created
+RESULTADO: ACEPTADO
+
+## Contenedor efimero con latest sobre un pod existente (kubectl debug)
+$ kubectl debug -n notes pod-conforme --image=busybox:latest --profile=general -- true
+Defaulting debug container name to debugger-f7vsq.
+Warning: Non-root user is configured for the entire target Pod, and some capabilities granted by debug profile may not work. Please consider using "--custom" with a custom profile that specifies "securityContext.runAsUser: 0".
+Error from server: admission webhook "vpol.validate.kyverno.svc-fail-finegrained-disallow-latest-tag" denied the request: Policy disallow-latest-tag failed: No se permite usar la etiqueta latest en las imagenes.
+RESULTADO: RECHAZADO
+
+## Limpieza
+pod "pod-conforme" deleted from notes namespace

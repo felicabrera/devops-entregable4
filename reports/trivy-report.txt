@@ -1,0 +1,255 @@
+# Trivy Version: 0.69.3 | 2026-11-12T00:03:52Z
+
+## trivy image --severity HIGH,CRITICAL --ignore-unfixed notes-backend:dev
+2026-11-11T21:03:52-03:00	INFO	[vuln] Vulnerability scanning is enabled
+2026-11-11T21:03:52-03:00	INFO	Detected OS	family="debian" version="12.15"
+2026-11-11T21:03:52-03:00	INFO	[debian] Detecting vulnerabilities...	os_version="12" pkg_num=97
+2026-11-11T21:03:52-03:00	INFO	Number of language-specific files	num=1
+2026-11-11T21:03:52-03:00	INFO	[python-pkg] Detecting vulnerabilities...
+2026-11-11T21:03:52-03:00	WARN	Using severities from other vendors for some vulnerabilities. Read https://trivy.dev/docs/v0.69/guide/scanner/vulnerability#severity-selection for details.
+
+Report Summary
+
+┌──────────────────────────────────────────────────────────────────────────────────┬────────────┬─────────────────┐
+│                                      Target                                      │    Type    │ Vulnerabilities │
+├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
+│ notes-backend:dev (debian 12.15)                                                 │   debian   │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
+│ opt/venv/lib/python3.13/site-packages/annotated_doc-0.0.6.dist-info/METADATA     │ python-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
+│ opt/venv/lib/python3.13/site-packages/annotated_types-0.8.0.dist-info/METADATA   │ python-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
+│ opt/venv/lib/python3.13/site-packages/anyio-4.16.0.dist-info/METADATA            │ python-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
+│ opt/venv/lib/python3.13/site-packages/click-8.5.1.dist-info/METADATA             │ python-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
+│ opt/venv/lib/python3.13/site-packages/fastapi-0.162.0.dist-info/METADATA         │ python-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
+│ opt/venv/lib/python3.13/site-packages/h11-0.16.0.dist-info/METADATA              │ python-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
+│ opt/venv/lib/python3.13/site-packages/httptools-0.9.0.dist-info/METADATA         │ python-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
+│ opt/venv/lib/python3.13/site-packages/idna-3.20.dist-info/METADATA               │ python-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
+│ opt/venv/lib/python3.13/site-packages/opentelemetry_api-1.45.2.dist-info/METADA- │ python-pkg │        0        │
+│ TA                                                                               │            │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
+│ opt/venv/lib/python3.13/site-packages/prometheus_client-0.26.0.dist-info/METADA- │ python-pkg │        0        │
+│ TA                                                                               │            │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
+│ opt/venv/lib/python3.13/site-packages/pydantic-2.14.3.dist-info/METADATA         │ python-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
+│ opt/venv/lib/python3.13/site-packages/pydantic_core-2.50.4.dist-info/METADATA    │ python-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
+│ opt/venv/lib/python3.13/site-packages/python_dotenv-1.2.4.dist-info/METADATA     │ python-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
+│ opt/venv/lib/python3.13/site-packages/pyyaml-6.0.3.dist-info/METADATA            │ python-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
+│ opt/venv/lib/python3.13/site-packages/starlette-1.10.0.dist-info/METADATA        │ python-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
+│ opt/venv/lib/python3.13/site-packages/typing_extensions-4.16.0.dist-info/METADA- │ python-pkg │        0        │
+│ TA                                                                               │            │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
+│ opt/venv/lib/python3.13/site-packages/typing_inspection-0.4.5.dist-info/METADATA │ python-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
+│ opt/venv/lib/python3.13/site-packages/uvicorn-0.54.0.dist-info/METADATA          │ python-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
+│ opt/venv/lib/python3.13/site-packages/uvloop-0.23.0.dist-info/METADATA           │ python-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
+│ opt/venv/lib/python3.13/site-packages/watchfiles-1.3.0.dist-info/METADATA        │ python-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
+│ opt/venv/lib/python3.13/site-packages/websockets-17.4.dist-info/METADATA         │ python-pkg │        0        │
+└──────────────────────────────────────────────────────────────────────────────────┴────────────┴─────────────────┘
+Legend:
+- '-': Not scanned
+- '0': Clean (no security findings detected)
+
+
+## trivy image --severity CRITICAL (incluye sin parche) notes-backend:dev
+2026-11-11T21:03:52-03:00	INFO	[vuln] Vulnerability scanning is enabled
+2026-11-11T21:03:52-03:00	INFO	Detected OS	family="debian" version="12.15"
+2026-11-11T21:03:52-03:00	INFO	[debian] Detecting vulnerabilities...	os_version="12" pkg_num=97
+2026-11-11T21:03:52-03:00	INFO	Number of language-specific files	num=1
+2026-11-11T21:03:52-03:00	INFO	[python-pkg] Detecting vulnerabilities...
+2026-11-11T21:03:52-03:00	WARN	Using severities from other vendors for some vulnerabilities. Read https://trivy.dev/docs/v0.69/guide/scanner/vulnerability#severity-selection for details.
+
+Report Summary
+
+┌──────────────────────────────────────────────────────────────────────────────────┬────────────┬─────────────────┐
+│                                      Target                                      │    Type    │ Vulnerabilities │
+├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
+│ notes-backend:dev (debian 12.15)                                                 │   debian   │        2        │
+├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
+│ opt/venv/lib/python3.13/site-packages/annotated_doc-0.0.6.dist-info/METADATA     │ python-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
+│ opt/venv/lib/python3.13/site-packages/annotated_types-0.8.0.dist-info/METADATA   │ python-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
+│ opt/venv/lib/python3.13/site-packages/anyio-4.16.0.dist-info/METADATA            │ python-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
+│ opt/venv/lib/python3.13/site-packages/click-8.5.1.dist-info/METADATA             │ python-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
+│ opt/venv/lib/python3.13/site-packages/fastapi-0.162.0.dist-info/METADATA         │ python-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
+│ opt/venv/lib/python3.13/site-packages/h11-0.16.0.dist-info/METADATA              │ python-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
+│ opt/venv/lib/python3.13/site-packages/httptools-0.9.0.dist-info/METADATA         │ python-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
+│ opt/venv/lib/python3.13/site-packages/idna-3.20.dist-info/METADATA               │ python-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
+│ opt/venv/lib/python3.13/site-packages/opentelemetry_api-1.45.2.dist-info/METADA- │ python-pkg │        0        │
+│ TA                                                                               │            │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
+│ opt/venv/lib/python3.13/site-packages/prometheus_client-0.26.0.dist-info/METADA- │ python-pkg │        0        │
+│ TA                                                                               │            │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
+│ opt/venv/lib/python3.13/site-packages/pydantic-2.14.3.dist-info/METADATA         │ python-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
+│ opt/venv/lib/python3.13/site-packages/pydantic_core-2.50.4.dist-info/METADATA    │ python-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
+│ opt/venv/lib/python3.13/site-packages/python_dotenv-1.2.4.dist-info/METADATA     │ python-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
+│ opt/venv/lib/python3.13/site-packages/pyyaml-6.0.3.dist-info/METADATA            │ python-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
+│ opt/venv/lib/python3.13/site-packages/starlette-1.10.0.dist-info/METADATA        │ python-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
+│ opt/venv/lib/python3.13/site-packages/typing_extensions-4.16.0.dist-info/METADA- │ python-pkg │        0        │
+│ TA                                                                               │            │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
+│ opt/venv/lib/python3.13/site-packages/typing_inspection-0.4.5.dist-info/METADATA │ python-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
+│ opt/venv/lib/python3.13/site-packages/uvicorn-0.54.0.dist-info/METADATA          │ python-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
+│ opt/venv/lib/python3.13/site-packages/uvloop-0.23.0.dist-info/METADATA           │ python-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
+│ opt/venv/lib/python3.13/site-packages/watchfiles-1.3.0.dist-info/METADATA        │ python-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
+│ opt/venv/lib/python3.13/site-packages/websockets-17.4.dist-info/METADATA         │ python-pkg │        0        │
+└──────────────────────────────────────────────────────────────────────────────────┴────────────┴─────────────────┘
+Legend:
+- '-': Not scanned
+- '0': Clean (no security findings detected)
+
+
+notes-backend:dev (debian 12.15)
+================================
+Total: 2 (CRITICAL: 2)
+
+┌──────────────┬────────────────┬──────────┬──────────────┬───────────────────┬───────────────┬────────────────────────────────────────────────────────┐
+│   Library    │ Vulnerability  │ Severity │    Status    │ Installed Version │ Fixed Version │                         Title                          │
+├──────────────┼────────────────┼──────────┼──────────────┼───────────────────┼───────────────┼────────────────────────────────────────────────────────┤
+│ libsqlite3-0 │ CVE-2025-7458  │ CRITICAL │ affected     │ 3.40.1-2+deb12u2  │               │ sqlite: SQLite integer overflow                        │
+│              │                │          │              │                   │               │ https://avd.aquasec.com/nvd/cve-2025-7458              │
+├──────────────┼────────────────┤          ├──────────────┼───────────────────┼───────────────┼────────────────────────────────────────────────────────┤
+│ zlib1g       │ CVE-2023-45853 │          │ will_not_fix │ 1:1.2.13.dfsg-1   │               │ zlib: integer overflow and resultant heap-based buffer │
+│              │                │          │              │                   │               │ overflow in zipOpenNewFileInZip4_6                     │
+│              │                │          │              │                   │               │ https://avd.aquasec.com/nvd/cve-2023-45853             │
+└──────────────┴────────────────┴──────────┴──────────────┴───────────────────┴───────────────┴────────────────────────────────────────────────────────┘
+# Codigo de salida (CRITICAL): 1
+
+## trivy image --severity HIGH,CRITICAL --ignore-unfixed notes-frontend:dev
+2026-11-11T21:03:52-03:00	INFO	[vuln] Vulnerability scanning is enabled
+2026-11-11T21:03:52-03:00	INFO	Detected OS	family="alpine" version="3.24.2"
+2026-11-11T21:03:52-03:00	WARN	This OS version is not on the EOL list	family="alpine" version="3.24"
+2026-11-11T21:03:52-03:00	INFO	[alpine] Detecting vulnerabilities...	os_version="3.24" repository="3.24" pkg_num=71
+2026-11-11T21:03:52-03:00	INFO	Number of language-specific files	num=0
+
+Report Summary
+
+┌────────────────────────────────────┬────────┬─────────────────┐
+│               Target               │  Type  │ Vulnerabilities │
+├────────────────────────────────────┼────────┼─────────────────┤
+│ notes-frontend:dev (alpine 3.24.2) │ alpine │        0        │
+└────────────────────────────────────┴────────┴─────────────────┘
+Legend:
+- '-': Not scanned
+- '0': Clean (no security findings detected)
+
+
+📣 [34mNotices:[0m
+  - Version 0.76.2 of Trivy is now available, current version is 0.69.3
+
+To suppress version checks, run Trivy scans with the --skip-version-check flag
+
+
+## trivy image --severity CRITICAL (incluye sin parche) notes-frontend:dev
+2026-11-11T21:03:52-03:00	INFO	[vuln] Vulnerability scanning is enabled
+2026-11-11T21:03:52-03:00	INFO	Detected OS	family="alpine" version="3.24.2"
+2026-11-11T21:03:52-03:00	WARN	This OS version is not on the EOL list	family="alpine" version="3.24"
+2026-11-11T21:03:52-03:00	INFO	[alpine] Detecting vulnerabilities...	os_version="3.24" repository="3.24" pkg_num=71
+2026-11-11T21:03:52-03:00	INFO	Number of language-specific files	num=0
+
+Report Summary
+
+┌────────────────────────────────────┬────────┬─────────────────┐
+│               Target               │  Type  │ Vulnerabilities │
+├────────────────────────────────────┼────────┼─────────────────┤
+│ notes-frontend:dev (alpine 3.24.2) │ alpine │        0        │
+└────────────────────────────────────┴────────┴─────────────────┘
+Legend:
+- '-': Not scanned
+- '0': Clean (no security findings detected)
+
+# Codigo de salida (CRITICAL): 0
+
+## trivy config (Dockerfiles, Helm chart, Kubernetes, workflows)
+2026-11-11T21:03:52-03:00	INFO	[misconfig] Misconfiguration scanning is enabled
+2026-11-11T21:03:52-03:00	INFO	[checks-client] Need to update the checks bundle
+2026-11-11T21:03:52-03:00	INFO	[checks-client] Downloading the checks bundle...
+234.57 KiB / 234.57 KiB [--------------------------------------------------------->] 100.00% ? p/s ?234.57 KiB / 234.57 KiB [----------------------------------------------] 100.00% 12.18 MiB p/s 200ms2026-11-11T21:03:56-03:00	WARN	[rego] Module will be skipped as current version of Trivy is older than minimum trivy version required - please update Trivy to use this module	file_path="Users/felipe/Library/Caches/trivy/policy/content/policies/cloud/policies/aws/cloudfront/enable_logging.rego" minimum_trivy_version="0.72.0"
+2026-11-11T21:03:56-03:00	INFO	Detected config files	num=20
+
+Report Summary
+
+┌─────────────────────────────────────────────────┬────────────┬───────────────────┐
+│                     Target                      │    Type    │ Misconfigurations │
+├─────────────────────────────────────────────────┼────────────┼───────────────────┤
+│ backend/Dockerfile                              │ dockerfile │         0         │
+├─────────────────────────────────────────────────┼────────────┼───────────────────┤
+│ frontend/Dockerfile                             │ dockerfile │         0         │
+├─────────────────────────────────────────────────┼────────────┼───────────────────┤
+│ helm-chart/templates/backend-configmap.yaml     │    helm    │         0         │
+├─────────────────────────────────────────────────┼────────────┼───────────────────┤
+│ helm-chart/templates/backend-deployment.yaml    │    helm    │         0         │
+├─────────────────────────────────────────────────┼────────────┼───────────────────┤
+│ helm-chart/templates/backend-service.yaml       │    helm    │         0         │
+├─────────────────────────────────────────────────┼────────────┼───────────────────┤
+│ helm-chart/templates/frontend-deployment.yaml   │    helm    │         0         │
+├─────────────────────────────────────────────────┼────────────┼───────────────────┤
+│ helm-chart/templates/frontend-service.yaml      │    helm    │         0         │
+├─────────────────────────────────────────────────┼────────────┼───────────────────┤
+│ helm-chart/templates/grafana-configmap.yaml     │    helm    │         0         │
+├─────────────────────────────────────────────────┼────────────┼───────────────────┤
+│ helm-chart/templates/grafana-deployment.yaml    │    helm    │         0         │
+├─────────────────────────────────────────────────┼────────────┼───────────────────┤
+│ helm-chart/templates/grafana-secret.yaml        │    helm    │         0         │
+├─────────────────────────────────────────────────┼────────────┼───────────────────┤
+│ helm-chart/templates/grafana-service.yaml       │    helm    │         0         │
+├─────────────────────────────────────────────────┼────────────┼───────────────────┤
+│ helm-chart/templates/prometheus-configmap.yaml  │    helm    │         0         │
+├─────────────────────────────────────────────────┼────────────┼───────────────────┤
+│ helm-chart/templates/prometheus-deployment.yaml │    helm    │         0         │
+├─────────────────────────────────────────────────┼────────────┼───────────────────┤
+│ helm-chart/templates/prometheus-service.yaml    │    helm    │         0         │
+├─────────────────────────────────────────────────┼────────────┼───────────────────┤
+│ jenkins/Dockerfile                              │ dockerfile │         0         │
+├─────────────────────────────────────────────────┼────────────┼───────────────────┤
+│ kyverno/policies/disallow-latest-tag.yaml       │ kubernetes │         0         │
+├─────────────────────────────────────────────────┼────────────┼───────────────────┤
+│ kyverno/policies/disallow-privileged.yaml       │ kubernetes │         0         │
+├─────────────────────────────────────────────────┼────────────┼───────────────────┤
+│ kyverno/policies/disallow-root.yaml             │ kubernetes │         0         │
+├─────────────────────────────────────────────────┼────────────┼───────────────────┤
+│ kyverno/policies/require-probes.yaml            │ kubernetes │         0         │
+├─────────────────────────────────────────────────┼────────────┼───────────────────┤
+│ kyverno/policies/require-resources.yaml         │ kubernetes │         0         │
+└─────────────────────────────────────────────────┴────────────┴───────────────────┘
+Legend:
+- '-': Not scanned
+- '0': Clean (no security findings detected)
+
+
+📣 [34mNotices:[0m
+  - Version 0.76.2 of Trivy is now available, current version is 0.69.3
+
+To suppress version checks, run Trivy scans with the --skip-version-check flag
+

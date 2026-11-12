@@ -1,0 +1,43 @@
+# Semgrep 1.185.0 | 2026-11-12T00:03:31Z
+# semgrep scan --config .semgrep --config p/python --config p/dockerfile --config p/kubernetes --config p/secrets --config p/owasp-top-ten
+
+               
+               
+┌─────────────┐
+│ Scan Status │
+└─────────────┘
+  Scanning 78 files tracked by git with 614 Code rules:
+                                                                                                                        
+  Language      Rules   Files          Origin      Rules                                                                
+ ─────────────────────────────        ───────────────────                                                               
+  <multilang>      49      78          Community     609                                                                
+  yaml             32      38          Custom          5                                                                
+  bash              1      11                                                                                           
+  python          156       5                                                                                           
+  dockerfile        7       3                                                                                           
+  json              3       2                                                                                           
+  js               65       1                                                                                           
+  php              22       1                                                                                           
+  html              1       1                                                                                           
+                                                                                                                        
+                
+                
+┌──────────────┐
+│ Scan Summary │
+└──────────────┘
+✅ Scan completed successfully.
+ • Findings: 0 (0 blocking)
+ • Rules run: 335
+ • Targets scanned: 78
+ • Parsed lines: ~99.9%
+ • Scan skipped: 
+   ◦ Files matching .semgrepignore patterns: 23
+ • Scan was limited to files tracked by git
+ • For a detailed list of skipped files and lines, run semgrep with the --verbose flag
+Ran 335 rules on 78 files: 0 findings.
+(need more rules? `semgrep login` for additional free Semgrep Registry rules)
+
+If Semgrep missed a finding, please send us feedback to let us know!
+See https://semgrep.dev/docs/reporting-false-negatives/
+
+# Codigo de salida: 0
