@@ -1,0 +1,13 @@
+# Viola las cuatro politicas de Pod a la vez
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-no-conforme
+spec:
+  hostNetwork: true
+  containers:
+    - name: app
+      image: nginx:latest
+      securityContext:
+        runAsUser: 0
+        privileged: true

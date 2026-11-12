@@ -1,0 +1,56 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: politicas-notes
+policies:
+  - ../policies/disallow-latest-tag.yaml
+  - ../policies/require-resources.yaml
+  - ../policies/disallow-root.yaml
+  - ../policies/disallow-privileged.yaml
+  - ../policies/require-probes.yaml
+resources:
+  - pod-conforme.yaml
+  - pod-latest.yaml
+  - pod-sin-limites.yaml
+  - pod-root.yaml
+  - pod-privilegiado.yaml
+  - pod-init-no-conforme.yaml
+  - pod-no-conforme.yaml
+  - deployment-sin-probes.yaml
+results:
+  - policy: disallow-latest-tag
+    resources: [pod-conforme, pod-sin-limites, pod-root, pod-privilegiado]
+    kind: Pod
+    result: pass
+  - policy: disallow-latest-tag
+    resources: [pod-latest, pod-init-no-conforme, pod-no-conforme]
+    kind: Pod
+    result: fail
+  - policy: require-requests-limits
+    resources: [pod-conforme, pod-latest, pod-root, pod-privilegiado]
+    kind: Pod
+    result: pass
+  - policy: require-requests-limits
+    resources: [pod-sin-limites, pod-init-no-conforme, pod-no-conforme]
+    kind: Pod
+    result: fail
+  - policy: disallow-root-containers
+    resources: [pod-conforme, pod-latest, pod-sin-limites, pod-privilegiado]
+    kind: Pod
+    result: pass
+  - policy: disallow-root-containers
+    resources: [pod-root, pod-init-no-conforme, pod-no-conforme]
+    kind: Pod
+    result: fail
+  - policy: disallow-privileged-containers
+    resources: [pod-conforme, pod-latest, pod-sin-limites, pod-root]
+    kind: Pod
+    result: pass
+  - policy: disallow-privileged-containers
+    resources: [pod-privilegiado, pod-no-conforme, pod-init-no-conforme]
+    kind: Pod
+    result: fail
+  - policy: require-probes
+    resources: [deploy-sin-probes]
+    kind: Deployment
+    result: fail

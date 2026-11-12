@@ -1,0 +1,17 @@
+# Valores para el chart oficial kyverno/kyverno (3.10.0, Kyverno v1.20.0) en el cluster local.
+# Una replica por controlador (cluster de un nodo). El reports controller necesita
+# permisos sobre pods/ephemeralcontainers porque las politicas validan ese subrecurso.
+admissionController:
+  replicas: 1
+backgroundController:
+  replicas: 1
+cleanupController:
+  replicas: 1
+reportsController:
+  replicas: 1
+  rbac:
+    clusterRole:
+      extraResources:
+        - apiGroups: [""]
+          resources: ["pods/ephemeralcontainers"]
+          verbs: ["get", "list", "watch"]

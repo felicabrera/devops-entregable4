@@ -1,0 +1,18 @@
+# Viola require-requests-limits (sin limits)
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-sin-limites
+spec:
+  securityContext:
+    runAsNonRoot: true
+    runAsUser: 10001
+  containers:
+    - name: app
+      image: nginxinc/nginx-unprivileged:1.31.7-alpine
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop: ["ALL"]
+      resources:
+        requests: {cpu: 50m, memory: 32Mi}

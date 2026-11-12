@@ -1,0 +1,17 @@
+# Viola disallow-root-containers (runAsUser 0 y sin runAsNonRoot)
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-root
+spec:
+  containers:
+    - name: app
+      image: nginx:1.27.5
+      securityContext:
+        runAsUser: 0
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop: ["ALL"]
+      resources:
+        requests: {cpu: 50m, memory: 32Mi}
+        limits: {cpu: 100m, memory: 64Mi}

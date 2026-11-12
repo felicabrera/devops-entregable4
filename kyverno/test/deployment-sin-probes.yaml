@@ -1,0 +1,26 @@
+# Viola require-probes (Deployment sin readiness ni liveness)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deploy-sin-probes
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {app: sin-probes}
+  template:
+    metadata:
+      labels: {app: sin-probes}
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001
+      containers:
+        - name: app
+          image: nginxinc/nginx-unprivileged:1.31.7-alpine
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ["ALL"]
+          resources:
+            requests: {cpu: 50m, memory: 32Mi}
+            limits: {cpu: 100m, memory: 64Mi}

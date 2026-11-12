@@ -1,0 +1,66 @@
+# Valores para el chart oficial falcosecurity/falco (9.2.2, Falco 0.45.2).
+# Docker Desktop (kernel linuxkit con BTF): driver modern eBPF, sin modulo de kernel.
+driver:
+  enabled: true
+  kind: modern_ebpf
+
+tty: true
+
+# Sin Falcosidekick ni colector de metadatos: las alertas se leen de los logs del pod
+falcosidekick:
+  enabled: false
+collectors:
+  kubernetes:
+    enabled: false
+
+# Formato de salida: JSON por linea, facil de filtrar con jq
+falco:
+  json_output: true
+  json_include_output_property: true
+  json_include_tags_property: true
+  priority: notice
+  rule_matching: first
+  log_level: info
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 256Mi
+  limits:
+    cpu: 1000m
+    memory: 1Gi
+
+# Reglas propias de la Notes API, ademas de las reglas por defecto de Falco
+customRules:
+  notes-rules.yaml: |-
+    - rule: Lectura del archivo de notas por un proceso inesperado
+      desc: >
+        Un proceso distinto del servidor de la API abrio el archivo de notas.
+        Puede indicar exfiltracion de datos o manipulacion manual del almacenamiento.
+      condition: >
+        open_read and container and fd.name = /data/notes.json
+        and not proc.name in (python, python3, python3.13, uvicorn)
+      output: >
+        Lectura inesperada del archivo de notas
+        (user=%user.name user_uid=%user.uid proc=%proc.name cmdline=%proc.cmdline
+        parent=%proc.pname file=%fd.name container=%container.name
+        image=%container.image.repository:%container.image.tag)
+      priority: WARNING
+      tags: [notes, data, exfiltration]
+
+    - rule: Busqueda de credenciales en el contenedor
+      desc: >
+        Se ejecuto find o grep buscando claves privadas o contrasenas dentro
+        de un contenedor. Es un comportamiento tipico de reconocimiento
+        posterior a un compromiso.
+      condition: >
+        spawned_process and container
+        and ((proc.name = find and (proc.args contains id_rsa or proc.args contains id_dsa or proc.args contains "*.pem" or proc.args contains password))
+             or (proc.name in (grep, egrep, fgrep) and (proc.args contains PRIVATE or proc.args contains password or proc.args contains passwd)))
+      output: >
+        Busqueda de credenciales dentro de un contenedor
+        (user=%user.name user_uid=%user.uid proc=%proc.name cmdline=%proc.cmdline
+        parent=%proc.pname container=%container.name
+        image=%container.image.repository:%container.image.tag)
+      priority: WARNING
+      tags: [notes, credentials, mitre_credential_access]

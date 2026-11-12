@@ -1,0 +1,44 @@
+apiVersion: policies.kyverno.io/v1
+kind: ValidatingPolicy
+metadata:
+  name: disallow-root-containers
+  annotations:
+    policies.kyverno.io/title: Impedir contenedores como root
+    policies.kyverno.io/category: Pod Security
+    policies.kyverno.io/severity: high
+    policies.kyverno.io/subject: Pod
+    policies.kyverno.io/description: >-
+      Los contenedores deben ejecutarse con runAsNonRoot: true (a nivel de pod o de
+      cada contenedor) y no pueden fijar runAsUser en 0. Aplica a containers,
+      initContainers y ephemeralContainers.
+spec:
+  validationActions: [Deny]
+  evaluation:
+    background:
+      enabled: true
+  matchConstraints:
+    resourceRules:
+      - apiGroups: [""]
+        apiVersions: ["v1"]
+        operations: ["CREATE", "UPDATE"]
+        resources: ["pods", "pods/ephemeralcontainers"]
+  matchConditions:
+    - name: exclude-system-namespaces
+      expression: "!(request.?namespace.orValue('') in ['kube-system', 'kube-public', 'kube-node-lease', 'kyverno', 'local-path-storage', 'falco', 'jenkins'])"
+  variables:
+    - name: allContainers
+      expression: >-
+        object.spec.containers
+        + object.spec.?initContainers.orValue([])
+        + object.spec.?ephemeralContainers.orValue([])
+    - name: podNonRoot
+      expression: "object.spec.?securityContext.?runAsNonRoot.orValue(false) == true"
+  validations:
+    - expression: >-
+        variables.allContainers.all(c,
+          c.?securityContext.?runAsNonRoot.orValue(variables.podNonRoot) == true)
+      message: "Los contenedores no pueden ejecutarse como root: defina securityContext.runAsNonRoot: true."
+    - expression: >-
+        object.spec.?securityContext.?runAsUser.orValue(1) != 0
+        && variables.allContainers.all(c, c.?securityContext.?runAsUser.orValue(1) != 0)
+      message: "runAsUser no puede ser 0 (root)."

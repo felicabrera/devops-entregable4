@@ -1,0 +1,37 @@
+apiVersion: policies.kyverno.io/v1
+kind: ValidatingPolicy
+metadata:
+  name: require-requests-limits
+  annotations:
+    policies.kyverno.io/title: Exigir requests y limits de recursos
+    policies.kyverno.io/category: Best Practices
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/subject: Pod
+    policies.kyverno.io/description: >-
+      Todos los contenedores deben declarar requests y limits de CPU y memoria
+      para evitar que un pod agote los recursos del nodo. Aplica a containers e
+      initContainers (Kubernetes no permite recursos en ephemeralContainers).
+spec:
+  validationActions: [Deny]
+  evaluation:
+    background:
+      enabled: true
+  matchConstraints:
+    resourceRules:
+      - apiGroups: [""]
+        apiVersions: ["v1"]
+        operations: ["CREATE", "UPDATE"]
+        resources: ["pods"]
+  matchConditions:
+    - name: exclude-system-namespaces
+      expression: "!(request.?namespace.orValue('') in ['kube-system', 'kube-public', 'kube-node-lease', 'kyverno', 'local-path-storage', 'falco', 'jenkins'])"
+  variables:
+    - name: containers
+      expression: "object.spec.containers + object.spec.?initContainers.orValue([])"
+  validations:
+    - expression: >-
+        variables.containers.all(c,
+          has(c.resources) && has(c.resources.requests) && has(c.resources.limits)
+          && 'cpu' in c.resources.requests && 'memory' in c.resources.requests
+          && 'cpu' in c.resources.limits && 'memory' in c.resources.limits)
+      message: "Todos los contenedores deben definir resources.requests y resources.limits de cpu y memory."

@@ -1,0 +1,19 @@
+# Viola disallow-latest-tag (etiqueta latest)
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-latest
+spec:
+  securityContext:
+    runAsNonRoot: true
+    runAsUser: 10001
+  containers:
+    - name: app
+      image: nginxinc/nginx-unprivileged:latest
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop: ["ALL"]
+      resources:
+        requests: {cpu: 50m, memory: 32Mi}
+        limits: {cpu: 100m, memory: 64Mi}
