@@ -25,11 +25,19 @@ export GHCR_TOKEN="${GHCR_TOKEN:-}"
 export KUBECONFIG_FILE="${KUBECONFIG_FILE:-$HOME/.kube/config}"
 
 # Jenkins corre en un contenedor: el kubeconfig de Docker Desktop apunta a 127.0.0.1,
-# que dentro del contenedor no es el host. Se genera una copia que usa kubernetes.docker.internal.
+# que dentro del contenedor no es el host. Se genera una copia del contexto actual que
+# apunta a host.docker.internal (mismo puerto) y valida el certificado contra "localhost",
+# que esta en los SAN del API server tanto en modo kubeadm (6443) como en modo kind (puerto aleatorio).
 mkdir -p home
 JENKINS_KUBECONFIG="$ROOT_DIR/jenkins/home/kubeconfig"
-sed -E 's#https://(127\.0\.0\.1|localhost):6443#https://kubernetes.docker.internal:6443#' "$KUBECONFIG_FILE" > "$JENKINS_KUBECONFIG"
+KUBECONFIG="$KUBECONFIG_FILE" kubectl config view --minify --flatten > "$JENKINS_KUBECONFIG"
 chmod 600 "$JENKINS_KUBECONFIG"
+cluster="$(KUBECONFIG="$JENKINS_KUBECONFIG" kubectl config view -o jsonpath='{.clusters[0].name}')"
+server="$(KUBECONFIG="$JENKINS_KUBECONFIG" kubectl config view -o jsonpath='{.clusters[0].cluster.server}')"
+if [[ "$server" =~ ^https://(127\.0\.0\.1|localhost):([0-9]+)$ ]]; then
+  KUBECONFIG="$JENKINS_KUBECONFIG" kubectl config set-cluster "$cluster" \
+    --server="https://host.docker.internal:${BASH_REMATCH[2]}" --tls-server-name=localhost >/dev/null
+fi
 
 log "Construyendo la imagen de Jenkins (con docker, helm, kubectl, trivy, semgrep y snyk)"
 docker compose build
