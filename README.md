@@ -371,9 +371,11 @@ desarrollo y como se resolvieron:
 
 `snyk test --file=backend/requirements.txt --package-manager=pip --severity-threshold=high` sobre
 las dependencias instaladas (fastapi 0.162.0, uvicorn 0.54.0, prometheus-client 0.26.0 y sus
-transitivas) y `snyk code test` sobre `backend/`. El resultado esta en
-`reports/snyk-report.txt`; como segunda opinion, CI corre `pip-audit --strict`. En el pipeline
-cualquier vulnerabilidad HIGH o CRITICAL detiene la ejecucion antes de construir la imagen.
+transitivas). Resultado del workflow `Seguridad` (run 43335088092): 15 dependencias analizadas,
+sin rutas vulnerables. La salida esta en `reports/snyk-report.txt` y el SARIF se publica en Code
+Scanning. `scripts/security-scan.sh` agrega `snyk code test` sobre `backend/` cuando se corre en
+local; como segunda opinion, CI corre `pip-audit --strict`. En el pipeline cualquier
+vulnerabilidad HIGH o CRITICAL detiene la ejecucion antes de construir la imagen.
 
 ### 8.3 Trivy
 

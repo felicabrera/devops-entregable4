@@ -1,0 +1,16 @@
+# Snyk (snyk/actions/setup) | 2026-11-13 | workflow Seguridad, run 43335088092 (commit dd0ad75dd7f6)
+# https://github.com/felicabrera/devops-entregable4/actions/runs/43335088092
+# snyk test --file=backend/requirements.txt --package-manager=pip --severity-threshold=high --sarif-file-output=snyk.sarif
+# El SARIF se publica en GitHub Security > Code scanning (categoria snyk).
+
+Testing /home/runner/work/devops-entregable4/devops-entregable4...
+
+Organization:      felicabrera
+Package manager:   pip
+Target file:       backend/requirements.txt
+Project name:      backend
+Open source:       no
+Project path:      /home/runner/work/devops-entregable4/devops-entregable4
+Licenses:          enabled
+
+✔ Tested 15 dependencies for known issues, no vulnerable paths found.
