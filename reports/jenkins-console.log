@@ -18,11 +18,11 @@ Fetching upstream changes from https://github.com/felicabrera/devops-entregable4
  > git --version # 'git version 2.47.3'
  > git fetch --tags --force --progress -- https://github.com/felicabrera/devops-entregable4.git +refs/heads/*:refs/remotes/origin/* # timeout=10
  > git rev-parse refs/remotes/origin/main^{commit} # timeout=10
-Checking out Revision 52b7d7dd80441d10021c68bf51860a555f5a3881 (refs/remotes/origin/main)
+Checking out Revision 18b34eeb21d1d5f8abc6ce2a53c4c7b3e0347f2b (refs/remotes/origin/main)
  > git config core.sparsecheckout # timeout=10
- > git checkout -f 52b7d7dd80441d10021c68bf51860a555f5a3881 # timeout=10
-Commit message: "fix(jenkins): stop masking semgrep and snyk exit codes behind tee"
- > git rev-list --no-walk 55145b49b1df9174c56791b33d321647921f1bce # timeout=10
+ > git checkout -f 18b34eeb21d1d5f8abc6ce2a53c4c7b3e0347f2b # timeout=10
+Commit message: "docs: add snyk dependency scan results"
+ > git rev-list --no-walk dd0ad75dd7f63de7234c8e83a6f24deefc53899a # timeout=10
 [Pipeline] }
 [Pipeline] // stage
 [Pipeline] withEnv
@@ -32,93 +32,120 @@ Commit message: "fix(jenkins): stop masking semgrep and snyk exit codes behind t
 [Pipeline] timestamps
 [Pipeline] {
 [Pipeline] timeout
-[2026-11-12T23:59:10.589Z] Timeout set to expire in 45 min
+[2026-11-13T00:17:26.828Z] Timeout set to expire in 45 min
 [Pipeline] {
 [Pipeline] stage
 [Pipeline] { (Checkout)
 [Pipeline] checkout
-[2026-11-12T23:59:10.614Z] Selected Git installation does not exist. Using Default
-[2026-11-12T23:59:10.614Z] The recommended git tool is: NONE
-[2026-11-12T23:59:10.614Z] No credentials specified
-[2026-11-12T23:59:10.614Z]  > git rev-parse --resolve-git-dir /var/jenkins_home/workspace/notes-pipeline/.git # timeout=10
-[2026-11-12T23:59:10.617Z] Fetching changes from the remote Git repository
-[2026-11-12T23:59:10.617Z]  > git config remote.origin.url https://github.com/felicabrera/devops-entregable4.git # timeout=10
-[2026-11-12T23:59:10.621Z] Fetching upstream changes from https://github.com/felicabrera/devops-entregable4.git
-[2026-11-12T23:59:10.621Z]  > git --version # timeout=10
-[2026-11-12T23:59:10.623Z]  > git --version # 'git version 2.47.3'
-[2026-11-12T23:59:10.623Z]  > git fetch --tags --force --progress -- https://github.com/felicabrera/devops-entregable4.git +refs/heads/*:refs/remotes/origin/* # timeout=10
-[2026-11-12T23:59:11.144Z]  > git rev-parse refs/remotes/origin/main^{commit} # timeout=10
-[2026-11-12T23:59:11.147Z] Checking out Revision 52b7d7dd80441d10021c68bf51860a555f5a3881 (refs/remotes/origin/main)
-[2026-11-12T23:59:11.147Z]  > git config core.sparsecheckout # timeout=10
-[2026-11-12T23:59:11.149Z]  > git checkout -f 52b7d7dd80441d10021c68bf51860a555f5a3881 # timeout=10
-[2026-11-12T23:59:11.153Z] Commit message: "fix(jenkins): stop masking semgrep and snyk exit codes behind tee"
+[2026-11-13T00:17:26.862Z] Selected Git installation does not exist. Using Default
+[2026-11-13T00:17:26.862Z] The recommended git tool is: NONE
+[2026-11-13T00:17:26.862Z] No credentials specified
+[2026-11-13T00:17:26.863Z]  > git rev-parse --resolve-git-dir /var/jenkins_home/workspace/notes-pipeline/.git # timeout=10
+[2026-11-13T00:17:26.865Z] Fetching changes from the remote Git repository
+[2026-11-13T00:17:26.866Z]  > git config remote.origin.url https://github.com/felicabrera/devops-entregable4.git # timeout=10
+[2026-11-13T00:17:26.868Z] Fetching upstream changes from https://github.com/felicabrera/devops-entregable4.git
+[2026-11-13T00:17:26.868Z]  > git --version # timeout=10
+[2026-11-13T00:17:26.870Z]  > git --version # 'git version 2.47.3'
+[2026-11-13T00:17:26.870Z]  > git fetch --tags --force --progress -- https://github.com/felicabrera/devops-entregable4.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+[2026-11-13T00:17:27.414Z]  > git rev-parse refs/remotes/origin/main^{commit} # timeout=10
+[2026-11-13T00:17:27.417Z] Checking out Revision 18b34eeb21d1d5f8abc6ce2a53c4c7b3e0347f2b (refs/remotes/origin/main)
+[2026-11-13T00:17:27.418Z]  > git config core.sparsecheckout # timeout=10
+[2026-11-13T00:17:27.420Z]  > git checkout -f 18b34eeb21d1d5f8abc6ce2a53c4c7b3e0347f2b # timeout=10
+[2026-11-13T00:17:27.425Z] Commit message: "docs: add snyk dependency scan results"
 [Pipeline] script
 [Pipeline] {
 [Pipeline] sh
-[2026-11-12T23:59:11.429Z] + git rev-parse --short=12 HEAD
+[2026-11-13T00:17:27.714Z] + git rev-parse --short=12 HEAD
 [Pipeline] }
 [Pipeline] // script
 [Pipeline] sh
-[2026-11-12T23:59:11.718Z] + git log -1 --oneline
-[2026-11-12T23:59:11.718Z] 52b7d7d fix(jenkins): stop masking semgrep and snyk exit codes behind tee
-[2026-11-12T23:59:11.718Z] + echo Imagenes: localhost:5001/backend:52b7d7dd8044 localhost:5001/frontend:52b7d7dd8044
-[2026-11-12T23:59:11.718Z] Imagenes: localhost:5001/backend:52b7d7dd8044 localhost:5001/frontend:52b7d7dd8044
+[2026-11-13T00:17:28.008Z] + git log -1 --oneline
+[2026-11-13T00:17:28.008Z] 18b34ee docs: add snyk dependency scan results
+[2026-11-13T00:17:28.008Z] + echo Imagenes: localhost:5001/backend:18b34eeb21d1 localhost:5001/frontend:18b34eeb21d1
+[2026-11-13T00:17:28.008Z] Imagenes: localhost:5001/backend:18b34eeb21d1 localhost:5001/frontend:18b34eeb21d1
 [Pipeline] }
 [Pipeline] // stage
 [Pipeline] stage
 [Pipeline] { (Analisis estatico (Semgrep))
 [Pipeline] sh
-[2026-11-12T23:59:12.008Z] + mkdir -p reports/jenkins
-[2026-11-12T23:59:12.008Z] + rc=0
-[2026-11-12T23:59:12.008Z] + semgrep scan --config .semgrep --config p/python --config p/dockerfile --config p/kubernetes --config p/secrets --metrics=off --error --text --sarif-output reports/jenkins/semgrep.sarif
-[2026-11-12T23:59:13.872Z] + cat reports/jenkins/semgrep.txt
-[2026-11-12T23:59:13.872Z]                
-[2026-11-12T23:59:13.872Z]                
-[2026-11-12T23:59:13.872Z] ┌─────────────┐
-[2026-11-12T23:59:13.872Z] │ Scan Status │
-[2026-11-12T23:59:13.872Z] └─────────────┘
-[2026-11-12T23:59:13.872Z]   Scanning 80 files tracked by git with 225 Code rules:
-[2026-11-12T23:59:13.872Z]                                                                                                                         
-[2026-11-12T23:59:13.872Z]   Language      Rules   Files          Origin      Rules                                                                
-[2026-11-12T23:59:13.872Z]  ─────────────────────────────        ───────────────────                                                               
-[2026-11-12T23:59:13.872Z]   <multilang>      36      80          Community     220                                                                
-[2026-11-12T23:59:13.872Z]   yaml             13      38          Custom          5                                                                
-[2026-11-12T23:59:13.872Z]   python          156       5                                                                                           
-[2026-11-12T23:59:13.872Z]   dockerfile        7       3                                                                                           
-[2026-11-12T23:59:13.872Z]   js                5       1                                                                                           
-[2026-11-12T23:59:13.872Z]                                                                                                                         
-[2026-11-12T23:59:13.872Z]                 
-[2026-11-12T23:59:13.872Z]                 
-[2026-11-12T23:59:13.872Z] ┌──────────────┐
-[2026-11-12T23:59:13.872Z] │ Scan Summary │
-[2026-11-12T23:59:13.872Z] └──────────────┘
-[2026-11-12T23:59:13.872Z] ✅ Scan completed successfully.
-[2026-11-12T23:59:13.872Z]  • Findings: 0 (0 blocking)
-[2026-11-12T23:59:13.872Z]  • Rules run: 216
-[2026-11-12T23:59:13.872Z]  • Targets scanned: 80
-[2026-11-12T23:59:13.872Z]  • Parsed lines: ~100.0%
-[2026-11-12T23:59:13.872Z]  • Scan skipped: 
-[2026-11-12T23:59:13.872Z]    ◦ Files matching .semgrepignore patterns: 29
-[2026-11-12T23:59:13.872Z]  • Scan was limited to files tracked by git
-[2026-11-12T23:59:13.872Z]  • For a detailed list of skipped files and lines, run semgrep with the --verbose flag
-[2026-11-12T23:59:13.872Z] Ran 216 rules on 80 files: 0 findings.
-[2026-11-12T23:59:13.872Z] (need more rules? `semgrep login` for additional free Semgrep Registry rules)
-[2026-11-12T23:59:13.872Z] 
-[2026-11-12T23:59:13.872Z] If Semgrep missed a finding, please send us feedback to let us know!
-[2026-11-12T23:59:13.872Z] See https://semgrep.dev/docs/reporting-false-negatives/
-[2026-11-12T23:59:13.872Z] + exit 0
+[2026-11-13T00:17:28.302Z] + mkdir -p reports/jenkins
+[2026-11-13T00:17:28.302Z] + rc=0
+[2026-11-13T00:17:28.302Z] + semgrep scan --config .semgrep --config p/python --config p/dockerfile --config p/kubernetes --config p/secrets --metrics=off --error --text --sarif-output reports/jenkins/semgrep.sarif
+[2026-11-13T00:17:30.165Z] + cat reports/jenkins/semgrep.txt
+[2026-11-13T00:17:30.165Z]                
+[2026-11-13T00:17:30.165Z]                
+[2026-11-13T00:17:30.165Z] ┌─────────────┐
+[2026-11-13T00:17:30.165Z] │ Scan Status │
+[2026-11-13T00:17:30.165Z] └─────────────┘
+[2026-11-13T00:17:30.165Z]   Scanning 80 files tracked by git with 225 Code rules:
+[2026-11-13T00:17:30.165Z]                                                                                                                         
+[2026-11-13T00:17:30.165Z]   Language      Rules   Files          Origin      Rules                                                                
+[2026-11-13T00:17:30.165Z]  ─────────────────────────────        ───────────────────                                                               
+[2026-11-13T00:17:30.165Z]   <multilang>      36      80          Community     220                                                                
+[2026-11-13T00:17:30.165Z]   yaml             13      38          Custom          5                                                                
+[2026-11-13T00:17:30.165Z]   python          156       5                                                                                           
+[2026-11-13T00:17:30.165Z]   dockerfile        7       3                                                                                           
+[2026-11-13T00:17:30.165Z]   js                5       1                                                                                           
+[2026-11-13T00:17:30.165Z]                                                                                                                         
+[2026-11-13T00:17:30.165Z]                 
+[2026-11-13T00:17:30.165Z]                 
+[2026-11-13T00:17:30.165Z] ┌──────────────┐
+[2026-11-13T00:17:30.165Z] │ Scan Summary │
+[2026-11-13T00:17:30.165Z] └──────────────┘
+[2026-11-13T00:17:30.165Z] ✅ Scan completed successfully.
+[2026-11-13T00:17:30.165Z]  • Findings: 0 (0 blocking)
+[2026-11-13T00:17:30.165Z]  • Rules run: 216
+[2026-11-13T00:17:30.165Z]  • Targets scanned: 80
+[2026-11-13T00:17:30.166Z]  • Parsed lines: ~100.0%
+[2026-11-13T00:17:30.166Z]  • Scan skipped: 
+[2026-11-13T00:17:30.166Z]    ◦ Files matching .semgrepignore patterns: 31
+[2026-11-13T00:17:30.166Z]  • Scan was limited to files tracked by git
+[2026-11-13T00:17:30.166Z]  • For a detailed list of skipped files and lines, run semgrep with the --verbose flag
+[2026-11-13T00:17:30.166Z] Ran 216 rules on 80 files: 0 findings.
+[2026-11-13T00:17:30.166Z] (need more rules? `semgrep login` for additional free Semgrep Registry rules)
+[2026-11-13T00:17:30.166Z] 
+[2026-11-13T00:17:30.166Z] If Semgrep missed a finding, please send us feedback to let us know!
+[2026-11-13T00:17:30.166Z] See https://semgrep.dev/docs/reporting-false-negatives/
+[2026-11-13T00:17:30.166Z] + exit 0
 [Pipeline] }
 [Pipeline] // stage
 [Pipeline] stage
 [Pipeline] { (Dependencias (Snyk))
 [Pipeline] withCredentials
-[2026-11-12T23:59:13.922Z] Masking supported pattern matches of $SNYK_TOKEN
+[2026-11-13T00:17:30.221Z] Masking supported pattern matches of $SNYK_TOKEN
 [Pipeline] {
 [Pipeline] script
 [Pipeline] {
-[Pipeline] writeFile
-[Pipeline] unstable
-[2026-11-12T23:59:13.956Z] WARNING: SNYK_TOKEN vacio: se omite Snyk. Cargar el token en jenkins/.env
+[Pipeline] sh
+[2026-11-13T00:17:30.511Z] + python3 -m venv .venv-snyk
+[2026-11-13T00:17:31.062Z] + .venv-snyk/bin/pip install -q -r backend/requirements.txt
+[2026-11-13T00:17:31.062Z] + cd backend
+[2026-11-13T00:17:31.062Z] + rc=0
+[2026-11-13T00:17:31.062Z] + snyk test --file=requirements.txt --package-manager=pip --command=../.venv-snyk/bin/python --severity-threshold=high
+[2026-11-13T00:17:36.261Z] + cat ../reports/jenkins/snyk.txt
+[2026-11-13T00:17:36.261Z] 
+[2026-11-13T00:17:36.261Z] Testing /var/jenkins_home/workspace/notes-pipeline/backend...
+[2026-11-13T00:17:36.261Z] 
+[2026-11-13T00:17:36.261Z] Organization:      felicabrera
+[2026-11-13T00:17:36.261Z] Package manager:   pip
+[2026-11-13T00:17:36.261Z] Target file:       requirements.txt
+[2026-11-13T00:17:36.261Z] Project name:      backend
+[2026-11-13T00:17:36.261Z] Open source:       no
+[2026-11-13T00:17:36.261Z] Project path:      /var/jenkins_home/workspace/notes-pipeline/backend
+[2026-11-13T00:17:36.261Z] Licenses:          enabled
+[2026-11-13T00:17:36.261Z] 
+[2026-11-13T00:17:36.261Z] ✔ Tested 15 dependencies for known issues, no vulnerable paths found.
+[2026-11-13T00:17:36.261Z] 
+[2026-11-13T00:17:36.261Z] 
+[2026-11-13T00:17:36.261Z] + [ 0 -ne 0 ]
+[2026-11-13T00:17:36.261Z] + snyk monitor --file=requirements.txt --package-manager=pip --command=../.venv-snyk/bin/python --project-name=devops-entregable4-backend
+[2026-11-13T00:17:39.492Z] 
+[2026-11-13T00:17:39.492Z] Monitoring /var/jenkins_home/workspace/notes-pipeline/backend (backend)...
+[2026-11-13T00:17:39.492Z] 
+[2026-11-13T00:17:39.492Z] Explore this snapshot at https://app.snyk.io/org/felicabrera/project/9fb90afe-9f41-4a32-b09b-6967e03dfc63/history/2003b75c-7244-4555-a1d4-6bb13170660a
+[2026-11-13T00:17:39.492Z] 
+[2026-11-13T00:17:39.492Z] Notifications about newly disclosed issues related to these dependencies will be emailed to you.
+[2026-11-13T00:17:39.492Z] 
 [Pipeline] }
 [Pipeline] // script
 [Pipeline] }
@@ -128,401 +155,405 @@ Commit message: "fix(jenkins): stop masking semgrep and snyk exit codes behind t
 [Pipeline] stage
 [Pipeline] { (Build y test)
 [Pipeline] sh
-[2026-11-12T23:59:14.250Z] + python3 -m venv .venv-test
-[2026-11-12T23:59:14.801Z] + .venv-test/bin/pip install -q -r backend/requirements-dev.txt
-[2026-11-12T23:59:14.801Z] + cd backend
-[2026-11-12T23:59:14.801Z] + ../.venv-test/bin/ruff check .
-[2026-11-12T23:59:14.801Z] All checks passed!
-[2026-11-12T23:59:14.801Z] + ../.venv-test/bin/ruff format --check .
-[2026-11-12T23:59:14.801Z] 4 files already formatted
-[2026-11-12T23:59:14.801Z] + ../.venv-test/bin/pytest -q --junitxml=../reports/jenkins/pytest.xml
-[2026-11-12T23:59:15.052Z] ......                                                                   [100%]
-[2026-11-12T23:59:15.052Z] =============================== warnings summary ===============================
-[2026-11-12T23:59:15.052Z] ../.venv-test/lib/python3.13/site-packages/fastapi/testclient.py:1
-[2026-11-12T23:59:15.052Z]   /var/jenkins_home/workspace/notes-pipeline/.venv-test/lib/python3.13/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
-[2026-11-12T23:59:15.052Z]     from starlette.testclient import TestClient as TestClient  # noqa
-[2026-11-12T23:59:15.052Z] 
-[2026-11-12T23:59:15.052Z] -- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
-[2026-11-12T23:59:15.052Z] 6 passed, 1 warning in 0.04s
-[2026-11-12T23:59:15.052Z] + cd ..
-[2026-11-12T23:59:15.052Z] + helm lint helm-chart -f helm-chart/values-dev.yaml
-[2026-11-12T23:59:15.052Z] ==> Linting helm-chart
-[2026-11-12T23:59:15.052Z] [INFO] Chart.yaml: icon is recommended
-[2026-11-12T23:59:15.052Z] 
-[2026-11-12T23:59:15.052Z] 1 chart(s) linted, 0 chart(s) failed
-[2026-11-12T23:59:15.052Z] + helm lint helm-chart -f helm-chart/values-prod.yaml --set backend.image.tag=x,frontend.image.tag=x
-[2026-11-12T23:59:15.052Z] ==> Linting helm-chart
-[2026-11-12T23:59:15.052Z] [INFO] Chart.yaml: icon is recommended
-[2026-11-12T23:59:15.052Z] 
-[2026-11-12T23:59:15.052Z] 1 chart(s) linted, 0 chart(s) failed
-[2026-11-12T23:59:15.052Z] + helm template notes helm-chart -f helm-chart/values-prod.yaml --set backend.image.tag=x,frontend.image.tag=x
-[2026-11-12T23:59:15.052Z] + kyverno apply kyverno/policies/ --resource reports/jenkins/rendered.yaml
-[2026-11-12T23:59:15.303Z] 
-[2026-11-12T23:59:15.303Z] Applying 5 policy rule(s) to 18 resource(s)...
-[2026-11-12T23:59:15.553Z] 
-[2026-11-12T23:59:15.553Z] pass: 12, fail: 0, warn: 0, error: 0, skip: 0 
-[2026-11-12T23:59:15.553Z] + cd kyverno/test
-[2026-11-12T23:59:15.553Z] + kyverno test .
-[2026-11-12T23:59:15.553Z] Loading test  ( kyverno-test.yaml ) ...
-[2026-11-12T23:59:15.553Z]   Loading values/variables ...
-[2026-11-12T23:59:15.553Z]   Loading policies ...
-[2026-11-12T23:59:15.807Z]   Loading resources ...
-[2026-11-12T23:59:15.807Z]   Loading exceptions ...
-[2026-11-12T23:59:15.807Z]   Applying 5 policies to 8 resources with 0 exceptions ...
-[2026-11-12T23:59:15.807Z]   Checking results ...
-[2026-11-12T23:59:15.807Z] 
-[2026-11-12T23:59:15.807Z] │──────────│────────────────────────────────│──────│──────────────────────────────────────────────│────────│────────│
-[2026-11-12T23:59:15.807Z] │ [40;32mID (29) [0m │ [40;32mPOLICY                        [0m │ [40;32mRULE[0m │ [40;32mRESOURCE                                    [0m │ [40;32mRESULT[0m │ [40;32mREASON[0m │
-[2026-11-12T23:59:15.807Z] │──────────│────────────────────────────────│──────│──────────────────────────────────────────────│────────│────────│
-[2026-11-12T23:59:15.807Z] │ 1        │ disallow-latest-tag            │      │ v1/Pod/default/pod-conforme                  │ Pass   │ Ok     │
-[2026-11-12T23:59:15.807Z] │ 2        │ disallow-latest-tag            │      │ v1/Pod/default/pod-sin-limites               │ Pass   │ Ok     │
-[2026-11-12T23:59:15.807Z] │ 3        │ disallow-latest-tag            │      │ v1/Pod/default/pod-root                      │ Pass   │ Ok     │
-[2026-11-12T23:59:15.807Z] │ 4        │ disallow-latest-tag            │      │ v1/Pod/default/pod-privilegiado              │ Pass   │ Ok     │
-[2026-11-12T23:59:15.807Z] │ 5        │ disallow-latest-tag            │      │ v1/Pod/default/pod-latest                    │ Pass   │ Ok     │
-[2026-11-12T23:59:15.807Z] │ 6        │ disallow-latest-tag            │      │ v1/Pod/default/pod-init-no-conforme          │ Pass   │ Ok     │
-[2026-11-12T23:59:15.807Z] │ 7        │ disallow-latest-tag            │      │ v1/Pod/default/pod-no-conforme               │ Pass   │ Ok     │
-[2026-11-12T23:59:15.807Z] │ 8        │ require-requests-limits        │      │ v1/Pod/default/pod-conforme                  │ Pass   │ Ok     │
-[2026-11-12T23:59:15.807Z] │ 9        │ require-requests-limits        │      │ v1/Pod/default/pod-latest                    │ Pass   │ Ok     │
-[2026-11-12T23:59:15.807Z] │ 10       │ require-requests-limits        │      │ v1/Pod/default/pod-root                      │ Pass   │ Ok     │
-[2026-11-12T23:59:15.807Z] │ 11       │ require-requests-limits        │      │ v1/Pod/default/pod-privilegiado              │ Pass   │ Ok     │
-[2026-11-12T23:59:15.807Z] │ 12       │ require-requests-limits        │      │ v1/Pod/default/pod-sin-limites               │ Pass   │ Ok     │
-[2026-11-12T23:59:15.807Z] │ 13       │ require-requests-limits        │      │ v1/Pod/default/pod-init-no-conforme          │ Pass   │ Ok     │
-[2026-11-12T23:59:15.807Z] │ 14       │ require-requests-limits        │      │ v1/Pod/default/pod-no-conforme               │ Pass   │ Ok     │
-[2026-11-12T23:59:15.807Z] │ 15       │ disallow-root-containers       │      │ v1/Pod/default/pod-conforme                  │ Pass   │ Ok     │
-[2026-11-12T23:59:15.807Z] │ 16       │ disallow-root-containers       │      │ v1/Pod/default/pod-latest                    │ Pass   │ Ok     │
-[2026-11-12T23:59:15.807Z] │ 17       │ disallow-root-containers       │      │ v1/Pod/default/pod-sin-limites               │ Pass   │ Ok     │
-[2026-11-12T23:59:15.807Z] │ 18       │ disallow-root-containers       │      │ v1/Pod/default/pod-privilegiado              │ Pass   │ Ok     │
-[2026-11-12T23:59:15.807Z] │ 19       │ disallow-root-containers       │      │ v1/Pod/default/pod-root                      │ Pass   │ Ok     │
-[2026-11-12T23:59:15.807Z] │ 20       │ disallow-root-containers       │      │ v1/Pod/default/pod-init-no-conforme          │ Pass   │ Ok     │
-[2026-11-12T23:59:15.807Z] │ 21       │ disallow-root-containers       │      │ v1/Pod/default/pod-no-conforme               │ Pass   │ Ok     │
-[2026-11-12T23:59:15.807Z] │ 22       │ disallow-privileged-containers │      │ v1/Pod/default/pod-conforme                  │ Pass   │ Ok     │
-[2026-11-12T23:59:15.807Z] │ 23       │ disallow-privileged-containers │      │ v1/Pod/default/pod-latest                    │ Pass   │ Ok     │
-[2026-11-12T23:59:15.807Z] │ 24       │ disallow-privileged-containers │      │ v1/Pod/default/pod-sin-limites               │ Pass   │ Ok     │
-[2026-11-12T23:59:15.807Z] │ 25       │ disallow-privileged-containers │      │ v1/Pod/default/pod-root                      │ Pass   │ Ok     │
-[2026-11-12T23:59:15.807Z] │ 26       │ disallow-privileged-containers │      │ v1/Pod/default/pod-privilegiado              │ Pass   │ Ok     │
-[2026-11-12T23:59:15.807Z] │ 27       │ disallow-privileged-containers │      │ v1/Pod/default/pod-no-conforme               │ Pass   │ Ok     │
-[2026-11-12T23:59:15.807Z] │ 28       │ disallow-privileged-containers │      │ v1/Pod/default/pod-init-no-conforme          │ Pass   │ Ok     │
-[2026-11-12T23:59:15.807Z] │ 29       │ require-probes                 │      │ apps/v1/Deployment/default/deploy-sin-probes │ Pass   │ Ok     │
-[2026-11-12T23:59:15.807Z] │──────────│────────────────────────────────│──────│──────────────────────────────────────────────│────────│────────│
-[2026-11-12T23:59:15.807Z] 
-[2026-11-12T23:59:15.807Z] 
-[2026-11-12T23:59:15.807Z] Test Summary: 29 tests passed and 0 tests failed
-[2026-11-12T23:59:15.807Z] 
+[2026-11-13T00:17:41.160Z] + python3 -m venv .venv-test
+[2026-11-13T00:17:41.711Z] + .venv-test/bin/pip install -q -r backend/requirements-dev.txt
+[2026-11-13T00:17:41.711Z] + cd backend
+[2026-11-13T00:17:41.711Z] + ../.venv-test/bin/ruff check .
+[2026-11-13T00:17:41.711Z] All checks passed!
+[2026-11-13T00:17:41.711Z] + ../.venv-test/bin/ruff format --check .
+[2026-11-13T00:17:41.711Z] 4 files already formatted
+[2026-11-13T00:17:41.711Z] + ../.venv-test/bin/pytest -q --junitxml=../reports/jenkins/pytest.xml
+[2026-11-13T00:17:41.962Z] ......                                                                   [100%]
+[2026-11-13T00:17:41.962Z] =============================== warnings summary ===============================
+[2026-11-13T00:17:41.962Z] ../.venv-test/lib/python3.13/site-packages/fastapi/testclient.py:1
+[2026-11-13T00:17:41.962Z]   /var/jenkins_home/workspace/notes-pipeline/.venv-test/lib/python3.13/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+[2026-11-13T00:17:41.962Z]     from starlette.testclient import TestClient as TestClient  # noqa
+[2026-11-13T00:17:41.962Z] 
+[2026-11-13T00:17:41.962Z] -- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+[2026-11-13T00:17:41.962Z] 6 passed, 1 warning in 0.04s
+[2026-11-13T00:17:41.962Z] + cd ..
+[2026-11-13T00:17:41.962Z] + helm lint helm-chart -f helm-chart/values-dev.yaml
+[2026-11-13T00:17:41.962Z] ==> Linting helm-chart
+[2026-11-13T00:17:41.962Z] [INFO] Chart.yaml: icon is recommended
+[2026-11-13T00:17:41.962Z] 
+[2026-11-13T00:17:41.962Z] 1 chart(s) linted, 0 chart(s) failed
+[2026-11-13T00:17:41.962Z] + helm lint helm-chart -f helm-chart/values-prod.yaml --set backend.image.tag=x,frontend.image.tag=x
+[2026-11-13T00:17:42.213Z] ==> Linting helm-chart
+[2026-11-13T00:17:42.213Z] [INFO] Chart.yaml: icon is recommended
+[2026-11-13T00:17:42.213Z] 
+[2026-11-13T00:17:42.213Z] 1 chart(s) linted, 0 chart(s) failed
+[2026-11-13T00:17:42.213Z] + helm template notes helm-chart -f helm-chart/values-prod.yaml --set backend.image.tag=x,frontend.image.tag=x
+[2026-11-13T00:17:42.213Z] + kyverno apply kyverno/policies/ --resource reports/jenkins/rendered.yaml
+[2026-11-13T00:17:42.213Z] 
+[2026-11-13T00:17:42.213Z] Applying 5 policy rule(s) to 18 resource(s)...
+[2026-11-13T00:17:42.764Z] 
+[2026-11-13T00:17:42.764Z] pass: 12, fail: 0, warn: 0, error: 0, skip: 0 
+[2026-11-13T00:17:42.764Z] + cd kyverno/test
+[2026-11-13T00:17:42.764Z] + kyverno test .
+[2026-11-13T00:17:42.764Z] Loading test  ( kyverno-test.yaml ) ...
+[2026-11-13T00:17:42.764Z]   Loading values/variables ...
+[2026-11-13T00:17:42.764Z]   Loading policies ...
+[2026-11-13T00:17:42.764Z]   Loading resources ...
+[2026-11-13T00:17:42.764Z]   Loading exceptions ...
+[2026-11-13T00:17:42.764Z]   Applying 5 policies to 8 resources with 0 exceptions ...
+[2026-11-13T00:17:43.015Z]   Checking results ...
+[2026-11-13T00:17:43.015Z] 
+[2026-11-13T00:17:43.015Z] │──────────│────────────────────────────────│──────│──────────────────────────────────────────────│────────│────────│
+[2026-11-13T00:17:43.015Z] │ [40;32mID (29) [0m │ [40;32mPOLICY                        [0m │ [40;32mRULE[0m │ [40;32mRESOURCE                                    [0m │ [40;32mRESULT[0m │ [40;32mREASON[0m │
+[2026-11-13T00:17:43.015Z] │──────────│────────────────────────────────│──────│──────────────────────────────────────────────│────────│────────│
+[2026-11-13T00:17:43.015Z] │ 1        │ disallow-latest-tag            │      │ v1/Pod/default/pod-conforme                  │ Pass   │ Ok     │
+[2026-11-13T00:17:43.015Z] │ 2        │ disallow-latest-tag            │      │ v1/Pod/default/pod-sin-limites               │ Pass   │ Ok     │
+[2026-11-13T00:17:43.015Z] │ 3        │ disallow-latest-tag            │      │ v1/Pod/default/pod-root                      │ Pass   │ Ok     │
+[2026-11-13T00:17:43.015Z] │ 4        │ disallow-latest-tag            │      │ v1/Pod/default/pod-privilegiado              │ Pass   │ Ok     │
+[2026-11-13T00:17:43.015Z] │ 5        │ disallow-latest-tag            │      │ v1/Pod/default/pod-latest                    │ Pass   │ Ok     │
+[2026-11-13T00:17:43.015Z] │ 6        │ disallow-latest-tag            │      │ v1/Pod/default/pod-init-no-conforme          │ Pass   │ Ok     │
+[2026-11-13T00:17:43.015Z] │ 7        │ disallow-latest-tag            │      │ v1/Pod/default/pod-no-conforme               │ Pass   │ Ok     │
+[2026-11-13T00:17:43.015Z] │ 8        │ require-requests-limits        │      │ v1/Pod/default/pod-conforme                  │ Pass   │ Ok     │
+[2026-11-13T00:17:43.015Z] │ 9        │ require-requests-limits        │      │ v1/Pod/default/pod-latest                    │ Pass   │ Ok     │
+[2026-11-13T00:17:43.015Z] │ 10       │ require-requests-limits        │      │ v1/Pod/default/pod-root                      │ Pass   │ Ok     │
+[2026-11-13T00:17:43.015Z] │ 11       │ require-requests-limits        │      │ v1/Pod/default/pod-privilegiado              │ Pass   │ Ok     │
+[2026-11-13T00:17:43.015Z] │ 12       │ require-requests-limits        │      │ v1/Pod/default/pod-sin-limites               │ Pass   │ Ok     │
+[2026-11-13T00:17:43.015Z] │ 13       │ require-requests-limits        │      │ v1/Pod/default/pod-init-no-conforme          │ Pass   │ Ok     │
+[2026-11-13T00:17:43.015Z] │ 14       │ require-requests-limits        │      │ v1/Pod/default/pod-no-conforme               │ Pass   │ Ok     │
+[2026-11-13T00:17:43.015Z] │ 15       │ disallow-root-containers       │      │ v1/Pod/default/pod-conforme                  │ Pass   │ Ok     │
+[2026-11-13T00:17:43.015Z] │ 16       │ disallow-root-containers       │      │ v1/Pod/default/pod-latest                    │ Pass   │ Ok     │
+[2026-11-13T00:17:43.015Z] │ 17       │ disallow-root-containers       │      │ v1/Pod/default/pod-sin-limites               │ Pass   │ Ok     │
+[2026-11-13T00:17:43.015Z] │ 18       │ disallow-root-containers       │      │ v1/Pod/default/pod-privilegiado              │ Pass   │ Ok     │
+[2026-11-13T00:17:43.015Z] │ 19       │ disallow-root-containers       │      │ v1/Pod/default/pod-root                      │ Pass   │ Ok     │
+[2026-11-13T00:17:43.015Z] │ 20       │ disallow-root-containers       │      │ v1/Pod/default/pod-init-no-conforme          │ Pass   │ Ok     │
+[2026-11-13T00:17:43.015Z] │ 21       │ disallow-root-containers       │      │ v1/Pod/default/pod-no-conforme               │ Pass   │ Ok     │
+[2026-11-13T00:17:43.015Z] │ 22       │ disallow-privileged-containers │      │ v1/Pod/default/pod-conforme                  │ Pass   │ Ok     │
+[2026-11-13T00:17:43.015Z] │ 23       │ disallow-privileged-containers │      │ v1/Pod/default/pod-latest                    │ Pass   │ Ok     │
+[2026-11-13T00:17:43.015Z] │ 24       │ disallow-privileged-containers │      │ v1/Pod/default/pod-sin-limites               │ Pass   │ Ok     │
+[2026-11-13T00:17:43.015Z] │ 25       │ disallow-privileged-containers │      │ v1/Pod/default/pod-root                      │ Pass   │ Ok     │
+[2026-11-13T00:17:43.015Z] │ 26       │ disallow-privileged-containers │      │ v1/Pod/default/pod-privilegiado              │ Pass   │ Ok     │
+[2026-11-13T00:17:43.015Z] │ 27       │ disallow-privileged-containers │      │ v1/Pod/default/pod-no-conforme               │ Pass   │ Ok     │
+[2026-11-13T00:17:43.015Z] │ 28       │ disallow-privileged-containers │      │ v1/Pod/default/pod-init-no-conforme          │ Pass   │ Ok     │
+[2026-11-13T00:17:43.015Z] │ 29       │ require-probes                 │      │ apps/v1/Deployment/default/deploy-sin-probes │ Pass   │ Ok     │
+[2026-11-13T00:17:43.015Z] │──────────│────────────────────────────────│──────│──────────────────────────────────────────────│────────│────────│
+[2026-11-13T00:17:43.015Z] 
+[2026-11-13T00:17:43.015Z] 
+[2026-11-13T00:17:43.015Z] Test Summary: 29 tests passed and 0 tests failed
+[2026-11-13T00:17:43.015Z] 
 Post stage
 [Pipeline] junit
-[2026-11-12T23:59:15.818Z] Recording test results
-[2026-11-12T23:59:15.822Z] [Checks API] No suitable checks publisher found.
+[2026-11-13T00:17:43.032Z] Recording test results
+[2026-11-13T00:17:43.067Z] [Checks API] No suitable checks publisher found.
 [Pipeline] }
 [Pipeline] // stage
 [Pipeline] stage
 [Pipeline] { (Imagen Docker)
 [Pipeline] sh
-[2026-11-12T23:59:16.102Z] + docker buildx build --platform linux/arm64 --load --build-arg APP_VERSION=52b7d7dd8044 -t localhost:5001/backend:52b7d7dd8044 backend
-[2026-11-12T23:59:16.102Z] #0 building with "default" instance using docker driver
-[2026-11-12T23:59:16.102Z] 
-[2026-11-12T23:59:16.102Z] #1 [internal] load build definition from Dockerfile
-[2026-11-12T23:59:16.102Z] #1 transferring dockerfile: 2.13kB done
-[2026-11-12T23:59:16.102Z] #1 DONE 0.0s
-[2026-11-12T23:59:16.102Z] 
-[2026-11-12T23:59:16.102Z] #2 resolve image config for docker-image://docker.io/docker/dockerfile:1.7
-[2026-11-12T23:59:16.654Z] #2 DONE 0.5s
-[2026-11-12T23:59:16.654Z] 
-[2026-11-12T23:59:16.654Z] #3 docker-image://docker.io/docker/dockerfile:1.7@sha256:a57df69d0ea827fb7266491f2813635de6f17269be881f696fbfdf2d83dda33e
-[2026-11-12T23:59:16.654Z] #3 resolve docker.io/docker/dockerfile:1.7@sha256:a57df69d0ea827fb7266491f2813635de6f17269be881f696fbfdf2d83dda33e done
-[2026-11-12T23:59:16.654Z] #3 CACHED
-[2026-11-12T23:59:16.654Z] 
-[2026-11-12T23:59:16.654Z] #4 [internal] load metadata for docker.io/library/python:3.13.18-slim-bookworm
-[2026-11-12T23:59:17.205Z] #4 DONE 0.5s
-[2026-11-12T23:59:17.205Z] 
-[2026-11-12T23:59:17.205Z] #5 [internal] load .dockerignore
-[2026-11-12T23:59:17.205Z] #5 transferring context: 143B done
-[2026-11-12T23:59:17.205Z] #5 DONE 0.0s
-[2026-11-12T23:59:17.205Z] 
-[2026-11-12T23:59:17.205Z] #6 [internal] load build context
-[2026-11-12T23:59:17.205Z] #6 transferring context: 64B done
-[2026-11-12T23:59:17.205Z] #6 DONE 0.0s
-[2026-11-12T23:59:17.205Z] 
-[2026-11-12T23:59:17.205Z] #7 [builder 1/4] FROM docker.io/library/python:3.13.18-slim-bookworm@sha256:a5a7017efc5969e00ae2b91c8eb0631049a569652aa4ffc4501769049ae45c72
-[2026-11-12T23:59:17.205Z] #7 resolve docker.io/library/python:3.13.18-slim-bookworm@sha256:a5a7017efc5969e00ae2b91c8eb0631049a569652aa4ffc4501769049ae45c72 done
-[2026-11-12T23:59:17.205Z] #7 CACHED
-[2026-11-12T23:59:17.205Z] 
-[2026-11-12T23:59:17.205Z] #8 [builder 2/4] WORKDIR /build
-[2026-11-12T23:59:17.205Z] #8 CACHED
-[2026-11-12T23:59:17.205Z] 
-[2026-11-12T23:59:17.205Z] #9 [builder 3/4] COPY requirements.txt .
-[2026-11-12T23:59:17.205Z] #9 CACHED
-[2026-11-12T23:59:17.205Z] 
-[2026-11-12T23:59:17.205Z] #10 [builder 4/4] RUN python -m venv /opt/venv     && /opt/venv/bin/pip install --no-cache-dir -r requirements.txt     && find /opt/venv -name '__pycache__' -type d -prune -exec rm -rf {} +     && rm -rf /opt/venv/lib/python3.13/site-packages/pip /opt/venv/lib/python3.13/site-packages/pip-*               /opt/venv/lib/python3.13/site-packages/setuptools* /opt/venv/lib/python3.13/site-packages/wheel*               /opt/venv/lib/python3.13/site-packages/_distutils_hack /opt/venv/bin/pip* /opt/venv/bin/wheel*
-[2026-11-12T23:59:17.205Z] #10 CACHED
-[2026-11-12T23:59:17.205Z] 
-[2026-11-12T23:59:17.205Z] #11 [runtime 2/5] RUN apt-get update     && apt-get upgrade -y --no-install-recommends     && rm -rf /var/lib/apt/lists/*     && pip uninstall -y pip setuptools wheel 2>/dev/null || true     && rm -rf /root/.cache     && groupadd --gid 10001 app     && useradd --uid 10001 --gid app --no-create-home --shell /usr/sbin/nologin app     && mkdir /data && chown app:app /data
-[2026-11-12T23:59:17.205Z] #11 0.136 Get:1 http://deb.debian.org/debian bookworm InRelease [151 kB]
-[2026-11-12T23:59:17.456Z] #11 0.182 Get:2 http://deb.debian.org/debian bookworm-updates InRelease [55.4 kB]
-[2026-11-12T23:59:17.456Z] #11 0.206 Get:3 http://deb.debian.org/debian-security bookworm-security InRelease [34.8 kB]
-[2026-11-12T23:59:17.456Z] #11 0.224 Get:4 http://deb.debian.org/debian bookworm/main arm64 Packages [8689 kB]
-[2026-11-12T23:59:17.456Z] #11 0.417 Get:5 http://deb.debian.org/debian bookworm-updates/main arm64 Packages [6936 B]
-[2026-11-12T23:59:17.706Z] #11 0.419 Get:6 http://deb.debian.org/debian-security bookworm-security/main arm64 Packages [367 kB]
-[2026-11-12T23:59:17.957Z] #11 0.911 Fetched 9304 kB in 1s (11.1 MB/s)
-[2026-11-12T23:59:18.212Z] #11 0.911 Reading package lists...
-[2026-11-12T23:59:18.462Z] #11 1.105 Reading package lists...
-[2026-11-12T23:59:18.462Z] #11 1.298 Building dependency tree...
-[2026-11-12T23:59:18.462Z] #11 1.346 Reading state information...
-[2026-11-12T23:59:18.462Z] #11 1.359 Calculating upgrade...
-[2026-11-12T23:59:18.462Z] #11 1.431 0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.
-[2026-11-12T23:59:19.013Z] #11 1.940 Found existing installation: pip 26.2.2
-[2026-11-12T23:59:19.264Z] #11 1.952 Uninstalling pip-26.2.2:
-[2026-11-12T23:59:19.264Z] #11 2.018   Successfully uninstalled pip-26.2.2
-[2026-11-12T23:59:19.264Z] #11 DONE 2.1s
-[2026-11-12T23:59:19.264Z] 
-[2026-11-12T23:59:19.264Z] #12 [runtime 3/5] WORKDIR /app
-[2026-11-12T23:59:19.264Z] #12 DONE 0.0s
-[2026-11-12T23:59:19.264Z] 
-[2026-11-12T23:59:19.264Z] #13 [runtime 4/5] COPY --from=builder /opt/venv /opt/venv
-[2026-11-12T23:59:19.264Z] #13 DONE 0.1s
-[2026-11-12T23:59:19.515Z] 
-[2026-11-12T23:59:19.515Z] #14 [runtime 5/5] COPY --chown=app:app main.py .
-[2026-11-12T23:59:19.515Z] #14 DONE 0.0s
-[2026-11-12T23:59:19.515Z] 
-[2026-11-12T23:59:19.515Z] #15 exporting to image
-[2026-11-12T23:59:19.515Z] #15 exporting layers
-[2026-11-12T23:59:20.066Z] #15 exporting layers 0.6s done
-[2026-11-12T23:59:20.066Z] #15 exporting manifest sha256:79eb7cf7d504a6a6c449482ec4cbcf4b287e40a22c87e61b0a59f75845eea6cd done
-[2026-11-12T23:59:20.066Z] #15 exporting config sha256:3942d977b3ed1a93287a69fe61285c39abaa073d1364e0a31f8896b95af93417 done
-[2026-11-12T23:59:20.066Z] #15 exporting attestation manifest sha256:e466f1bef72bc478da665a89c8b916de07d06a2094adff69b0c349761feea653 done
-[2026-11-12T23:59:20.066Z] #15 exporting manifest list sha256:c5a18df466de923c19bd96e59b27e249ab246508bb75cae1f431c31d07edf198 done
-[2026-11-12T23:59:20.066Z] #15 naming to localhost:5001/backend:52b7d7dd8044 done
-[2026-11-12T23:59:20.066Z] #15 unpacking to localhost:5001/backend:52b7d7dd8044 0.1s done
-[2026-11-12T23:59:20.316Z] #15 DONE 0.8s
-[2026-11-12T23:59:20.316Z] + docker buildx build --platform linux/arm64 --load -t localhost:5001/frontend:52b7d7dd8044 frontend
-[2026-11-12T23:59:20.567Z] #0 building with "default" instance using docker driver
-[2026-11-12T23:59:20.567Z] 
-[2026-11-12T23:59:20.567Z] #1 [internal] load build definition from Dockerfile
-[2026-11-12T23:59:20.567Z] #1 transferring dockerfile: 1.15kB done
-[2026-11-12T23:59:20.567Z] #1 DONE 0.0s
-[2026-11-12T23:59:20.567Z] 
-[2026-11-12T23:59:20.567Z] #2 resolve image config for docker-image://docker.io/docker/dockerfile:1.7
-[2026-11-12T23:59:20.567Z] #2 DONE 0.2s
-[2026-11-12T23:59:20.818Z] 
-[2026-11-12T23:59:20.818Z] #3 docker-image://docker.io/docker/dockerfile:1.7@sha256:a57df69d0ea827fb7266491f2813635de6f17269be881f696fbfdf2d83dda33e
-[2026-11-12T23:59:20.818Z] #3 resolve docker.io/docker/dockerfile:1.7@sha256:a57df69d0ea827fb7266491f2813635de6f17269be881f696fbfdf2d83dda33e done
-[2026-11-12T23:59:20.818Z] #3 CACHED
-[2026-11-12T23:59:20.818Z] 
-[2026-11-12T23:59:20.818Z] #4 [internal] load metadata for docker.io/library/alpine:3.24.4
-[2026-11-12T23:59:21.068Z] #4 ...
-[2026-11-12T23:59:21.068Z] 
-[2026-11-12T23:59:21.068Z] #5 [internal] load metadata for docker.io/nginxinc/nginx-unprivileged:1.31.7-alpine
-[2026-11-12T23:59:21.068Z] #5 DONE 0.5s
-[2026-11-12T23:59:21.068Z] 
-[2026-11-12T23:59:21.068Z] #4 [internal] load metadata for docker.io/library/alpine:3.24.4
-[2026-11-12T23:59:21.068Z] #4 DONE 0.5s
-[2026-11-12T23:59:21.068Z] 
-[2026-11-12T23:59:21.068Z] #6 [internal] load .dockerignore
-[2026-11-12T23:59:21.068Z] #6 transferring context: 65B done
-[2026-11-12T23:59:21.068Z] #6 DONE 0.0s
-[2026-11-12T23:59:21.068Z] 
-[2026-11-12T23:59:21.068Z] #7 [runtime 1/4] FROM docker.io/nginxinc/nginx-unprivileged:1.31.7-alpine@sha256:b5047b9b76845eac124358373c6852377c52e4b05834a47647e955dd91cb8f1e
-[2026-11-12T23:59:21.068Z] #7 resolve docker.io/nginxinc/nginx-unprivileged:1.31.7-alpine@sha256:b5047b9b76845eac124358373c6852377c52e4b05834a47647e955dd91cb8f1e done
-[2026-11-12T23:59:21.068Z] #7 DONE 0.0s
-[2026-11-12T23:59:21.068Z] 
-[2026-11-12T23:59:21.068Z] #8 [builder 1/4] FROM docker.io/library/alpine:3.24.4@sha256:f59abe656b692d901e184be3445e084786602108599d2a51d229c0f5a48c71bf
-[2026-11-12T23:59:21.068Z] #8 resolve docker.io/library/alpine:3.24.4@sha256:f59abe656b692d901e184be3445e084786602108599d2a51d229c0f5a48c71bf done
-[2026-11-12T23:59:21.068Z] #8 DONE 0.0s
-[2026-11-12T23:59:21.068Z] 
-[2026-11-12T23:59:21.068Z] #9 [internal] load build context
-[2026-11-12T23:59:21.068Z] #9 transferring context: 118B done
-[2026-11-12T23:59:21.068Z] #9 DONE 0.0s
-[2026-11-12T23:59:21.068Z] 
-[2026-11-12T23:59:21.068Z] #10 [builder 3/4] COPY index.html styles.css app.js ./
-[2026-11-12T23:59:21.068Z] #10 CACHED
-[2026-11-12T23:59:21.068Z] 
-[2026-11-12T23:59:21.068Z] #11 [builder 2/4] WORKDIR /site
-[2026-11-12T23:59:21.068Z] #11 CACHED
-[2026-11-12T23:59:21.068Z] 
-[2026-11-12T23:59:21.068Z] #12 [builder 4/4] RUN apk add --no-cache gzip=1.15-r0     && for f in index.html styles.css app.js; do gzip -9 -k "$f"; done     && ls -l
-[2026-11-12T23:59:21.068Z] #12 CACHED
-[2026-11-12T23:59:21.068Z] 
-[2026-11-12T23:59:21.068Z] #13 [runtime 3/4] COPY --chown=101:101 nginx.conf /etc/nginx/templates/default.conf.template
-[2026-11-12T23:59:21.068Z] #13 CACHED
-[2026-11-12T23:59:21.068Z] 
-[2026-11-12T23:59:21.068Z] #14 [runtime 2/4] RUN rm -f /etc/nginx/conf.d/default.conf     && apk upgrade --no-cache     && rm -rf /usr/share/nginx/html/*
-[2026-11-12T23:59:21.068Z] #14 CACHED
-[2026-11-12T23:59:21.068Z] 
-[2026-11-12T23:59:21.068Z] #15 [runtime 4/4] COPY --from=builder --chown=101:101 /site/ /usr/share/nginx/html/
-[2026-11-12T23:59:21.068Z] #15 CACHED
-[2026-11-12T23:59:21.068Z] 
-[2026-11-12T23:59:21.068Z] #16 exporting to image
-[2026-11-12T23:59:21.068Z] #16 exporting layers done
-[2026-11-12T23:59:21.068Z] #16 exporting manifest sha256:ca7877403caa5d99dc0fce8351550ce13d182f5516399a087a88660a3f52b12c done
-[2026-11-12T23:59:21.068Z] #16 exporting config sha256:a12c95bb3ce9443c2efd9ea87535fc5255dea1ef262cbdaaaf449c6944c39851 done
-[2026-11-12T23:59:21.068Z] #16 exporting attestation manifest sha256:db4f52aa64e29b97235c26d8040928223344450e19f4bc52812ab2027cf27b91 done
-[2026-11-12T23:59:21.068Z] #16 exporting manifest list sha256:6e5f3697ff6f65942a1c1926947c6a6ae93ae6a3e7e459278d90520f1dca1c7f
-[2026-11-12T23:59:21.319Z] #16 exporting manifest list sha256:6e5f3697ff6f65942a1c1926947c6a6ae93ae6a3e7e459278d90520f1dca1c7f done
-[2026-11-12T23:59:21.319Z] #16 naming to localhost:5001/frontend:52b7d7dd8044 done
-[2026-11-12T23:59:21.319Z] #16 unpacking to localhost:5001/frontend:52b7d7dd8044 done
-[2026-11-12T23:59:21.319Z] #16 DONE 0.0s
-[2026-11-12T23:59:21.319Z] + docker image inspect --format {{index .RepoTags 0}} {{.Size}} localhost:5001/backend:52b7d7dd8044 localhost:5001/frontend:52b7d7dd8044
-[2026-11-12T23:59:21.319Z] localhost:5001/backend:52b7d7dd8044 259152256
-[2026-11-12T23:59:21.319Z] localhost:5001/frontend:52b7d7dd8044 101091251
+[2026-11-13T00:17:43.351Z] + docker buildx build --platform linux/arm64 --load --build-arg APP_VERSION=18b34eeb21d1 -t localhost:5001/backend:18b34eeb21d1 backend
+[2026-11-13T00:17:43.602Z] #0 building with "default" instance using docker driver
+[2026-11-13T00:17:43.602Z] 
+[2026-11-13T00:17:43.602Z] #1 [internal] load build definition from Dockerfile
+[2026-11-13T00:17:43.602Z] #1 transferring dockerfile: 2.13kB done
+[2026-11-13T00:17:43.602Z] #1 DONE 0.0s
+[2026-11-13T00:17:43.602Z] 
+[2026-11-13T00:17:43.602Z] #2 resolve image config for docker-image://docker.io/docker/dockerfile:1.7
+[2026-11-13T00:17:44.153Z] #2 DONE 0.9s
+[2026-11-13T00:17:44.404Z] 
+[2026-11-13T00:17:44.404Z] #3 docker-image://docker.io/docker/dockerfile:1.7@sha256:a57df69d0ea827fb7266491f2813635de6f17269be881f696fbfdf2d83dda33e
+[2026-11-13T00:17:44.404Z] #3 resolve docker.io/docker/dockerfile:1.7@sha256:a57df69d0ea827fb7266491f2813635de6f17269be881f696fbfdf2d83dda33e done
+[2026-11-13T00:17:44.404Z] #3 CACHED
+[2026-11-13T00:17:44.404Z] 
+[2026-11-13T00:17:44.404Z] #4 [internal] load metadata for docker.io/library/python:3.13.18-slim-bookworm
+[2026-11-13T00:17:45.317Z] #4 DONE 0.8s
+[2026-11-13T00:17:45.317Z] 
+[2026-11-13T00:17:45.317Z] #5 [internal] load .dockerignore
+[2026-11-13T00:17:45.317Z] #5 transferring context: 143B done
+[2026-11-13T00:17:45.317Z] #5 DONE 0.0s
+[2026-11-13T00:17:45.317Z] 
+[2026-11-13T00:17:45.317Z] #6 [builder 1/4] FROM docker.io/library/python:3.13.18-slim-bookworm@sha256:a5a7017efc5969e00ae2b91c8eb0631049a569652aa4ffc4501769049ae45c72
+[2026-11-13T00:17:45.317Z] #6 resolve docker.io/library/python:3.13.18-slim-bookworm@sha256:a5a7017efc5969e00ae2b91c8eb0631049a569652aa4ffc4501769049ae45c72 0.0s done
+[2026-11-13T00:17:45.317Z] #6 CACHED
+[2026-11-13T00:17:45.317Z] 
+[2026-11-13T00:17:45.317Z] #7 [internal] load build context
+[2026-11-13T00:17:45.317Z] #7 transferring context: 4.77kB done
+[2026-11-13T00:17:45.317Z] #7 DONE 0.0s
+[2026-11-13T00:17:45.317Z] 
+[2026-11-13T00:17:45.317Z] #8 [builder 3/4] COPY requirements.txt .
+[2026-11-13T00:17:45.317Z] #8 CACHED
+[2026-11-13T00:17:45.317Z] 
+[2026-11-13T00:17:45.317Z] #9 [builder 2/4] WORKDIR /build
+[2026-11-13T00:17:45.317Z] #9 CACHED
+[2026-11-13T00:17:45.317Z] 
+[2026-11-13T00:17:45.317Z] #10 [builder 4/4] RUN python -m venv /opt/venv     && /opt/venv/bin/pip install --no-cache-dir -r requirements.txt     && find /opt/venv -name '__pycache__' -type d -prune -exec rm -rf {} +     && rm -rf /opt/venv/lib/python3.13/site-packages/pip /opt/venv/lib/python3.13/site-packages/pip-*               /opt/venv/lib/python3.13/site-packages/setuptools* /opt/venv/lib/python3.13/site-packages/wheel*               /opt/venv/lib/python3.13/site-packages/_distutils_hack /opt/venv/bin/pip* /opt/venv/bin/wheel*
+[2026-11-13T00:17:45.317Z] #10 CACHED
+[2026-11-13T00:17:45.317Z] 
+[2026-11-13T00:17:45.317Z] #11 [runtime 2/5] RUN apt-get update     && apt-get upgrade -y --no-install-recommends     && rm -rf /var/lib/apt/lists/*     && pip uninstall -y pip setuptools wheel 2>/dev/null || true     && rm -rf /root/.cache     && groupadd --gid 10001 app     && useradd --uid 10001 --gid app --no-create-home --shell /usr/sbin/nologin app     && mkdir /data && chown app:app /data
+[2026-11-13T00:17:45.317Z] #11 0.157 Get:1 http://deb.debian.org/debian bookworm InRelease [151 kB]
+[2026-11-13T00:17:45.568Z] #11 0.206 Get:2 http://deb.debian.org/debian bookworm-updates InRelease [55.4 kB]
+[2026-11-13T00:17:45.568Z] #11 0.229 Get:3 http://deb.debian.org/debian-security bookworm-security InRelease [34.8 kB]
+[2026-11-13T00:17:45.568Z] #11 0.248 Get:4 http://deb.debian.org/debian bookworm/main arm64 Packages [8689 kB]
+[2026-11-13T00:17:45.568Z] #11 0.433 Get:5 http://deb.debian.org/debian bookworm-updates/main arm64 Packages [6936 B]
+[2026-11-13T00:17:45.818Z] #11 0.436 Get:6 http://deb.debian.org/debian-security bookworm-security/main arm64 Packages [367 kB]
+[2026-11-13T00:17:46.068Z] #11 0.917 Fetched 9304 kB in 1s (11.0 MB/s)
+[2026-11-13T00:17:46.319Z] #11 0.917 Reading package lists...
+[2026-11-13T00:17:46.570Z] #11 1.110 Reading package lists...
+[2026-11-13T00:17:46.570Z] #11 1.292 Building dependency tree...
+[2026-11-13T00:17:46.570Z] #11 1.343 Reading state information...
+[2026-11-13T00:17:46.570Z] #11 1.354 Calculating upgrade...
+[2026-11-13T00:17:46.570Z] #11 1.418 0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.
+[2026-11-13T00:17:47.120Z] #11 1.979 Found existing installation: pip 26.2.2
+[2026-11-13T00:17:47.371Z] #11 1.997 Uninstalling pip-26.2.2:
+[2026-11-13T00:17:47.371Z] #11 2.093   Successfully uninstalled pip-26.2.2
+[2026-11-13T00:17:47.371Z] #11 DONE 2.2s
+[2026-11-13T00:17:47.371Z] 
+[2026-11-13T00:17:47.371Z] #12 [runtime 3/5] WORKDIR /app
+[2026-11-13T00:17:47.371Z] #12 DONE 0.0s
+[2026-11-13T00:17:47.371Z] 
+[2026-11-13T00:17:47.371Z] #13 [runtime 4/5] COPY --from=builder /opt/venv /opt/venv
+[2026-11-13T00:17:47.371Z] #13 DONE 0.1s
+[2026-11-13T00:17:47.622Z] 
+[2026-11-13T00:17:47.622Z] #14 [runtime 5/5] COPY --chown=app:app main.py .
+[2026-11-13T00:17:47.622Z] #14 DONE 0.0s
+[2026-11-13T00:17:47.622Z] 
+[2026-11-13T00:17:47.622Z] #15 exporting to image
+[2026-11-13T00:17:47.622Z] #15 exporting layers
+[2026-11-13T00:17:48.173Z] #15 exporting layers 0.6s done
+[2026-11-13T00:17:48.173Z] #15 exporting manifest sha256:ddbd20cbf3ca1b96944a97f66b5c11571722f70dced1857388d81bb4ba4e2111 done
+[2026-11-13T00:17:48.173Z] #15 exporting config sha256:2b30df0c488fd5be1166126d7df15af2810e9775adc400dc48571d9e9485aaf0 done
+[2026-11-13T00:17:48.173Z] #15 exporting attestation manifest sha256:53a0a956d3a5b6cbd12cb92cfea33fc1df6396e05b0f52b80cf30e36cd0733a0 done
+[2026-11-13T00:17:48.173Z] #15 exporting manifest list sha256:bad1bb4ca08a7cb3056b92c8c6a972847276a12e667a44d317d9e0dda5dfa09d done
+[2026-11-13T00:17:48.173Z] #15 naming to localhost:5001/backend:18b34eeb21d1 done
+[2026-11-13T00:17:48.173Z] #15 unpacking to localhost:5001/backend:18b34eeb21d1
+[2026-11-13T00:17:48.424Z] #15 unpacking to localhost:5001/backend:18b34eeb21d1 0.2s done
+[2026-11-13T00:17:48.424Z] #15 DONE 0.8s
+[2026-11-13T00:17:48.424Z] + docker buildx build --platform linux/arm64 --load -t localhost:5001/frontend:18b34eeb21d1 frontend
+[2026-11-13T00:17:48.675Z] #0 building with "default" instance using docker driver
+[2026-11-13T00:17:48.675Z] 
+[2026-11-13T00:17:48.675Z] #1 [internal] load build definition from Dockerfile
+[2026-11-13T00:17:48.675Z] #1 transferring dockerfile: 1.15kB done
+[2026-11-13T00:17:48.675Z] #1 DONE 0.0s
+[2026-11-13T00:17:48.675Z] 
+[2026-11-13T00:17:48.675Z] #2 resolve image config for docker-image://docker.io/docker/dockerfile:1.7
+[2026-11-13T00:17:48.675Z] #2 DONE 0.2s
+[2026-11-13T00:17:48.926Z] 
+[2026-11-13T00:17:48.926Z] #3 docker-image://docker.io/docker/dockerfile:1.7@sha256:a57df69d0ea827fb7266491f2813635de6f17269be881f696fbfdf2d83dda33e
+[2026-11-13T00:17:48.926Z] #3 resolve docker.io/docker/dockerfile:1.7@sha256:a57df69d0ea827fb7266491f2813635de6f17269be881f696fbfdf2d83dda33e done
+[2026-11-13T00:17:48.926Z] #3 CACHED
+[2026-11-13T00:17:48.926Z] 
+[2026-11-13T00:17:48.926Z] #4 [internal] load metadata for docker.io/library/alpine:3.24.4
+[2026-11-13T00:17:49.477Z] #4 DONE 0.9s
+[2026-11-13T00:17:49.477Z] 
+[2026-11-13T00:17:49.477Z] #5 [internal] load metadata for docker.io/nginxinc/nginx-unprivileged:1.31.7-alpine
+[2026-11-13T00:17:49.728Z] #5 DONE 0.9s
+[2026-11-13T00:17:49.728Z] 
+[2026-11-13T00:17:49.728Z] #6 [internal] load .dockerignore
+[2026-11-13T00:17:49.728Z] #6 transferring context: 65B done
+[2026-11-13T00:17:49.728Z] #6 DONE 0.0s
+[2026-11-13T00:17:49.728Z] 
+[2026-11-13T00:17:49.728Z] #7 [runtime 1/4] FROM docker.io/nginxinc/nginx-unprivileged:1.31.7-alpine@sha256:b5047b9b76845eac124358373c6852377c52e4b05834a47647e955dd91cb8f1e
+[2026-11-13T00:17:49.728Z] #7 resolve docker.io/nginxinc/nginx-unprivileged:1.31.7-alpine@sha256:b5047b9b76845eac124358373c6852377c52e4b05834a47647e955dd91cb8f1e done
+[2026-11-13T00:17:49.728Z] #7 DONE 0.0s
+[2026-11-13T00:17:49.728Z] 
+[2026-11-13T00:17:49.728Z] #8 [builder 1/4] FROM docker.io/library/alpine:3.24.4@sha256:f59abe656b692d901e184be3445e084786602108599d2a51d229c0f5a48c71bf
+[2026-11-13T00:17:49.728Z] #8 resolve docker.io/library/alpine:3.24.4@sha256:f59abe656b692d901e184be3445e084786602108599d2a51d229c0f5a48c71bf done
+[2026-11-13T00:17:49.728Z] #8 DONE 0.0s
+[2026-11-13T00:17:49.728Z] 
+[2026-11-13T00:17:49.728Z] #9 [internal] load build context
+[2026-11-13T00:17:49.728Z] #9 transferring context: 6.43kB done
+[2026-11-13T00:17:49.728Z] #9 DONE 0.0s
+[2026-11-13T00:17:49.728Z] 
+[2026-11-13T00:17:49.728Z] #10 [builder 2/4] WORKDIR /site
+[2026-11-13T00:17:49.728Z] #10 CACHED
+[2026-11-13T00:17:49.728Z] 
+[2026-11-13T00:17:49.728Z] #11 [builder 4/4] RUN apk add --no-cache gzip=1.15-r0     && for f in index.html styles.css app.js; do gzip -9 -k "$f"; done     && ls -l
+[2026-11-13T00:17:49.728Z] #11 CACHED
+[2026-11-13T00:17:49.728Z] 
+[2026-11-13T00:17:49.728Z] #12 [builder 3/4] COPY index.html styles.css app.js ./
+[2026-11-13T00:17:49.728Z] #12 CACHED
+[2026-11-13T00:17:49.728Z] 
+[2026-11-13T00:17:49.728Z] #13 [runtime 2/4] RUN rm -f /etc/nginx/conf.d/default.conf     && apk upgrade --no-cache     && rm -rf /usr/share/nginx/html/*
+[2026-11-13T00:17:49.728Z] #13 CACHED
+[2026-11-13T00:17:49.728Z] 
+[2026-11-13T00:17:49.728Z] #14 [runtime 3/4] COPY --chown=101:101 nginx.conf /etc/nginx/templates/default.conf.template
+[2026-11-13T00:17:49.728Z] #14 CACHED
+[2026-11-13T00:17:49.729Z] 
+[2026-11-13T00:17:49.729Z] #15 [runtime 4/4] COPY --from=builder --chown=101:101 /site/ /usr/share/nginx/html/
+[2026-11-13T00:17:49.729Z] #15 CACHED
+[2026-11-13T00:17:49.729Z] 
+[2026-11-13T00:17:49.729Z] #16 exporting to image
+[2026-11-13T00:17:49.729Z] #16 exporting layers
+[2026-11-13T00:17:49.729Z] #16 exporting layers done
+[2026-11-13T00:17:49.729Z] #16 exporting manifest sha256:ca7877403caa5d99dc0fce8351550ce13d182f5516399a087a88660a3f52b12c done
+[2026-11-13T00:17:49.729Z] #16 exporting config sha256:a12c95bb3ce9443c2efd9ea87535fc5255dea1ef262cbdaaaf449c6944c39851 done
+[2026-11-13T00:17:49.729Z] #16 exporting attestation manifest sha256:131fdb14d0a89e1489f59d07ca51c2e64c0bb2d64469456a27f76dc261294a09 done
+[2026-11-13T00:17:49.729Z] #16 exporting manifest list sha256:a23e59c830856d4d60c8b380a05058e70a479062b7e948d1e06f4518c7758a2d done
+[2026-11-13T00:17:49.729Z] #16 naming to localhost:5001/frontend:18b34eeb21d1 done
+[2026-11-13T00:17:49.729Z] #16 unpacking to localhost:5001/frontend:18b34eeb21d1 done
+[2026-11-13T00:17:49.729Z] #16 DONE 0.0s
+[2026-11-13T00:17:49.729Z] + docker image inspect --format {{index .RepoTags 0}} {{.Size}} localhost:5001/backend:18b34eeb21d1 localhost:5001/frontend:18b34eeb21d1
+[2026-11-13T00:17:49.729Z] localhost:5001/backend:18b34eeb21d1 259152266
+[2026-11-13T00:17:49.729Z] localhost:5001/frontend:18b34eeb21d1 101091251
 [Pipeline] }
 [Pipeline] // stage
 [Pipeline] stage
 [Pipeline] { (Escaneo de imagen (Trivy))
 [Pipeline] sh
-[2026-11-12T23:59:21.607Z] + trivy image --severity HIGH,CRITICAL --ignore-unfixed --scanners vuln localhost:5001/backend:52b7d7dd8044
-[2026-11-12T23:59:21.607Z] + tee -a reports/jenkins/trivy.txt
-[2026-11-12T23:59:21.607Z] 2026-11-12T23:59:21Z	INFO	[vuln] Vulnerability scanning is enabled
-[2026-11-12T23:59:22.158Z] 2026-11-12T23:59:22Z	INFO	[python] Licenses acquired from one or more METADATA files may be subject to additional terms. Use `--debug` flag to see all affected packages.
-[2026-11-12T23:59:22.158Z] 2026-11-12T23:59:22Z	INFO	Detected OS	family="debian" version="12.15"
-[2026-11-12T23:59:22.158Z] 2026-11-12T23:59:22Z	INFO	[debian] Detecting vulnerabilities...	os_version="12" pkg_num=97
-[2026-11-12T23:59:22.158Z] 2026-11-12T23:59:22Z	INFO	Number of language-specific files	num=1
-[2026-11-12T23:59:22.158Z] 2026-11-12T23:59:22Z	INFO	[python-pkg] Detecting vulnerabilities...
-[2026-11-12T23:59:22.158Z] 2026-11-12T23:59:22Z	WARN	Using severities from other vendors for some vulnerabilities. Read https://trivy.dev/docs/v0.76/guide/scanner/vulnerability#severity-selection for details.
-[2026-11-12T23:59:22.158Z] 
-[2026-11-12T23:59:22.158Z] Report Summary
-[2026-11-12T23:59:22.158Z] 
-[2026-11-12T23:59:22.158Z] ┌──────────────────────────────────────────────────────────────────────────────────┬────────────┬─────────────────┐
-[2026-11-12T23:59:22.158Z] │                                      Target                                      │    Type    │ Vulnerabilities │
-[2026-11-12T23:59:22.158Z] ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
-[2026-11-12T23:59:22.158Z] │ localhost:5001/backend:52b7d7dd8044 (debian 12.15)                               │   debian   │        0        │
-[2026-11-12T23:59:22.158Z] ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
-[2026-11-12T23:59:22.158Z] │ opt/venv/lib/python3.13/site-packages/annotated_doc-0.0.6.dist-info/METADATA     │ python-pkg │        0        │
-[2026-11-12T23:59:22.158Z] ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
-[2026-11-12T23:59:22.158Z] │ opt/venv/lib/python3.13/site-packages/annotated_types-0.8.0.dist-info/METADATA   │ python-pkg │        0        │
-[2026-11-12T23:59:22.158Z] ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
-[2026-11-12T23:59:22.158Z] │ opt/venv/lib/python3.13/site-packages/anyio-4.16.0.dist-info/METADATA            │ python-pkg │        0        │
-[2026-11-12T23:59:22.158Z] ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
-[2026-11-12T23:59:22.158Z] │ opt/venv/lib/python3.13/site-packages/click-8.5.1.dist-info/METADATA             │ python-pkg │        0        │
-[2026-11-12T23:59:22.158Z] ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
-[2026-11-12T23:59:22.158Z] │ opt/venv/lib/python3.13/site-packages/fastapi-0.162.0.dist-info/METADATA         │ python-pkg │        0        │
-[2026-11-12T23:59:22.158Z] ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
-[2026-11-12T23:59:22.158Z] │ opt/venv/lib/python3.13/site-packages/h11-0.16.0.dist-info/METADATA              │ python-pkg │        0        │
-[2026-11-12T23:59:22.158Z] ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
-[2026-11-12T23:59:22.158Z] │ opt/venv/lib/python3.13/site-packages/httptools-0.9.0.dist-info/METADATA         │ python-pkg │        0        │
-[2026-11-12T23:59:22.158Z] ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
-[2026-11-12T23:59:22.158Z] │ opt/venv/lib/python3.13/site-packages/idna-3.20.dist-info/METADATA               │ python-pkg │        0        │
-[2026-11-12T23:59:22.158Z] ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
-[2026-11-12T23:59:22.158Z] │ opt/venv/lib/python3.13/site-packages/opentelemetry_api-1.45.2.dist-info/METADA- │ python-pkg │        0        │
-[2026-11-12T23:59:22.158Z] │ TA                                                                               │            │                 │
-[2026-11-12T23:59:22.158Z] ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
-[2026-11-12T23:59:22.158Z] │ opt/venv/lib/python3.13/site-packages/prometheus_client-0.26.0.dist-info/METADA- │ python-pkg │        0        │
-[2026-11-12T23:59:22.158Z] │ TA                                                                               │            │                 │
-[2026-11-12T23:59:22.158Z] ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
-[2026-11-12T23:59:22.158Z] │ opt/venv/lib/python3.13/site-packages/pydantic-2.14.3.dist-info/METADATA         │ python-pkg │        0        │
-[2026-11-12T23:59:22.158Z] ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
-[2026-11-12T23:59:22.158Z] │ opt/venv/lib/python3.13/site-packages/pydantic_core-2.50.4.dist-info/METADATA    │ python-pkg │        0        │
-[2026-11-12T23:59:22.158Z] ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
-[2026-11-12T23:59:22.158Z] │ opt/venv/lib/python3.13/site-packages/python_dotenv-1.2.4.dist-info/METADATA     │ python-pkg │        0        │
-[2026-11-12T23:59:22.158Z] ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
-[2026-11-12T23:59:22.158Z] │ opt/venv/lib/python3.13/site-packages/pyyaml-6.0.3.dist-info/METADATA            │ python-pkg │        0        │
-[2026-11-12T23:59:22.158Z] ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
-[2026-11-12T23:59:22.158Z] │ opt/venv/lib/python3.13/site-packages/starlette-1.10.0.dist-info/METADATA        │ python-pkg │        0        │
-[2026-11-12T23:59:22.158Z] ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
-[2026-11-12T23:59:22.158Z] │ opt/venv/lib/python3.13/site-packages/typing_extensions-4.16.0.dist-info/METADA- │ python-pkg │        0        │
-[2026-11-12T23:59:22.158Z] │ TA                                                                               │            │                 │
-[2026-11-12T23:59:22.158Z] ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
-[2026-11-12T23:59:22.158Z] │ opt/venv/lib/python3.13/site-packages/typing_inspection-0.4.5.dist-info/METADATA │ python-pkg │        0        │
-[2026-11-12T23:59:22.158Z] ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
-[2026-11-12T23:59:22.158Z] │ opt/venv/lib/python3.13/site-packages/uvicorn-0.54.0.dist-info/METADATA          │ python-pkg │        0        │
-[2026-11-12T23:59:22.158Z] ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
-[2026-11-12T23:59:22.158Z] │ opt/venv/lib/python3.13/site-packages/uvloop-0.23.0.dist-info/METADATA           │ python-pkg │        0        │
-[2026-11-12T23:59:22.158Z] ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
-[2026-11-12T23:59:22.158Z] │ opt/venv/lib/python3.13/site-packages/watchfiles-1.3.0.dist-info/METADATA        │ python-pkg │        0        │
-[2026-11-12T23:59:22.158Z] ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
-[2026-11-12T23:59:22.158Z] │ opt/venv/lib/python3.13/site-packages/websockets-17.4.dist-info/METADATA         │ python-pkg │        0        │
-[2026-11-12T23:59:22.158Z] └──────────────────────────────────────────────────────────────────────────────────┴────────────┴─────────────────┘
-[2026-11-12T23:59:22.158Z] Legend:
-[2026-11-12T23:59:22.158Z] - '-': Not scanned
-[2026-11-12T23:59:22.158Z] - '0': Clean (no security findings detected)
-[2026-11-12T23:59:22.158Z] 
-[2026-11-12T23:59:22.158Z] + trivy image --severity CRITICAL --ignore-unfixed --scanners vuln --exit-code 1 --quiet localhost:5001/backend:52b7d7dd8044
-[2026-11-12T23:59:22.158Z] 
-[2026-11-12T23:59:22.158Z] Report Summary
-[2026-11-12T23:59:22.158Z] 
-[2026-11-12T23:59:22.158Z] ┌──────────────────────────────────────────────────────────────────────────────────┬────────────┬─────────────────┐
-[2026-11-12T23:59:22.158Z] │                                      Target                                      │    Type    │ Vulnerabilities │
-[2026-11-12T23:59:22.158Z] ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
-[2026-11-12T23:59:22.158Z] │ localhost:5001/backend:52b7d7dd8044 (debian 12.15)                               │   debian   │        0        │
-[2026-11-12T23:59:22.158Z] ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
-[2026-11-12T23:59:22.158Z] │ opt/venv/lib/python3.13/site-packages/annotated_doc-0.0.6.dist-info/METADATA     │ python-pkg │        0        │
-[2026-11-12T23:59:22.158Z] ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
-[2026-11-12T23:59:22.158Z] │ opt/venv/lib/python3.13/site-packages/annotated_types-0.8.0.dist-info/METADATA   │ python-pkg │        0        │
-[2026-11-12T23:59:22.158Z] ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
-[2026-11-12T23:59:22.158Z] │ opt/venv/lib/python3.13/site-packages/anyio-4.16.0.dist-info/METADATA            │ python-pkg │        0        │
-[2026-11-12T23:59:22.158Z] ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
-[2026-11-12T23:59:22.158Z] │ opt/venv/lib/python3.13/site-packages/click-8.5.1.dist-info/METADATA             │ python-pkg │        0        │
-[2026-11-12T23:59:22.158Z] ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
-[2026-11-12T23:59:22.158Z] │ opt/venv/lib/python3.13/site-packages/fastapi-0.162.0.dist-info/METADATA         │ python-pkg │        0        │
-[2026-11-12T23:59:22.158Z] ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
-[2026-11-12T23:59:22.158Z] │ opt/venv/lib/python3.13/site-packages/h11-0.16.0.dist-info/METADATA              │ python-pkg │        0        │
-[2026-11-12T23:59:22.158Z] ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
-[2026-11-12T23:59:22.158Z] │ opt/venv/lib/python3.13/site-packages/httptools-0.9.0.dist-info/METADATA         │ python-pkg │        0        │
-[2026-11-12T23:59:22.158Z] ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
-[2026-11-12T23:59:22.158Z] │ opt/venv/lib/python3.13/site-packages/idna-3.20.dist-info/METADATA               │ python-pkg │        0        │
-[2026-11-12T23:59:22.158Z] ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
-[2026-11-12T23:59:22.158Z] │ opt/venv/lib/python3.13/site-packages/opentelemetry_api-1.45.2.dist-info/METADA- │ python-pkg │        0        │
-[2026-11-12T23:59:22.158Z] │ TA                                                                               │            │                 │
-[2026-11-12T23:59:22.158Z] ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
-[2026-11-12T23:59:22.158Z] │ opt/venv/lib/python3.13/site-packages/prometheus_client-0.26.0.dist-info/METADA- │ python-pkg │        0        │
-[2026-11-12T23:59:22.158Z] │ TA                                                                               │            │                 │
-[2026-11-12T23:59:22.158Z] ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
-[2026-11-12T23:59:22.158Z] │ opt/venv/lib/python3.13/site-packages/pydantic-2.14.3.dist-info/METADATA         │ python-pkg │        0        │
-[2026-11-12T23:59:22.158Z] ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
-[2026-11-12T23:59:22.158Z] │ opt/venv/lib/python3.13/site-packages/pydantic_core-2.50.4.dist-info/METADATA    │ python-pkg │        0        │
-[2026-11-12T23:59:22.158Z] ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
-[2026-11-12T23:59:22.158Z] │ opt/venv/lib/python3.13/site-packages/python_dotenv-1.2.4.dist-info/METADATA     │ python-pkg │        0        │
-[2026-11-12T23:59:22.158Z] ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
-[2026-11-12T23:59:22.158Z] │ opt/venv/lib/python3.13/site-packages/pyyaml-6.0.3.dist-info/METADATA            │ python-pkg │        0        │
-[2026-11-12T23:59:22.158Z] ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
-[2026-11-12T23:59:22.158Z] │ opt/venv/lib/python3.13/site-packages/starlette-1.10.0.dist-info/METADATA        │ python-pkg │        0        │
-[2026-11-12T23:59:22.158Z] ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
-[2026-11-12T23:59:22.158Z] │ opt/venv/lib/python3.13/site-packages/typing_extensions-4.16.0.dist-info/METADA- │ python-pkg │        0        │
-[2026-11-12T23:59:22.158Z] │ TA                                                                               │            │                 │
-[2026-11-12T23:59:22.158Z] ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
-[2026-11-12T23:59:22.158Z] │ opt/venv/lib/python3.13/site-packages/typing_inspection-0.4.5.dist-info/METADATA │ python-pkg │        0        │
-[2026-11-12T23:59:22.158Z] ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
-[2026-11-12T23:59:22.158Z] │ opt/venv/lib/python3.13/site-packages/uvicorn-0.54.0.dist-info/METADATA          │ python-pkg │        0        │
-[2026-11-12T23:59:22.158Z] ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
-[2026-11-12T23:59:22.158Z] │ opt/venv/lib/python3.13/site-packages/uvloop-0.23.0.dist-info/METADATA           │ python-pkg │        0        │
-[2026-11-12T23:59:22.158Z] ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
-[2026-11-12T23:59:22.158Z] │ opt/venv/lib/python3.13/site-packages/watchfiles-1.3.0.dist-info/METADATA        │ python-pkg │        0        │
-[2026-11-12T23:59:22.158Z] ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
-[2026-11-12T23:59:22.158Z] │ opt/venv/lib/python3.13/site-packages/websockets-17.4.dist-info/METADATA         │ python-pkg │        0        │
-[2026-11-12T23:59:22.158Z] └──────────────────────────────────────────────────────────────────────────────────┴────────────┴─────────────────┘
-[2026-11-12T23:59:22.158Z] Legend:
-[2026-11-12T23:59:22.158Z] - '-': Not scanned
-[2026-11-12T23:59:22.158Z] - '0': Clean (no security findings detected)
-[2026-11-12T23:59:22.158Z] 
-[2026-11-12T23:59:22.158Z] + trivy image --severity HIGH,CRITICAL --ignore-unfixed --scanners vuln localhost:5001/frontend:52b7d7dd8044
-[2026-11-12T23:59:22.158Z] + tee -a reports/jenkins/trivy.txt
-[2026-11-12T23:59:22.158Z] 2026-11-12T23:59:22Z	INFO	[vuln] Vulnerability scanning is enabled
-[2026-11-12T23:59:22.158Z] 2026-11-12T23:59:22Z	INFO	Detected OS	family="alpine" version="3.24.2"
-[2026-11-12T23:59:22.158Z] 2026-11-12T23:59:22Z	INFO	[alpine] Detecting vulnerabilities...	os_version="3.24" repository="3.24" pkg_num=71
-[2026-11-12T23:59:22.158Z] 2026-11-12T23:59:22Z	INFO	Number of language-specific files	num=0
-[2026-11-12T23:59:22.158Z] 
-[2026-11-12T23:59:22.158Z] Report Summary
-[2026-11-12T23:59:22.158Z] 
-[2026-11-12T23:59:22.158Z] ┌──────────────────────────────────────────────────────┬────────┬─────────────────┐
-[2026-11-12T23:59:22.158Z] │                        Target                        │  Type  │ Vulnerabilities │
-[2026-11-12T23:59:22.158Z] ├──────────────────────────────────────────────────────┼────────┼─────────────────┤
-[2026-11-12T23:59:22.158Z] │ localhost:5001/frontend:52b7d7dd8044 (alpine 3.24.2) │ alpine │        0        │
-[2026-11-12T23:59:22.158Z] └──────────────────────────────────────────────────────┴────────┴─────────────────┘
-[2026-11-12T23:59:22.158Z] Legend:
-[2026-11-12T23:59:22.158Z] - '-': Not scanned
-[2026-11-12T23:59:22.158Z] - '0': Clean (no security findings detected)
-[2026-11-12T23:59:22.158Z] 
-[2026-11-12T23:59:22.158Z] + trivy image --severity CRITICAL --ignore-unfixed --scanners vuln --exit-code 1 --quiet localhost:5001/frontend:52b7d7dd8044
-[2026-11-12T23:59:22.410Z] 
-[2026-11-12T23:59:22.410Z] Report Summary
-[2026-11-12T23:59:22.410Z] 
-[2026-11-12T23:59:22.410Z] ┌──────────────────────────────────────────────────────┬────────┬─────────────────┐
-[2026-11-12T23:59:22.410Z] │                        Target                        │  Type  │ Vulnerabilities │
-[2026-11-12T23:59:22.410Z] ├──────────────────────────────────────────────────────┼────────┼─────────────────┤
-[2026-11-12T23:59:22.410Z] │ localhost:5001/frontend:52b7d7dd8044 (alpine 3.24.2) │ alpine │        0        │
-[2026-11-12T23:59:22.410Z] └──────────────────────────────────────────────────────┴────────┴─────────────────┘
-[2026-11-12T23:59:22.410Z] Legend:
-[2026-11-12T23:59:22.410Z] - '-': Not scanned
-[2026-11-12T23:59:22.410Z] - '0': Clean (no security findings detected)
-[2026-11-12T23:59:22.410Z] 
+[2026-11-13T00:17:50.015Z] + trivy image --severity HIGH,CRITICAL --ignore-unfixed --scanners vuln localhost:5001/backend:18b34eeb21d1
+[2026-11-13T00:17:50.015Z] + tee -a reports/jenkins/trivy.txt
+[2026-11-13T00:17:50.015Z] 2026-11-13T00:17:49Z	INFO	[vulndb] Need to update DB
+[2026-11-13T00:17:50.015Z] 2026-11-13T00:17:49Z	INFO	[vulndb] Downloading vulnerability DB...
+[2026-11-13T00:17:50.015Z] 2026-11-13T00:17:49Z	INFO	[vulndb] Downloading artifact...	repo="mirror.gcr.io/aquasec/trivy-db:2"
+[2026-11-13T00:17:57.754Z] 980.36 KiB / 133.49 MiB [>___________________________________________________________] 0.72% ? p/s ?6.31 MiB / 133.49 MiB [-->___________________________________________________________] 4.72% ? p/s ?18.52 MiB / 133.49 MiB [-------->___________________________________________________] 13.87% ? p/s ?29.35 MiB / 133.49 MiB [---------->____________________________________] 21.99% 47.34 MiB p/s ETA 2s39.64 MiB / 133.49 MiB [------------->_________________________________] 29.69% 47.34 MiB p/s ETA 1s50.55 MiB / 133.49 MiB [----------------->_____________________________] 37.87% 47.34 MiB p/s ETA 1s61.53 MiB / 133.49 MiB [--------------------->_________________________] 46.09% 47.75 MiB p/s ETA 1s72.41 MiB / 133.49 MiB [------------------------->_____________________] 54.25% 47.75 MiB p/s ETA 1s83.65 MiB / 133.49 MiB [----------------------------->_________________] 62.67% 47.75 MiB p/s ETA 1s94.24 MiB / 133.49 MiB [--------------------------------->_____________] 70.60% 48.19 MiB p/s ETA 0s105.26 MiB / 133.49 MiB [------------------------------------>_________] 78.86% 48.19 MiB p/s ETA 0s116.08 MiB / 133.49 MiB [---------------------------------------->_____] 86.96% 48.19 MiB p/s ETA 0s126.85 MiB / 133.49 MiB [------------------------------------------->__] 95.03% 48.58 MiB p/s ETA 0s133.49 MiB / 133.49 MiB [-------------------------------------------->] 100.00% 48.58 MiB p/s ETA 0s133.49 MiB / 133.49 MiB [-------------------------------------------->] 100.00% 48.58 MiB p/s ETA 0s133.49 MiB / 133.49 MiB [-------------------------------------------->] 100.00% 46.16 MiB p/s ETA 0s133.49 MiB / 133.49 MiB [-------------------------------------------->] 100.00% 46.16 MiB p/s ETA 0s133.49 MiB / 133.49 MiB [-------------------------------------------->] 100.00% 46.16 MiB p/s ETA 0s133.49 MiB / 133.49 MiB [-------------------------------------------->] 100.00% 43.18 MiB p/s ETA 0s133.49 MiB / 133.49 MiB [-------------------------------------------->] 100.00% 43.18 MiB p/s ETA 0s133.49 MiB / 133.49 MiB [-------------------------------------------->] 100.00% 43.18 MiB p/s ETA 0s133.49 MiB / 133.49 MiB [-------------------------------------------->] 100.00% 40.40 MiB p/s ETA 0s133.49 MiB / 133.49 MiB [-------------------------------------------->] 100.00% 40.40 MiB p/s ETA 0s133.49 MiB / 133.49 MiB [-------------------------------------------->] 100.00% 40.40 MiB p/s ETA 0s133.49 MiB / 133.49 MiB [-----------------------------------------------] 100.00% 28.20 MiB p/s 4.9s2026-11-13T00:17:57Z	INFO	[vulndb] Artifact successfully downloaded	repo="mirror.gcr.io/aquasec/trivy-db:2"
+[2026-11-13T00:17:57.755Z] 2026-11-13T00:17:57Z	INFO	[vuln] Vulnerability scanning is enabled
+[2026-11-13T00:17:58.306Z] 2026-11-13T00:17:58Z	WARN	Third-party SBOM may lead to inaccurate vulnerability detection
+[2026-11-13T00:17:58.306Z] 2026-11-13T00:17:58Z	WARN	Recommend using Trivy to generate SBOMs
+[2026-11-13T00:17:58.306Z] 2026-11-13T00:17:58Z	INFO	[python] Licenses acquired from one or more METADATA files may be subject to additional terms. Use `--debug` flag to see all affected packages.
+[2026-11-13T00:17:58.556Z] 2026-11-13T00:17:58Z	INFO	Detected OS	family="debian" version="12.15"
+[2026-11-13T00:17:58.556Z] 2026-11-13T00:17:58Z	INFO	[debian] Detecting vulnerabilities...	os_version="12" pkg_num=97
+[2026-11-13T00:17:58.556Z] 2026-11-13T00:17:58Z	INFO	Number of language-specific files	num=1
+[2026-11-13T00:17:58.556Z] 2026-11-13T00:17:58Z	INFO	[python-pkg] Detecting vulnerabilities...
+[2026-11-13T00:17:58.556Z] 2026-11-13T00:17:58Z	WARN	Using severities from other vendors for some vulnerabilities. Read https://trivy.dev/docs/v0.76/guide/scanner/vulnerability#severity-selection for details.
+[2026-11-13T00:17:58.556Z] 
+[2026-11-13T00:17:58.556Z] Report Summary
+[2026-11-13T00:17:58.556Z] 
+[2026-11-13T00:17:58.556Z] ┌──────────────────────────────────────────────────────────────────────────────────┬────────────┬─────────────────┐
+[2026-11-13T00:17:58.556Z] │                                      Target                                      │    Type    │ Vulnerabilities │
+[2026-11-13T00:17:58.556Z] ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
+[2026-11-13T00:17:58.556Z] │ localhost:5001/backend:18b34eeb21d1 (debian 12.15)                               │   debian   │        0        │
+[2026-11-13T00:17:58.556Z] ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
+[2026-11-13T00:17:58.556Z] │ opt/venv/lib/python3.13/site-packages/annotated_doc-0.0.6.dist-info/METADATA     │ python-pkg │        0        │
+[2026-11-13T00:17:58.556Z] ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
+[2026-11-13T00:17:58.556Z] │ opt/venv/lib/python3.13/site-packages/annotated_types-0.8.0.dist-info/METADATA   │ python-pkg │        0        │
+[2026-11-13T00:17:58.556Z] ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
+[2026-11-13T00:17:58.556Z] │ opt/venv/lib/python3.13/site-packages/anyio-4.16.0.dist-info/METADATA            │ python-pkg │        0        │
+[2026-11-13T00:17:58.556Z] ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
+[2026-11-13T00:17:58.556Z] │ opt/venv/lib/python3.13/site-packages/click-8.5.1.dist-info/METADATA             │ python-pkg │        0        │
+[2026-11-13T00:17:58.556Z] ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
+[2026-11-13T00:17:58.556Z] │ opt/venv/lib/python3.13/site-packages/fastapi-0.162.0.dist-info/METADATA         │ python-pkg │        0        │
+[2026-11-13T00:17:58.556Z] ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
+[2026-11-13T00:17:58.556Z] │ opt/venv/lib/python3.13/site-packages/h11-0.16.0.dist-info/METADATA              │ python-pkg │        0        │
+[2026-11-13T00:17:58.556Z] ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
+[2026-11-13T00:17:58.556Z] │ opt/venv/lib/python3.13/site-packages/httptools-0.9.0.dist-info/METADATA         │ python-pkg │        0        │
+[2026-11-13T00:17:58.556Z] ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
+[2026-11-13T00:17:58.556Z] │ opt/venv/lib/python3.13/site-packages/idna-3.20.dist-info/METADATA               │ python-pkg │        0        │
+[2026-11-13T00:17:58.556Z] ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
+[2026-11-13T00:17:58.556Z] │ opt/venv/lib/python3.13/site-packages/opentelemetry_api-1.45.2.dist-info/METADA- │ python-pkg │        0        │
+[2026-11-13T00:17:58.556Z] │ TA                                                                               │            │                 │
+[2026-11-13T00:17:58.556Z] ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
+[2026-11-13T00:17:58.556Z] │ opt/venv/lib/python3.13/site-packages/prometheus_client-0.26.0.dist-info/METADA- │ python-pkg │        0        │
+[2026-11-13T00:17:58.556Z] │ TA                                                                               │            │                 │
+[2026-11-13T00:17:58.556Z] ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
+[2026-11-13T00:17:58.556Z] │ opt/venv/lib/python3.13/site-packages/pydantic-2.14.3.dist-info/METADATA         │ python-pkg │        0        │
+[2026-11-13T00:17:58.556Z] ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
+[2026-11-13T00:17:58.556Z] │ opt/venv/lib/python3.13/site-packages/pydantic_core-2.50.4.dist-info/METADATA    │ python-pkg │        0        │
+[2026-11-13T00:17:58.556Z] ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
+[2026-11-13T00:17:58.556Z] │ opt/venv/lib/python3.13/site-packages/python_dotenv-1.2.4.dist-info/METADATA     │ python-pkg │        0        │
+[2026-11-13T00:17:58.556Z] ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
+[2026-11-13T00:17:58.556Z] │ opt/venv/lib/python3.13/site-packages/pyyaml-6.0.3.dist-info/METADATA            │ python-pkg │        0        │
+[2026-11-13T00:17:58.556Z] ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
+[2026-11-13T00:17:58.556Z] │ opt/venv/lib/python3.13/site-packages/starlette-1.10.0.dist-info/METADATA        │ python-pkg │        0        │
+[2026-11-13T00:17:58.556Z] ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
+[2026-11-13T00:17:58.556Z] │ opt/venv/lib/python3.13/site-packages/typing_extensions-4.16.0.dist-info/METADA- │ python-pkg │        0        │
+[2026-11-13T00:17:58.556Z] │ TA                                                                               │            │                 │
+[2026-11-13T00:17:58.556Z] ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
+[2026-11-13T00:17:58.556Z] │ opt/venv/lib/python3.13/site-packages/typing_inspection-0.4.5.dist-info/METADATA │ python-pkg │        0        │
+[2026-11-13T00:17:58.556Z] ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
+[2026-11-13T00:17:58.556Z] │ opt/venv/lib/python3.13/site-packages/uvicorn-0.54.0.dist-info/METADATA          │ python-pkg │        0        │
+[2026-11-13T00:17:58.556Z] ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
+[2026-11-13T00:17:58.556Z] │ opt/venv/lib/python3.13/site-packages/uvloop-0.23.0.dist-info/METADATA           │ python-pkg │        0        │
+[2026-11-13T00:17:58.556Z] ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
+[2026-11-13T00:17:58.556Z] │ opt/venv/lib/python3.13/site-packages/watchfiles-1.3.0.dist-info/METADATA        │ python-pkg │        0        │
+[2026-11-13T00:17:58.556Z] ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
+[2026-11-13T00:17:58.556Z] │ opt/venv/lib/python3.13/site-packages/websockets-17.4.dist-info/METADATA         │ python-pkg │        0        │
+[2026-11-13T00:17:58.556Z] └──────────────────────────────────────────────────────────────────────────────────┴────────────┴─────────────────┘
+[2026-11-13T00:17:58.556Z] Legend:
+[2026-11-13T00:17:58.556Z] - '-': Not scanned
+[2026-11-13T00:17:58.556Z] - '0': Clean (no security findings detected)
+[2026-11-13T00:17:58.556Z] 
+[2026-11-13T00:17:58.556Z] + trivy image --severity CRITICAL --ignore-unfixed --scanners vuln --exit-code 1 --quiet localhost:5001/backend:18b34eeb21d1
+[2026-11-13T00:17:58.807Z] 
+[2026-11-13T00:17:58.807Z] Report Summary
+[2026-11-13T00:17:58.807Z] 
+[2026-11-13T00:17:58.807Z] ┌──────────────────────────────────────────────────────────────────────────────────┬────────────┬─────────────────┐
+[2026-11-13T00:17:58.807Z] │                                      Target                                      │    Type    │ Vulnerabilities │
+[2026-11-13T00:17:58.807Z] ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
+[2026-11-13T00:17:58.807Z] │ localhost:5001/backend:18b34eeb21d1 (debian 12.15)                               │   debian   │        0        │
+[2026-11-13T00:17:58.807Z] ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
+[2026-11-13T00:17:58.807Z] │ opt/venv/lib/python3.13/site-packages/annotated_doc-0.0.6.dist-info/METADATA     │ python-pkg │        0        │
+[2026-11-13T00:17:58.807Z] ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
+[2026-11-13T00:17:58.807Z] │ opt/venv/lib/python3.13/site-packages/annotated_types-0.8.0.dist-info/METADATA   │ python-pkg │        0        │
+[2026-11-13T00:17:58.807Z] ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
+[2026-11-13T00:17:58.807Z] │ opt/venv/lib/python3.13/site-packages/anyio-4.16.0.dist-info/METADATA            │ python-pkg │        0        │
+[2026-11-13T00:17:58.807Z] ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
+[2026-11-13T00:17:58.807Z] │ opt/venv/lib/python3.13/site-packages/click-8.5.1.dist-info/METADATA             │ python-pkg │        0        │
+[2026-11-13T00:17:58.807Z] ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
+[2026-11-13T00:17:58.807Z] │ opt/venv/lib/python3.13/site-packages/fastapi-0.162.0.dist-info/METADATA         │ python-pkg │        0        │
+[2026-11-13T00:17:58.807Z] ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
+[2026-11-13T00:17:58.807Z] │ opt/venv/lib/python3.13/site-packages/h11-0.16.0.dist-info/METADATA              │ python-pkg │        0        │
+[2026-11-13T00:17:58.807Z] ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
+[2026-11-13T00:17:58.807Z] │ opt/venv/lib/python3.13/site-packages/httptools-0.9.0.dist-info/METADATA         │ python-pkg │        0        │
+[2026-11-13T00:17:58.807Z] ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
+[2026-11-13T00:17:58.807Z] │ opt/venv/lib/python3.13/site-packages/idna-3.20.dist-info/METADATA               │ python-pkg │        0        │
+[2026-11-13T00:17:58.807Z] ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
+[2026-11-13T00:17:58.807Z] │ opt/venv/lib/python3.13/site-packages/opentelemetry_api-1.45.2.dist-info/METADA- │ python-pkg │        0        │
+[2026-11-13T00:17:58.807Z] │ TA                                                                               │            │                 │
+[2026-11-13T00:17:58.807Z] ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
+[2026-11-13T00:17:58.807Z] │ opt/venv/lib/python3.13/site-packages/prometheus_client-0.26.0.dist-info/METADA- │ python-pkg │        0        │
+[2026-11-13T00:17:58.807Z] │ TA                                                                               │            │                 │
+[2026-11-13T00:17:58.807Z] ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
+[2026-11-13T00:17:58.807Z] │ opt/venv/lib/python3.13/site-packages/pydantic-2.14.3.dist-info/METADATA         │ python-pkg │        0        │
+[2026-11-13T00:17:58.807Z] ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
+[2026-11-13T00:17:58.807Z] │ opt/venv/lib/python3.13/site-packages/pydantic_core-2.50.4.dist-info/METADATA    │ python-pkg │        0        │
+[2026-11-13T00:17:58.807Z] ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
+[2026-11-13T00:17:58.807Z] │ opt/venv/lib/python3.13/site-packages/python_dotenv-1.2.4.dist-info/METADATA     │ python-pkg │        0        │
+[2026-11-13T00:17:58.807Z] ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
+[2026-11-13T00:17:58.807Z] │ opt/venv/lib/python3.13/site-packages/pyyaml-6.0.3.dist-info/METADATA            │ python-pkg │        0        │
+[2026-11-13T00:17:58.807Z] ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
+[2026-11-13T00:17:58.807Z] │ opt/venv/lib/python3.13/site-packages/starlette-1.10.0.dist-info/METADATA        │ python-pkg │        0        │
+[2026-11-13T00:17:58.807Z] ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
+[2026-11-13T00:17:58.807Z] │ opt/venv/lib/python3.13/site-packages/typing_extensions-4.16.0.dist-info/METADA- │ python-pkg │        0        │
+[2026-11-13T00:17:58.807Z] │ TA                                                                               │            │                 │
+[2026-11-13T00:17:58.807Z] ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
+[2026-11-13T00:17:58.807Z] │ opt/venv/lib/python3.13/site-packages/typing_inspection-0.4.5.dist-info/METADATA │ python-pkg │        0        │
+[2026-11-13T00:17:58.807Z] ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
+[2026-11-13T00:17:58.807Z] │ opt/venv/lib/python3.13/site-packages/uvicorn-0.54.0.dist-info/METADATA          │ python-pkg │        0        │
+[2026-11-13T00:17:58.807Z] ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
+[2026-11-13T00:17:58.807Z] │ opt/venv/lib/python3.13/site-packages/uvloop-0.23.0.dist-info/METADATA           │ python-pkg │        0        │
+[2026-11-13T00:17:58.807Z] ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
+[2026-11-13T00:17:58.807Z] │ opt/venv/lib/python3.13/site-packages/watchfiles-1.3.0.dist-info/METADATA        │ python-pkg │        0        │
+[2026-11-13T00:17:58.807Z] ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┤
+[2026-11-13T00:17:58.807Z] │ opt/venv/lib/python3.13/site-packages/websockets-17.4.dist-info/METADATA         │ python-pkg │        0        │
+[2026-11-13T00:17:58.807Z] └──────────────────────────────────────────────────────────────────────────────────┴────────────┴─────────────────┘
+[2026-11-13T00:17:58.807Z] Legend:
+[2026-11-13T00:17:58.807Z] - '-': Not scanned
+[2026-11-13T00:17:58.807Z] - '0': Clean (no security findings detected)
+[2026-11-13T00:17:58.807Z] 
+[2026-11-13T00:17:58.807Z] + trivy image --severity HIGH,CRITICAL --ignore-unfixed --scanners vuln localhost:5001/frontend:18b34eeb21d1
+[2026-11-13T00:17:58.807Z] + tee -a reports/jenkins/trivy.txt
+[2026-11-13T00:17:58.807Z] 2026-11-13T00:17:58Z	INFO	[vuln] Vulnerability scanning is enabled
+[2026-11-13T00:17:59.058Z] 2026-11-13T00:17:59Z	INFO	Detected OS	family="alpine" version="3.24.2"
+[2026-11-13T00:17:59.058Z] 2026-11-13T00:17:59Z	INFO	[alpine] Detecting vulnerabilities...	os_version="3.24" repository="3.24" pkg_num=71
+[2026-11-13T00:17:59.058Z] 2026-11-13T00:17:59Z	INFO	Number of language-specific files	num=0
+[2026-11-13T00:17:59.058Z] 
+[2026-11-13T00:17:59.058Z] Report Summary
+[2026-11-13T00:17:59.058Z] 
+[2026-11-13T00:17:59.058Z] ┌──────────────────────────────────────────────────────┬────────┬─────────────────┐
+[2026-11-13T00:17:59.058Z] │                        Target                        │  Type  │ Vulnerabilities │
+[2026-11-13T00:17:59.058Z] ├──────────────────────────────────────────────────────┼────────┼─────────────────┤
+[2026-11-13T00:17:59.058Z] │ localhost:5001/frontend:18b34eeb21d1 (alpine 3.24.2) │ alpine │        0        │
+[2026-11-13T00:17:59.058Z] └──────────────────────────────────────────────────────┴────────┴─────────────────┘
+[2026-11-13T00:17:59.058Z] Legend:
+[2026-11-13T00:17:59.058Z] - '-': Not scanned
+[2026-11-13T00:17:59.058Z] - '0': Clean (no security findings detected)
+[2026-11-13T00:17:59.058Z] 
+[2026-11-13T00:17:59.058Z] + trivy image --severity CRITICAL --ignore-unfixed --scanners vuln --exit-code 1 --quiet localhost:5001/frontend:18b34eeb21d1
+[2026-11-13T00:17:59.308Z] 
+[2026-11-13T00:17:59.308Z] Report Summary
+[2026-11-13T00:17:59.308Z] 
+[2026-11-13T00:17:59.308Z] ┌──────────────────────────────────────────────────────┬────────┬─────────────────┐
+[2026-11-13T00:17:59.308Z] │                        Target                        │  Type  │ Vulnerabilities │
+[2026-11-13T00:17:59.308Z] ├──────────────────────────────────────────────────────┼────────┼─────────────────┤
+[2026-11-13T00:17:59.308Z] │ localhost:5001/frontend:18b34eeb21d1 (alpine 3.24.2) │ alpine │        0        │
+[2026-11-13T00:17:59.308Z] └──────────────────────────────────────────────────────┴────────┴─────────────────┘
+[2026-11-13T00:17:59.308Z] Legend:
+[2026-11-13T00:17:59.308Z] - '-': Not scanned
+[2026-11-13T00:17:59.308Z] - '0': Clean (no security findings detected)
+[2026-11-13T00:17:59.308Z] 
 [Pipeline] }
 [Pipeline] // stage
 [Pipeline] stage
@@ -530,84 +561,84 @@ Post stage
 [Pipeline] script
 [Pipeline] {
 [Pipeline] sh
-[2026-11-12T23:59:22.707Z] + docker push localhost:5001/backend:52b7d7dd8044
-[2026-11-12T23:59:22.707Z] The push refers to repository [localhost:5001/backend]
-[2026-11-12T23:59:22.707Z] a78e8c0bbab1: Waiting
-[2026-11-12T23:59:22.707Z] 44136fa355b3: Waiting
-[2026-11-12T23:59:22.707Z] 6566b82365dd: Waiting
-[2026-11-12T23:59:22.707Z] 2d66c782e484: Waiting
-[2026-11-12T23:59:22.707Z] a78e8c0bbab1: Waiting
-[2026-11-12T23:59:22.707Z] 44136fa355b3: Waiting
-[2026-11-12T23:59:22.707Z] 6566b82365dd: Waiting
-[2026-11-12T23:59:22.707Z] 2d66c782e484: Waiting
-[2026-11-12T23:59:22.958Z] 6566b82365dd: Waiting
-[2026-11-12T23:59:22.958Z] 2d66c782e484: Waiting
-[2026-11-12T23:59:22.958Z] a78e8c0bbab1: Waiting
-[2026-11-12T23:59:22.958Z] 44136fa355b3: Waiting
-[2026-11-12T23:59:22.958Z] a78e8c0bbab1: Waiting
-[2026-11-12T23:59:22.958Z] 44136fa355b3: Waiting
-[2026-11-12T23:59:22.958Z] 6566b82365dd: Waiting
-[2026-11-12T23:59:22.958Z] 2d66c782e484: Waiting
-[2026-11-12T23:59:23.210Z] 44136fa355b3: Waiting
-[2026-11-12T23:59:23.210Z] 6566b82365dd: Waiting
-[2026-11-12T23:59:23.210Z] 2d66c782e484: Waiting
-[2026-11-12T23:59:23.210Z] a78e8c0bbab1: Waiting
-[2026-11-12T23:59:23.210Z] a78e8c0bbab1: Waiting
-[2026-11-12T23:59:23.210Z] 44136fa355b3: Waiting
-[2026-11-12T23:59:23.210Z] 6566b82365dd: Waiting
-[2026-11-12T23:59:23.210Z] 2d66c782e484: Waiting
-[2026-11-12T23:59:23.210Z] a78e8c0bbab1: Pushed
-[2026-11-12T23:59:23.210Z] 44136fa355b3: Already exists
-[2026-11-12T23:59:23.210Z] 2d66c782e484: Layer already exists
-[2026-11-12T23:59:23.210Z] 291c50634111: Pushed
-[2026-11-12T23:59:23.210Z] 6566b82365dd: Layer already exists
-[2026-11-12T23:59:23.210Z] 6a7a3cd06cb5: Pushed
-[2026-11-12T23:59:23.210Z] 275133d18a0a: Layer already exists
-[2026-11-12T23:59:23.210Z] 1d3acbec7eb9: Layer already exists
-[2026-11-12T23:59:23.210Z] 97677b2c82b2: Pushed
-[2026-11-12T23:59:23.210Z] d919e0f36409: Pushed
-[2026-11-12T23:59:23.210Z] 52b7d7dd8044: digest: sha256:c5a18df466de923c19bd96e59b27e249ab246508bb75cae1f431c31d07edf198 size: 856
-[2026-11-12T23:59:23.210Z] + docker push localhost:5001/frontend:52b7d7dd8044
-[2026-11-12T23:59:23.210Z] The push refers to repository [localhost:5001/frontend]
-[2026-11-12T23:59:23.460Z] 44136fa355b3: Waiting
-[2026-11-12T23:59:23.460Z] d74d0cecaf1a: Waiting
-[2026-11-12T23:59:23.460Z] a9986cd6f37d: Waiting
-[2026-11-12T23:59:23.460Z] 4530bd001699: Waiting
-[2026-11-12T23:59:23.460Z] a9986cd6f37d: Waiting
-[2026-11-12T23:59:23.460Z] 4530bd001699: Waiting
-[2026-11-12T23:59:23.460Z] 44136fa355b3: Waiting
-[2026-11-12T23:59:23.460Z] d74d0cecaf1a: Waiting
-[2026-11-12T23:59:23.460Z] 4530bd001699: Waiting
-[2026-11-12T23:59:23.460Z] 44136fa355b3: Waiting
-[2026-11-12T23:59:23.460Z] d74d0cecaf1a: Waiting
-[2026-11-12T23:59:23.460Z] a9986cd6f37d: Waiting
-[2026-11-12T23:59:23.711Z] 4530bd001699: Waiting
-[2026-11-12T23:59:23.711Z] 44136fa355b3: Waiting
-[2026-11-12T23:59:23.711Z] d74d0cecaf1a: Waiting
-[2026-11-12T23:59:23.711Z] a9986cd6f37d: Waiting
-[2026-11-12T23:59:23.711Z] 4530bd001699: Waiting
-[2026-11-12T23:59:23.711Z] 44136fa355b3: Waiting
-[2026-11-12T23:59:23.711Z] d74d0cecaf1a: Waiting
-[2026-11-12T23:59:23.711Z] a9986cd6f37d: Waiting
-[2026-11-12T23:59:23.962Z] 4530bd001699: Waiting
-[2026-11-12T23:59:23.962Z] 44136fa355b3: Waiting
-[2026-11-12T23:59:23.962Z] d74d0cecaf1a: Waiting
-[2026-11-12T23:59:23.962Z] a9986cd6f37d: Waiting
-[2026-11-12T23:59:23.962Z] 2fe8f2a34241: Layer already exists
-[2026-11-12T23:59:23.962Z] 60a8a21e161a: Layer already exists
-[2026-11-12T23:59:23.962Z] 75390bd5c5e0: Layer already exists
-[2026-11-12T23:59:23.962Z] 44136fa355b3: Already exists
-[2026-11-12T23:59:23.962Z] a9986cd6f37d: Layer already exists
-[2026-11-12T23:59:23.962Z] 115972ae778a: Layer already exists
-[2026-11-12T23:59:23.962Z] 4b40f23576bc: Layer already exists
-[2026-11-12T23:59:23.962Z] b75fea50b323: Layer already exists
-[2026-11-12T23:59:23.962Z] 32f5bbf6f323: Layer already exists
-[2026-11-12T23:59:23.962Z] 4530bd001699: Pushed
-[2026-11-12T23:59:23.962Z] d74d0cecaf1a: Layer already exists
-[2026-11-12T23:59:23.962Z] 98f56d1336e8: Layer already exists
-[2026-11-12T23:59:23.962Z] 581a829fa84a: Layer already exists
-[2026-11-12T23:59:23.962Z] 4bc482c4f270: Layer already exists
-[2026-11-12T23:59:23.962Z] 52b7d7dd8044: digest: sha256:6e5f3697ff6f65942a1c1926947c6a6ae93ae6a3e7e459278d90520f1dca1c7f size: 856
+[2026-11-13T00:17:59.605Z] + docker push localhost:5001/backend:18b34eeb21d1
+[2026-11-13T00:17:59.605Z] The push refers to repository [localhost:5001/backend]
+[2026-11-13T00:17:59.605Z] 2d66c782e484: Waiting
+[2026-11-13T00:17:59.605Z] 5186a686e82e: Waiting
+[2026-11-13T00:17:59.605Z] 44136fa355b3: Waiting
+[2026-11-13T00:17:59.605Z] 6566b82365dd: Waiting
+[2026-11-13T00:17:59.605Z] 5186a686e82e: Waiting
+[2026-11-13T00:17:59.605Z] 44136fa355b3: Waiting
+[2026-11-13T00:17:59.605Z] 6566b82365dd: Waiting
+[2026-11-13T00:17:59.605Z] 2d66c782e484: Waiting
+[2026-11-13T00:17:59.855Z] 5186a686e82e: Waiting
+[2026-11-13T00:17:59.855Z] 44136fa355b3: Waiting
+[2026-11-13T00:17:59.855Z] 6566b82365dd: Waiting
+[2026-11-13T00:17:59.855Z] 2d66c782e484: Waiting
+[2026-11-13T00:17:59.855Z] 5186a686e82e: Waiting
+[2026-11-13T00:17:59.855Z] 44136fa355b3: Waiting
+[2026-11-13T00:17:59.855Z] 6566b82365dd: Waiting
+[2026-11-13T00:17:59.856Z] 2d66c782e484: Waiting
+[2026-11-13T00:18:00.106Z] 6566b82365dd: Waiting
+[2026-11-13T00:18:00.106Z] 2d66c782e484: Waiting
+[2026-11-13T00:18:00.106Z] 5186a686e82e: Waiting
+[2026-11-13T00:18:00.106Z] 44136fa355b3: Waiting
+[2026-11-13T00:18:00.106Z] 2d66c782e484: Waiting
+[2026-11-13T00:18:00.106Z] 5186a686e82e: Waiting
+[2026-11-13T00:18:00.106Z] 44136fa355b3: Waiting
+[2026-11-13T00:18:00.106Z] 6566b82365dd: Waiting
+[2026-11-13T00:18:00.106Z] 5186a686e82e: Pushed
+[2026-11-13T00:18:00.106Z] 44136fa355b3: Already exists
+[2026-11-13T00:18:00.106Z] 6566b82365dd: Layer already exists
+[2026-11-13T00:18:00.106Z] 1d3acbec7eb9: Layer already exists
+[2026-11-13T00:18:00.106Z] 2d66c782e484: Layer already exists
+[2026-11-13T00:18:00.106Z] 275133d18a0a: Layer already exists
+[2026-11-13T00:18:00.106Z] 2e8127ae85a2: Pushed
+[2026-11-13T00:18:00.106Z] 437f1556ed1c: Pushed
+[2026-11-13T00:18:00.106Z] d76afd1662da: Pushed
+[2026-11-13T00:18:00.106Z] 195df974abf3: Pushed
+[2026-11-13T00:18:00.106Z] 18b34eeb21d1: digest: sha256:bad1bb4ca08a7cb3056b92c8c6a972847276a12e667a44d317d9e0dda5dfa09d size: 856
+[2026-11-13T00:18:00.106Z] + docker push localhost:5001/frontend:18b34eeb21d1
+[2026-11-13T00:18:00.106Z] The push refers to repository [localhost:5001/frontend]
+[2026-11-13T00:18:00.357Z] 4609898226bb: Waiting
+[2026-11-13T00:18:00.357Z] 44136fa355b3: Waiting
+[2026-11-13T00:18:00.357Z] d74d0cecaf1a: Waiting
+[2026-11-13T00:18:00.357Z] a9986cd6f37d: Waiting
+[2026-11-13T00:18:00.357Z] 4609898226bb: Waiting
+[2026-11-13T00:18:00.357Z] 44136fa355b3: Waiting
+[2026-11-13T00:18:00.357Z] d74d0cecaf1a: Waiting
+[2026-11-13T00:18:00.357Z] a9986cd6f37d: Waiting
+[2026-11-13T00:18:00.357Z] 4609898226bb: Waiting
+[2026-11-13T00:18:00.357Z] 44136fa355b3: Waiting
+[2026-11-13T00:18:00.357Z] d74d0cecaf1a: Waiting
+[2026-11-13T00:18:00.357Z] a9986cd6f37d: Waiting
+[2026-11-13T00:18:00.607Z] 4609898226bb: Waiting
+[2026-11-13T00:18:00.607Z] 44136fa355b3: Waiting
+[2026-11-13T00:18:00.607Z] d74d0cecaf1a: Waiting
+[2026-11-13T00:18:00.607Z] a9986cd6f37d: Waiting
+[2026-11-13T00:18:00.607Z] 4609898226bb: Waiting
+[2026-11-13T00:18:00.607Z] 44136fa355b3: Waiting
+[2026-11-13T00:18:00.607Z] d74d0cecaf1a: Waiting
+[2026-11-13T00:18:00.607Z] a9986cd6f37d: Waiting
+[2026-11-13T00:18:00.858Z] 44136fa355b3: Waiting
+[2026-11-13T00:18:00.858Z] d74d0cecaf1a: Waiting
+[2026-11-13T00:18:00.858Z] a9986cd6f37d: Waiting
+[2026-11-13T00:18:00.858Z] 4609898226bb: Waiting
+[2026-11-13T00:18:00.858Z] 2fe8f2a34241: Layer already exists
+[2026-11-13T00:18:00.858Z] 32f5bbf6f323: Layer already exists
+[2026-11-13T00:18:00.858Z] 60a8a21e161a: Layer already exists
+[2026-11-13T00:18:00.858Z] 75390bd5c5e0: Layer already exists
+[2026-11-13T00:18:00.858Z] 4609898226bb: Pushed
+[2026-11-13T00:18:00.858Z] a9986cd6f37d: Layer already exists
+[2026-11-13T00:18:00.858Z] 115972ae778a: Layer already exists
+[2026-11-13T00:18:00.858Z] 581a829fa84a: Layer already exists
+[2026-11-13T00:18:00.858Z] 4b40f23576bc: Layer already exists
+[2026-11-13T00:18:00.858Z] b75fea50b323: Layer already exists
+[2026-11-13T00:18:00.858Z] 44136fa355b3: Already exists
+[2026-11-13T00:18:00.858Z] d74d0cecaf1a: Layer already exists
+[2026-11-13T00:18:00.858Z] 98f56d1336e8: Layer already exists
+[2026-11-13T00:18:00.858Z] 4bc482c4f270: Layer already exists
+[2026-11-13T00:18:00.858Z] 18b34eeb21d1: digest: sha256:a23e59c830856d4d60c8b380a05058e70a479062b7e948d1e06f4518c7758a2d size: 856
 [Pipeline] }
 [Pipeline] // script
 [Pipeline] }
@@ -615,45 +646,46 @@ Post stage
 [Pipeline] stage
 [Pipeline] { (Despliegue (Helm))
 [Pipeline] withCredentials
-[2026-11-12T23:59:24.006Z] Masking supported pattern matches of $KUBECONFIG
+[2026-11-13T00:18:00.955Z] Masking supported pattern matches of $KUBECONFIG
 [Pipeline] {
 [Pipeline] sh
-[2026-11-12T23:59:24.271Z] + kubectl get namespace notes
-[2026-11-12T23:59:24.271Z] + helm upgrade --install notes helm-chart --namespace notes --values helm-chart/values-dev.yaml --set image.registry=localhost:5001 --set backend.image.repository=backend --set backend.image.tag=52b7d7dd8044 --set frontend.image.repository=frontend --set frontend.image.tag=52b7d7dd8044 --set image.pullPolicy=IfNotPresent --wait --timeout 5m
-[2026-11-12T23:59:39.039Z] Release "notes" has been upgraded. Happy Helming!
-[2026-11-12T23:59:39.039Z] NAME: notes
-[2026-11-12T23:59:39.039Z] LAST DEPLOYED: Thu Nov 12 23:59:24 2026
-[2026-11-12T23:59:39.039Z] NAMESPACE: notes
-[2026-11-12T23:59:39.039Z] STATUS: deployed
-[2026-11-12T23:59:39.039Z] REVISION: 5
-[2026-11-12T23:59:39.039Z] NOTES:
-[2026-11-12T23:59:39.039Z] Release notes desplegado en el namespace notes (entorno: dev).
-[2026-11-12T23:59:39.039Z] 
-[2026-11-12T23:59:39.039Z] Componentes:
-[2026-11-12T23:59:39.039Z]   - backend:    notes-backend (localhost:5001/backend:52b7d7dd8044)
-[2026-11-12T23:59:39.039Z]   - frontend:   notes-frontend (localhost:5001/frontend:52b7d7dd8044)
-[2026-11-12T23:59:39.039Z]   - prometheus: notes-prometheus
-[2026-11-12T23:59:39.039Z]   - grafana:    notes-grafana (usuario admin)
-[2026-11-12T23:59:39.039Z] 
-[2026-11-12T23:59:39.039Z] Estado de los pods:
-[2026-11-12T23:59:39.039Z]   kubectl get pods -n notes -l app.kubernetes.io/instance=notes
-[2026-11-12T23:59:39.039Z] 
-[2026-11-12T23:59:39.039Z] Docker Desktop expone los servicios LoadBalancer en localhost:
-[2026-11-12T23:59:39.039Z]   App:        http://localhost:80
-[2026-11-12T23:59:39.039Z]   Prometheus: http://localhost:9091
-[2026-11-12T23:59:39.039Z]   Grafana:    http://localhost:3001
-[2026-11-12T23:59:39.039Z] 
-[2026-11-12T23:59:39.039Z] Prueba de humo: helm test notes -n notes
-[2026-11-12T23:59:39.039Z] + kubectl -n notes rollout status deployment/notes-backend
-[2026-11-12T23:59:39.039Z] deployment "notes-backend" successfully rolled out
-[2026-11-12T23:59:39.039Z] + kubectl -n notes get pods -l app.kubernetes.io/instance=notes -o wide
-[2026-11-12T23:59:39.039Z] NAME                              READY   STATUS      RESTARTS        AGE    IP            NODE                    NOMINATED NODE   READINESS GATES
-[2026-11-12T23:59:39.039Z] notes-backend-794bbc5dcf-f5r2s    1/1     Running     0               14s    10.244.0.23   desktop-control-plane   <none>           <none>
-[2026-11-12T23:59:39.039Z] notes-backend-794bbc5dcf-ncqwv    1/1     Running     0               8s     10.244.0.25   desktop-control-plane   <none>           <none>
-[2026-11-12T23:59:39.039Z] notes-frontend-86d7dc857c-vf5rg   1/1     Running     0               14s    10.244.0.24   desktop-control-plane   <none>           <none>
-[2026-11-12T23:59:39.039Z] notes-grafana-8fbb8cfd5-5968k     1/1     Running     3 (4m19s ago)   10h    10.244.0.14   desktop-control-plane   <none>           <none>
-[2026-11-12T23:59:39.039Z] notes-prometheus-596cd5d6-9b5n9   1/1     Running     2 (30m ago)     24h    10.244.0.6    desktop-control-plane   <none>           <none>
-[2026-11-12T23:59:39.039Z] notes-test                        0/1     Completed   0               2m7s   10.244.0.22   desktop-control-plane   <none>           <none>
+[2026-11-13T00:18:01.222Z] + kubectl get namespace notes
+[2026-11-13T00:18:01.222Z] + helm upgrade --install notes helm-chart --namespace notes --values helm-chart/values-dev.yaml --set image.registry=localhost:5001 --set backend.image.repository=backend --set backend.image.tag=18b34eeb21d1 --set frontend.image.repository=frontend --set frontend.image.tag=18b34eeb21d1 --set image.pullPolicy=IfNotPresent --wait --timeout 5m
+[2026-11-13T00:18:15.991Z] Release "notes" has been upgraded. Happy Helming!
+[2026-11-13T00:18:15.991Z] NAME: notes
+[2026-11-13T00:18:15.991Z] LAST DEPLOYED: Fri Nov 13 00:18:01 2026
+[2026-11-13T00:18:15.991Z] NAMESPACE: notes
+[2026-11-13T00:18:15.991Z] STATUS: deployed
+[2026-11-13T00:18:15.991Z] REVISION: 6
+[2026-11-13T00:18:15.991Z] NOTES:
+[2026-11-13T00:18:15.991Z] Release notes desplegado en el namespace notes (entorno: dev).
+[2026-11-13T00:18:15.991Z] 
+[2026-11-13T00:18:15.991Z] Componentes:
+[2026-11-13T00:18:15.991Z]   - backend:    notes-backend (localhost:5001/backend:18b34eeb21d1)
+[2026-11-13T00:18:15.991Z]   - frontend:   notes-frontend (localhost:5001/frontend:18b34eeb21d1)
+[2026-11-13T00:18:15.991Z]   - prometheus: notes-prometheus
+[2026-11-13T00:18:15.991Z]   - grafana:    notes-grafana (usuario admin)
+[2026-11-13T00:18:15.991Z] 
+[2026-11-13T00:18:15.991Z] Estado de los pods:
+[2026-11-13T00:18:15.991Z]   kubectl get pods -n notes -l app.kubernetes.io/instance=notes
+[2026-11-13T00:18:15.991Z] 
+[2026-11-13T00:18:15.991Z] Docker Desktop expone los servicios LoadBalancer en localhost:
+[2026-11-13T00:18:15.991Z]   App:        http://localhost:80
+[2026-11-13T00:18:15.991Z]   Prometheus: http://localhost:9091
+[2026-11-13T00:18:15.991Z]   Grafana:    http://localhost:3001
+[2026-11-13T00:18:15.991Z] 
+[2026-11-13T00:18:15.991Z] Prueba de humo: helm test notes -n notes
+[2026-11-13T00:18:15.991Z] + kubectl -n notes rollout status deployment/notes-backend
+[2026-11-13T00:18:15.991Z] deployment "notes-backend" successfully rolled out
+[2026-11-13T00:18:15.991Z] + kubectl -n notes get pods -l app.kubernetes.io/instance=notes -o wide
+[2026-11-13T00:18:15.991Z] NAME                              READY   STATUS      RESTARTS        AGE   IP            NODE                    NOMINATED NODE   READINESS GATES
+[2026-11-13T00:18:15.991Z] notes-backend-6978c85b85-ln66b    1/1     Running     0               12s   10.244.0.27   desktop-control-plane   <none>           <none>
+[2026-11-13T00:18:15.991Z] notes-backend-6978c85b85-wzkqc    1/1     Running     0               6s    10.244.0.29   desktop-control-plane   <none>           <none>
+[2026-11-13T00:18:15.991Z] notes-backend-794bbc5dcf-f5r2s    0/1     Completed   0               18m   10.244.0.23   desktop-control-plane   <none>           <none>
+[2026-11-13T00:18:15.991Z] notes-frontend-797476bc44-zwxs2   1/1     Running     0               12s   10.244.0.28   desktop-control-plane   <none>           <none>
+[2026-11-13T00:18:15.991Z] notes-grafana-8fbb8cfd5-5968k     1/1     Running     5 (6m40s ago)   10h   10.244.0.14   desktop-control-plane   <none>           <none>
+[2026-11-13T00:18:15.991Z] notes-prometheus-596cd5d6-9b5n9   1/1     Running     2 (49m ago)     24h   10.244.0.6    desktop-control-plane   <none>           <none>
+[2026-11-13T00:18:15.991Z] notes-test                        0/1     Completed   0               18m   10.244.0.26   desktop-control-plane   <none>           <none>
 [Pipeline] }
 [Pipeline] // withCredentials
 [Pipeline] }
@@ -661,56 +693,56 @@ Post stage
 [Pipeline] stage
 [Pipeline] { (Prueba de humo)
 [Pipeline] withCredentials
-[2026-11-12T23:59:39.084Z] Masking supported pattern matches of $KUBECONFIG
+[2026-11-13T00:18:16.041Z] Masking supported pattern matches of $KUBECONFIG
 [Pipeline] {
 [Pipeline] sh
-[2026-11-12T23:59:39.343Z] + helm test notes -n notes --logs
-[2026-11-12T23:59:45.836Z] NAME: notes
-[2026-11-12T23:59:45.836Z] LAST DEPLOYED: Thu Nov 12 23:59:24 2026
-[2026-11-12T23:59:45.836Z] NAMESPACE: notes
-[2026-11-12T23:59:45.836Z] STATUS: deployed
-[2026-11-12T23:59:45.836Z] REVISION: 5
-[2026-11-12T23:59:45.836Z] TEST SUITE:     notes-test
-[2026-11-12T23:59:45.836Z] Last Started:   Thu Nov 12 23:59:39 2026
-[2026-11-12T23:59:45.836Z] Last Completed: Thu Nov 12 23:59:44 2026
-[2026-11-12T23:59:45.836Z] Phase:          Succeeded
-[2026-11-12T23:59:45.836Z] NOTES:
-[2026-11-12T23:59:45.836Z] Release notes desplegado en el namespace notes (entorno: dev).
-[2026-11-12T23:59:45.836Z] 
-[2026-11-12T23:59:45.836Z] Componentes:
-[2026-11-12T23:59:45.836Z]   - backend:    notes-backend (localhost:5001/backend:52b7d7dd8044)
-[2026-11-12T23:59:45.836Z]   - frontend:   notes-frontend (localhost:5001/frontend:52b7d7dd8044)
-[2026-11-12T23:59:45.836Z]   - prometheus: notes-prometheus
-[2026-11-12T23:59:45.836Z]   - grafana:    notes-grafana (usuario admin)
-[2026-11-12T23:59:45.836Z] 
-[2026-11-12T23:59:45.836Z] Estado de los pods:
-[2026-11-12T23:59:45.836Z]   kubectl get pods -n notes -l app.kubernetes.io/instance=notes
-[2026-11-12T23:59:45.836Z] 
-[2026-11-12T23:59:45.836Z] Docker Desktop expone los servicios LoadBalancer en localhost:
-[2026-11-12T23:59:45.836Z]   App:        http://localhost:80
-[2026-11-12T23:59:45.836Z]   Prometheus: http://localhost:9091
-[2026-11-12T23:59:45.836Z]   Grafana:    http://localhost:3001
-[2026-11-12T23:59:45.836Z] 
-[2026-11-12T23:59:45.836Z] Prueba de humo: helm test notes -n notes
-[2026-11-12T23:59:45.836Z] 
-[2026-11-12T23:59:45.836Z] POD LOGS: notes-test
-[2026-11-12T23:59:45.836Z] GET http://notes-backend:8000/health
-[2026-11-12T23:59:45.836Z] {"status":"ok","health_param":"default","version":"52b7d7dd8044","env":"dev"}
-[2026-11-12T23:59:45.836Z] GET http://notes-backend:8000/metrics
-[2026-11-12T23:59:45.836Z] 18
-[2026-11-12T23:59:45.836Z] GET http://notes-frontend:80/healthz
-[2026-11-12T23:59:45.836Z] ok
-[2026-11-12T23:59:45.836Z] GET http://notes-frontend:80/api/stats
-[2026-11-12T23:59:45.836Z] {"total_notes":0,"version":"52b7d7dd8044","env":"dev"}
-[2026-11-12T23:59:45.836Z] GET http://notes-prometheus:9091/-/ready
-[2026-11-12T23:59:45.836Z] Prometheus Server is Ready.
-[2026-11-12T23:59:45.836Z] GET http://notes-grafana:3001/api/health
-[2026-11-12T23:59:45.836Z] {
-[2026-11-12T23:59:45.836Z]   "database": "ok",
-[2026-11-12T23:59:45.836Z]   "version": "13.3.1",
-[2026-11-12T23:59:45.836Z]   "commit": "da3aa3ff574e7dbbf808c66b6daa744defed0441"
-[2026-11-12T23:59:45.836Z] }
-[2026-11-12T23:59:45.836Z] 
+[2026-11-13T00:18:16.306Z] + helm test notes -n notes --logs
+[2026-11-13T00:18:18.789Z] NAME: notes
+[2026-11-13T00:18:18.789Z] LAST DEPLOYED: Fri Nov 13 00:18:01 2026
+[2026-11-13T00:18:18.789Z] NAMESPACE: notes
+[2026-11-13T00:18:18.789Z] STATUS: deployed
+[2026-11-13T00:18:18.789Z] REVISION: 6
+[2026-11-13T00:18:18.789Z] TEST SUITE:     notes-test
+[2026-11-13T00:18:18.789Z] Last Started:   Fri Nov 13 00:18:16 2026
+[2026-11-13T00:18:18.789Z] Last Completed: Fri Nov 13 00:18:18 2026
+[2026-11-13T00:18:18.789Z] Phase:          Succeeded
+[2026-11-13T00:18:18.789Z] NOTES:
+[2026-11-13T00:18:18.789Z] Release notes desplegado en el namespace notes (entorno: dev).
+[2026-11-13T00:18:18.789Z] 
+[2026-11-13T00:18:18.789Z] Componentes:
+[2026-11-13T00:18:18.789Z]   - backend:    notes-backend (localhost:5001/backend:18b34eeb21d1)
+[2026-11-13T00:18:18.789Z]   - frontend:   notes-frontend (localhost:5001/frontend:18b34eeb21d1)
+[2026-11-13T00:18:18.789Z]   - prometheus: notes-prometheus
+[2026-11-13T00:18:18.789Z]   - grafana:    notes-grafana (usuario admin)
+[2026-11-13T00:18:18.789Z] 
+[2026-11-13T00:18:18.789Z] Estado de los pods:
+[2026-11-13T00:18:18.789Z]   kubectl get pods -n notes -l app.kubernetes.io/instance=notes
+[2026-11-13T00:18:18.789Z] 
+[2026-11-13T00:18:18.789Z] Docker Desktop expone los servicios LoadBalancer en localhost:
+[2026-11-13T00:18:18.789Z]   App:        http://localhost:80
+[2026-11-13T00:18:18.789Z]   Prometheus: http://localhost:9091
+[2026-11-13T00:18:18.789Z]   Grafana:    http://localhost:3001
+[2026-11-13T00:18:18.789Z] 
+[2026-11-13T00:18:18.789Z] Prueba de humo: helm test notes -n notes
+[2026-11-13T00:18:18.789Z] 
+[2026-11-13T00:18:18.789Z] POD LOGS: notes-test
+[2026-11-13T00:18:18.789Z] GET http://notes-backend:8000/health
+[2026-11-13T00:18:18.789Z] {"status":"ok","health_param":"default","version":"18b34eeb21d1","env":"dev"}
+[2026-11-13T00:18:18.789Z] GET http://notes-backend:8000/metrics
+[2026-11-13T00:18:18.789Z] 18
+[2026-11-13T00:18:18.789Z] GET http://notes-frontend:80/healthz
+[2026-11-13T00:18:18.789Z] ok
+[2026-11-13T00:18:18.789Z] GET http://notes-frontend:80/api/stats
+[2026-11-13T00:18:18.789Z] {"total_notes":0,"version":"18b34eeb21d1","env":"dev"}
+[2026-11-13T00:18:18.789Z] GET http://notes-prometheus:9091/-/ready
+[2026-11-13T00:18:18.789Z] Prometheus Server is Ready.
+[2026-11-13T00:18:18.789Z] GET http://notes-grafana:3001/api/health
+[2026-11-13T00:18:18.789Z] {
+[2026-11-13T00:18:18.789Z]   "database": "ok",
+[2026-11-13T00:18:18.789Z]   "version": "13.3.1",
+[2026-11-13T00:18:18.789Z]   "commit": "da3aa3ff574e7dbbf808c66b6daa744defed0441"
+[2026-11-13T00:18:18.789Z] }
+[2026-11-13T00:18:18.789Z] 
 [Pipeline] }
 [Pipeline] // withCredentials
 [Pipeline] }
@@ -718,9 +750,9 @@ Post stage
 [Pipeline] stage
 [Pipeline] { (Declarative: Post Actions)
 [Pipeline] archiveArtifacts
-[2026-11-12T23:59:45.885Z] Archiving artifacts
+[2026-11-13T00:18:18.836Z] Archiving artifacts
 [Pipeline] sh
-[2026-11-12T23:59:46.154Z] + docker image rm -f localhost:5001/backend:52b7d7dd8044 localhost:5001/frontend:52b7d7dd8044
+[2026-11-13T00:18:19.097Z] + docker image rm -f localhost:5001/backend:18b34eeb21d1 localhost:5001/frontend:18b34eeb21d1
 [Pipeline] }
 [Pipeline] // stage
 [Pipeline] }
@@ -734,4 +766,4 @@ Post stage
 [Pipeline] }
 [Pipeline] // node
 [Pipeline] End of Pipeline
-Finished: UNSTABLE
+Finished: SUCCESS
