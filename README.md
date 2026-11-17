@@ -109,8 +109,13 @@ scripts/init.sh
 
 `init.sh` hace, en orden:
 
-1. `docker build` de `notes-backend:dev` y `notes-frontend:dev` (el cluster de Docker Desktop
-   comparte el daemon, no hace falta registry).
+1. `docker build` de `notes-backend:dev` y `notes-frontend:dev`. Si el Kubernetes de Docker
+   Desktop esta en modo kubeadm (runtime `docker://`), el nodo ve esas imagenes directamente. Si
+   esta en modo kind (runtime `containerd://`, nodo `desktop-control-plane`), el nodo no ve las
+   imagenes del host: `init.sh` levanta el registry local `localhost:5001` (o reutiliza el de
+   `jenkins/docker-compose.yml`), publica `backend:dev-<id>` y `frontend:dev-<id>` y despliega con
+   `image.registry=localhost:5001`. El `<id>` sale del id de la imagen, asi cada cambio de codigo
+   provoca un rollout.
 2. `scripts/install-operators.sh`: instala Kyverno (chart `kyverno/kyverno` 3.10.0, v1.20.0) con
    `kyverno/values.yaml`, aplica las cinco politicas y espera a que esten `READY`, e instala Falco
    (chart `falcosecurity/falco` 9.2.2, 0.45.2) con `falco/values.yaml`.
@@ -217,8 +222,10 @@ docker compose -f jenkins/docker-compose.yml down -v   # Jenkins y registry loca
 ### 3.8 Sin Kubernetes
 
 `docker compose up -d --build` levanta backend, Redis, frontend (http://localhost:8080), Prometheus
-(http://localhost:9091) y Grafana (http://localhost:3001) con la misma configuracion de alertas y
-el mismo dashboard. `APP_URL=http://localhost:8080 scripts/populate.sh 60` genera trafico.
+(http://localhost:9092) y Grafana (http://localhost:3002, admin / admin) con la misma configuracion
+de alertas y el mismo dashboard. `APP_URL=http://localhost:8080 scripts/populate.sh 60` genera
+trafico. Los puertos de Prometheus y Grafana son distintos a los del entorno dev de Kubernetes
+(9091 y 3001), asi los dos entornos pueden estar levantados a la vez.
 
 ## 4. Contenerizacion
 

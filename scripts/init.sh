@@ -14,10 +14,30 @@ require docker kubectl helm curl
 log "Entorno: $ENV_NAME | contexto: $KUBE_CONTEXT | namespace: $NAMESPACE | release: $RELEASE"
 "${KUBECTL[@]}" cluster-info | head -1
 
+EXTRA_ARGS=()
 if [ "$ENV_NAME" = "dev" ]; then
   log "Construyendo imagenes locales (tag $IMAGE_TAG)"
   docker build --build-arg "APP_VERSION=$IMAGE_TAG" -t "notes-backend:$IMAGE_TAG" "$ROOT_DIR/backend"
   docker build -t "notes-frontend:$IMAGE_TAG" "$ROOT_DIR/frontend"
+
+  # Docker Desktop tiene dos modos de Kubernetes. En modo kubeadm el nodo usa el daemon del host
+  # (runtime docker://) y ve las imagenes recien construidas. En modo kind el nodo usa su propio
+  # containerd y no las ve: hay que publicarlas en el registry local (localhost:5001).
+  runtime="$("${KUBECTL[@]}" get nodes -o jsonpath='{.items[0].status.nodeInfo.containerRuntimeVersion}')"
+  if [[ "$runtime" != docker://* ]]; then
+    log "Nodo con runtime $runtime: publicando las imagenes en el registry local $LOCAL_REGISTRY"
+    ensure_local_registry
+    # El tag incluye el id de la imagen para que cada cambio de codigo genere un rollout
+    for comp in backend frontend; do
+      id="$(docker image inspect -f '{{.Id}}' "notes-$comp:$IMAGE_TAG" | cut -d: -f2 | cut -c1-12)"
+      ref="$LOCAL_REGISTRY/$comp:$IMAGE_TAG-$id"
+      docker tag "notes-$comp:$IMAGE_TAG" "$ref"
+      docker push -q "$ref" >/dev/null
+      ok "$ref"
+      EXTRA_ARGS+=(--set "$comp.image.repository=$comp" --set "$comp.image.tag=$IMAGE_TAG-$id")
+    done
+    EXTRA_ARGS+=(--set "image.registry=$LOCAL_REGISTRY")
+  fi
 
   "$ROOT_DIR/scripts/install-operators.sh"
 fi
@@ -27,7 +47,6 @@ log "Creando namespace $NAMESPACE (si no existe)"
   || "${KUBECTL[@]}" create namespace "$NAMESPACE"
 
 log "Desplegando el chart con Helm"
-EXTRA_ARGS=()
 if [ "$ENV_NAME" = "prod" ]; then
   [ "$IMAGE_TAG" != "dev" ] || die "en prod hay que indicar IMAGE_TAG=<tag publicado en GHCR>"
   EXTRA_ARGS+=(--set "backend.image.tag=$IMAGE_TAG" --set "frontend.image.tag=$IMAGE_TAG")
@@ -36,7 +55,7 @@ fi
 "${HELM[@]}" upgrade --install "$RELEASE" "$CHART_DIR" \
   --namespace "$NAMESPACE" \
   --values "$VALUES_FILE" \
-  "${EXTRA_ARGS[@]}" \
+  ${EXTRA_ARGS[@]+"${EXTRA_ARGS[@]}"} \
   --wait --timeout 5m
 
 wait_for_release

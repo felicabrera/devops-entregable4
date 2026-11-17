@@ -27,6 +27,9 @@ case "$ENV_NAME" in
     ;;
 esac
 
+# Registry local para el modo kind de Docker Desktop (el mismo que levanta jenkins/docker-compose.yml)
+LOCAL_REGISTRY="${LOCAL_REGISTRY:-localhost:5001}"
+
 KUBECTL=(kubectl --context "$KUBE_CONTEXT")
 HELM=(helm --kube-context "$KUBE_CONTEXT")
 
@@ -59,4 +62,22 @@ app_url() {
   else
     echo "http://localhost"
   fi
+}
+
+# Deja corriendo el registry local en localhost:5001. Reutiliza el contenedor notes-registry de
+# jenkins/docker-compose.yml si existe; si no, lo crea con la misma imagen.
+ensure_local_registry() {
+  if curl -fsS --max-time 3 "http://$LOCAL_REGISTRY/v2/" >/dev/null 2>&1; then
+    return 0
+  fi
+  if docker container inspect notes-registry >/dev/null 2>&1; then
+    docker start notes-registry >/dev/null
+  else
+    docker run -d --name notes-registry --restart unless-stopped -p 5001:5000 registry:3.1.2 >/dev/null
+  fi
+  for _ in $(seq 1 20); do
+    curl -fsS --max-time 3 "http://$LOCAL_REGISTRY/v2/" >/dev/null 2>&1 && return 0
+    sleep 1
+  done
+  die "el registry local no responde en $LOCAL_REGISTRY"
 }
