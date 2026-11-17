@@ -344,8 +344,24 @@ Dashboard `grafana/dashboard.json` (uid `notes-api`, generado por `scripts/build
 | Negocio | notas guardadas en el tiempo, creadas/borradas por minuto, creadas en 5 min contra el umbral |
 | Estado | targets `up`, uptime por pod |
 
-Variables: `endpoint` (multi-select) y `threshold` (umbral de la alerta). Captura tras
-`scripts/populate.sh`: [docs/img/grafana-dashboard.png](docs/img/grafana-dashboard.png).
+Variables: `endpoint` (multi-select) y `threshold` (umbral de la alerta).
+
+Capturas tomadas en el entorno local (Docker Desktop) despues de `scripts/populate.sh`, con las
+dos replicas del backend compartiendo las notas en Redis (ultimos 15 minutos):
+
+**Resumen y trafico**
+
+![Resumen y trafico](docs/img/grafana-resumen-trafico.png)
+
+**Latencia y recursos por pod**
+
+![Latencia y recursos por pod](docs/img/grafana-latencia-recursos.png)
+
+**Negocio y estado**
+
+![Negocio y estado](docs/img/grafana-negocio-estado.png)
+
+Dashboard completo: [docs/img/grafana-dashboard.png](docs/img/grafana-dashboard.png).
 
 ## 8. Resultados de seguridad
 
