@@ -117,7 +117,7 @@ jobs:
             --set backend.image.tag="$TAG" \
             --set frontend.image.tag="$TAG" \
             --set monitoring.grafana.adminPassword="${{ secrets.GRAFANA_ADMIN_PASSWORD || 'admin' }}" \
-            --wait --timeout 5m --debug
+            --wait --timeout 5m
       - name: Estado del despliegue
         run: |
           kubectl -n "$NAMESPACE" rollout status deployment/notes-backend --timeout=180s
