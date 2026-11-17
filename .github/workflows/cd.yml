@@ -117,7 +117,7 @@ jobs:
             --set backend.image.tag="$TAG" \
             --set frontend.image.tag="$TAG" \
             --set monitoring.grafana.adminPassword="${{ secrets.GRAFANA_ADMIN_PASSWORD || 'admin' }}" \
-            --wait --timeout 5m
+            --wait --timeout 5m --debug
       - name: Estado del despliegue
         run: |
           kubectl -n "$NAMESPACE" rollout status deployment/notes-backend --timeout=180s
@@ -138,6 +138,31 @@ jobs:
           done | sort -u)
           echo "total_notes observados: $totals"
           [ "$(echo "$totals" | wc -l)" -eq 1 ] || { echo "las replicas devuelven totales distintos"; exit 1; }
+      # Va antes del rollback: el rollback borra los pods nuevos y con ellos sus eventos y logs
+      - name: Diagnostico si fallo el despliegue
+        if: failure()
+        run: |
+          set +e
+          ns="$NAMESPACE"
+          echo "::group::Eventos recientes"
+          kubectl -n "$ns" get events --sort-by=.lastTimestamp | tail -100
+          echo "::endgroup::"
+          echo "::group::Cuota del namespace"
+          kubectl -n "$ns" describe resourcequota
+          echo "::endgroup::"
+          echo "::group::ReplicaSets, pods y PVC"
+          kubectl -n "$ns" get rs,pods,pvc -o wide
+          echo "::endgroup::"
+          for pod in $(kubectl -n "$ns" get pods -l app.kubernetes.io/instance="$RELEASE" \
+              -o jsonpath='{range .items[*]}{.metadata.name}{" "}{.status.conditions[?(@.type=="Ready")].status}{"\n"}{end}' \
+              | awk '$2 != "True" {print $1}'); do
+            echo "::group::Pod no listo: $pod"
+            kubectl -n "$ns" describe pod "$pod" | tail -60
+            kubectl -n "$ns" logs "$pod" --all-containers --tail=80
+            kubectl -n "$ns" logs "$pod" --all-containers --previous --tail=40 2>/dev/null
+            echo "::endgroup::"
+          done
+          exit 0
       - name: Rollback automatico si fallo el despliegue
         if: failure()
         run: helm rollback "$RELEASE" -n "$NAMESPACE" --wait || true
