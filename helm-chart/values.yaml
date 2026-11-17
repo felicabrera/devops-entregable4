@@ -71,6 +71,26 @@ frontend:
       cpu: 200m
       memory: 64Mi
 
+# Almacenamiento compartido de notas. Con varias replicas del backend es obligatorio:
+# sin el, cada pod guarda sus notas en su propio emptyDir y la lista cambia segun el pod que responde.
+redis:
+  enabled: true
+  image:
+    repository: redis
+    tag: 7.4.6-alpine
+  maxmemory: 100mb
+  persistence:
+    enabled: false   # sin PVC usa emptyDir: las notas se pierden si se recrea el pod
+    size: 1Gi
+    storageClass: ""
+  resources:
+    requests:
+      cpu: 50m
+      memory: 64Mi
+    limits:
+      cpu: 200m
+      memory: 192Mi
+
 # Exposicion externa. Solo una de las dos opciones suele estar activa.
 ingress:
   enabled: false

@@ -28,6 +28,17 @@ def test_next_id_is_max_plus_one(client):
     assert third["id"] == 3
 
 
+def test_notes_newest_first(client):
+    for text in ("primera", "segunda", "tercera"):
+        client.post("/notes", json={"text": text})
+    texts = [n["text"] for n in client.get("/notes").json()["notes"]]
+    assert texts == ["tercera", "segunda", "primera"]
+
+
+def test_ready(client):
+    assert client.get("/ready").json()["status"] == "ready"
+
+
 def test_validation(client):
     assert client.post("/notes", json={"text": ""}).status_code == 422
     assert client.post("/notes", json={"text": "x" * 501}).status_code == 422

@@ -1,4 +1,4 @@
-# Stack local sin Kubernetes: app, frontend, Prometheus y Grafana.
+# Stack local sin Kubernetes: app, Redis, frontend, Prometheus y Grafana.
 # Para Kubernetes usar el Helm chart (scripts/init.sh).
 services:
   backend:
@@ -10,8 +10,23 @@ services:
     environment:
       APP_ENV: compose
       WELCOME_MESSAGE: Notes API (compose)
+      REDIS_URL: redis://redis:6379/0
     volumes:
       - notes-data:/data
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
+    cap_drop: [ALL]
+    depends_on:
+      - redis
+
+  # Almacenamiento compartido: permite escalar el backend (docker compose up --scale backend=2)
+  redis:
+    image: redis:7.4.6-alpine
+    command: ["redis-server", "--appendonly", "yes", "--dir", "/data", "--maxmemory", "100mb", "--maxmemory-policy", "noeviction"]
+    user: "999:1000"
+    volumes:
+      - redis-data:/data
     read_only: true
     security_opt:
       - no-new-privileges:true
@@ -28,10 +43,11 @@ services:
     depends_on:
       - backend
     read_only: true
+    # nginx corre como uid 101: los tmpfs deben ser suyos para que envsubst genere default.conf
     tmpfs:
-      - /tmp
-      - /var/cache/nginx
-      - /etc/nginx/conf.d
+      - /tmp:uid=101,gid=101
+      - /var/cache/nginx:uid=101,gid=101
+      - /etc/nginx/conf.d:uid=101,gid=101
     security_opt:
       - no-new-privileges:true
     cap_drop: [ALL]
@@ -69,5 +85,6 @@ services:
 
 volumes:
   notes-data:
+  redis-data:
   prometheus-data:
   grafana-data:

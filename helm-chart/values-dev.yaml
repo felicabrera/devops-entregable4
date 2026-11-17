@@ -15,6 +15,11 @@ backend:
   config:
     welcomeMessage: Notes API (dev)
 
+redis:
+  persistence:
+    enabled: true
+    size: 1Gi
+
 frontend:
   image:
     repository: notes-frontend

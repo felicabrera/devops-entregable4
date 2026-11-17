@@ -31,6 +31,13 @@ frontend:
     repository: frontend
     tag: ""
 
+# Notas compartidas por las 2 replicas del backend, persistidas en disco (AOF).
+# PVC: Prometheus 2Gi + Redis 1Gi = 2 de 3 PVC y 3Gi de 5Gi de la quota.
+redis:
+  persistence:
+    enabled: true
+    size: 1Gi
+
 apisix:
   enabled: true
   hosts:
