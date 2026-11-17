@@ -63,7 +63,7 @@ services:
       - ./monitoring/alerts.yml:/etc/prometheus/alerts.yml:ro
       - prometheus-data:/prometheus
     ports:
-      - "9091:9090"
+      - "9092:9090"   # 9091 lo usa el release de Kubernetes local
     depends_on:
       - backend
 
@@ -74,12 +74,13 @@ services:
       GF_SECURITY_ADMIN_PASSWORD: admin
       GF_ANALYTICS_REPORTING_ENABLED: "false"
       GF_USERS_ALLOW_SIGN_UP: "false"
+      GF_PLUGINS_PREINSTALL_DISABLED: "true"
     volumes:
       - ./monitoring/grafana/provisioning:/etc/grafana/provisioning:ro
       - ./grafana:/var/lib/grafana/dashboards:ro
       - grafana-data:/var/lib/grafana
     ports:
-      - "3001:3000"
+      - "3002:3000"   # 3001 lo usa el release de Kubernetes local
     depends_on:
       - prometheus
 

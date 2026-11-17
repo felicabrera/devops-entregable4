@@ -1,6 +1,7 @@
 # Entorno de desarrollo: Kubernetes de Docker Desktop.
-# Las imagenes se construyen localmente (docker build) y el cluster comparte el daemon,
-# por eso no hay registry y pullPolicy es IfNotPresent.
+# Las imagenes se construyen localmente (docker build). En modo kubeadm el cluster comparte el
+# daemon y se usan tal cual; en modo kind scripts/init.sh las publica en localhost:5001 y
+# sobrescribe image.registry y los tags. pullPolicy es IfNotPresent en ambos casos.
 environment: dev
 
 image:
