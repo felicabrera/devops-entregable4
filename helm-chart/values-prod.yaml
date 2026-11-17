@@ -1,6 +1,9 @@
 # Entorno productivo: cluster de la facultad (namespace alumno-team9).
 # Restricciones del namespace: sin LoadBalancer (quota services.loadbalancers=0),
 # 15 pods, 2 CPU / 3Gi de requests, 4 CPU / 6Gi de limits, 3 PVC de hasta 5Gi en total.
+# El namespace lo comparten otras aplicaciones, por lo que la quota libre es menor que la
+# nominal. Los limites de este archivo suman 1.45 CPU en regimen y el despliegue no crea pods
+# extra (maxSurge: 0 o Recreate): el pico nunca supera lo que ya estaba asignado al release.
 environment: prod
 
 image:
@@ -19,8 +22,14 @@ backend:
       cpu: 100m
       memory: 128Mi
     limits:
-      cpu: 500m
+      cpu: 200m
       memory: 256Mi
+  # Sin margen en la quota: se reemplaza un pod por vez en lugar de crear uno adicional
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 0
   # La cuenta del equipo no puede crear PodDisruptionBudgets en el cluster de la facultad
   podDisruptionBudget:
     enabled: false
@@ -30,13 +39,34 @@ frontend:
   image:
     repository: frontend
     tag: ""
+  resources:
+    requests:
+      cpu: 50m
+      memory: 32Mi
+    limits:
+      cpu: 100m
+      memory: 64Mi
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 0
 
-# Notas compartidas por las 2 replicas del backend, persistidas en disco (AOF).
-# PVC: Prometheus 2Gi + Redis 1Gi = 2 de 3 PVC y 3Gi de 5Gi de la quota.
+# Notas compartidas por las 2 replicas del backend.
+# Sin PVC: la quota de PVC (3) y de almacenamiento (5Gi) del namespace compartido esta
+# completa, por lo que Redis usa emptyDir. Las notas sobreviven a reinicios del backend,
+# pero se pierden si se recrea el pod de Redis. Con quota disponible se vuelve a
+# persistence.enabled: true (1Gi).
 redis:
   persistence:
-    enabled: true
-    size: 1Gi
+    enabled: false
+  resources:
+    requests:
+      cpu: 50m
+      memory: 64Mi
+    limits:
+      cpu: 150m
+      memory: 192Mi
 
 apisix:
   enabled: true
@@ -51,8 +81,22 @@ monitoring:
     persistence:
       enabled: true
       size: 2Gi
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
+      limits:
+        cpu: 300m
+        memory: 512Mi
   grafana:
     rootUrl: https://grafana-team9.reto-ucu.net
+    resources:
+      requests:
+        cpu: 100m
+        memory: 192Mi
+      limits:
+        cpu: 400m
+        memory: 512Mi
     adminPassword: admin   # se sobreescribe con --set monitoring.grafana.adminPassword desde un secreto
 
 networkPolicy:

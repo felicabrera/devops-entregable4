@@ -10,6 +10,8 @@ metadata:
     app.kubernetes.io/component: grafana
 spec:
   replicas: 1
+  strategy:
+    {{- toYaml $g.strategy | nindent 4 }}
   selector:
     matchLabels:
       {{- include "notes.selectorLabels" (dict "root" . "component" "grafana") | nindent 6 }}

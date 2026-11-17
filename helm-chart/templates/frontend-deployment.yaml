@@ -9,6 +9,8 @@ metadata:
     app.kubernetes.io/component: frontend
 spec:
   replicas: {{ .Values.frontend.replicas }}
+  strategy:
+    {{- toYaml .Values.frontend.strategy | nindent 4 }}
   selector:
     matchLabels:
       {{- include "notes.selectorLabels" (dict "root" . "component" "frontend") | nindent 6 }}
