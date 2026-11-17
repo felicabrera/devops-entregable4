@@ -35,7 +35,7 @@ almacenamiento, metricas Prometheus) y la lleva a un sistema completo:
   primero), `GET /notes/{id}`, `DELETE /notes/{id}`, `GET /stats`, `GET /metrics`, mas los
   endpoints legacy `POST /add/{note}` y `GET /list`. Tests con pytest y lint con ruff.
 - **almacenamiento**: Redis compartido por todas las replicas del backend (`REDIS_URL`), con AOF
-  sobre un PVC. Sin `REDIS_URL` el backend usa un archivo JSON local (tests y desarrollo).
+  sobre un PVC en dev y sobre `emptyDir` en prod (ver seccion 9). Sin `REDIS_URL` el backend usa un archivo JSON local (tests y desarrollo).
 - **frontend** (`frontend/`): sitio estatico (HTML, CSS, JS sin frameworks) servido por
   `nginx-unprivileged`, que proxea `/api/*` al backend para evitar CORS.
 - **monitoreo**: Prometheus con reglas de alerta y Grafana con un dashboard aprovisionado
@@ -78,7 +78,7 @@ flowchart LR
     R --> G[Grafana]
     R --> P[Prometheus]
     F -->|/api -> :8000| B[backend x2<br/>FastAPI]
-    B -->|:6379| RD[(Redis<br/>AOF en PVC)]
+    B -->|:6379| RD[(Redis<br/>AOF: PVC en dev, emptyDir en prod)]
     B --- H[(Service headless)]
     P -->|dns_sd + scrape /metrics| H
     G -->|PromQL| P
@@ -247,8 +247,8 @@ Escaneo con Trivy: ver seccion 8.3.
 
 | Template | Recurso |
 |---|---|
-| `backend-deployment.yaml`, `backend-service.yaml`, `backend-configmap.yaml` | Deployment (RollingUpdate `maxUnavailable: 0`, anti-afinidad, probes (`/health` liveness, `/ready` readiness), `readOnlyRootFilesystem`, `REDIS_URL`), Service ClusterIP + Service headless, ConfigMap con `API_TITLE`, `WELCOME_MESSAGE`, `HEALTH_PARAM`, `MAX_NOTE_LENGTH`, `APP_ENV` |
-| `redis-deployment.yaml`, `redis-service.yaml`, `redis-pvc.yaml` | Redis 7.4 (1 replica, `Recreate`, uid 999, raiz de solo lectura, AOF, `maxmemory` con `noeviction`), Service ClusterIP y PVC de 1Gi en dev y prod |
+| `backend-deployment.yaml`, `backend-service.yaml`, `backend-configmap.yaml` | Deployment (estrategia configurable: `maxSurge: 1` en dev, `maxSurge: 0` y `maxUnavailable: 1` en prod, anti-afinidad, probes (`/health` liveness, `/ready` readiness), `readOnlyRootFilesystem`, `REDIS_URL`), Service ClusterIP + Service headless, ConfigMap con `API_TITLE`, `WELCOME_MESSAGE`, `HEALTH_PARAM`, `MAX_NOTE_LENGTH`, `APP_ENV` |
+| `redis-deployment.yaml`, `redis-service.yaml`, `redis-pvc.yaml` | Redis 7.4 (1 replica, `Recreate`, uid 999, raiz de solo lectura, AOF, `maxmemory` con `noeviction`), Service ClusterIP y PVC de 1Gi en dev (en prod `emptyDir`) |
 | `backend-hpa.yaml`, `backend-pdb.yaml` | HPA y PDB opcionales |
 | `frontend-deployment.yaml`, `frontend-service.yaml` | Deployment de nginx (cache, tmp y conf en `emptyDir`) y Service |
 | `ingress.yaml`, `apisixroute.yaml` | Ingress (clase configurable) o ApisixRoute (cluster de la facultad) |
@@ -267,8 +267,10 @@ recursos) y contexto de seguridad.
 | Imagenes | `notes-backend:dev` locales, `IfNotPresent` | `ghcr.io/felicabrera/devops-entregable4/{backend,frontend}:<sha>`, `Always` |
 | Exposicion | Services `LoadBalancer` (localhost:80, 9091, 3001) | `ApisixRoute` con `notes-team9`, `grafana-team9`, `prometheus-team9.reto-ucu.net` |
 | Replicas | backend 2, frontend 1 | backend 2, frontend 2 |
+| Limites de CPU | backend 500m, frontend 200m, Grafana 500m, Prometheus 500m, Redis 200m | backend 200m, frontend 100m, Grafana 400m, Prometheus 300m, Redis 150m (1.45 CPU en total) |
+| Despliegue | backend y frontend `maxSurge: 1`, Grafana `Recreate` | backend y frontend `maxSurge: 0` y `maxUnavailable: 1`, Grafana `Recreate`: nunca hay pods extra |
 | Prometheus | retencion 2d, PVC 1Gi | retencion 7d, PVC 2Gi |
-| Redis | 1 replica, PVC 1Gi | 1 replica, PVC 1Gi (total 3Gi de 5Gi de cuota) |
+| Redis | 1 replica, PVC 1Gi | 1 replica, `emptyDir` (la cuota de PVC del namespace compartido esta completa) |
 | NetworkPolicy | si | si |
 | PDB | no | no (la cuenta no puede crear PDB) |
 
@@ -464,6 +466,7 @@ linea de comando, contenedor, imagen, pod y namespace.
 | Trivy encontro 2 CRITICAL sin parche en la base Debian del backend | Se aceptan documentadas (seccion 8.3) y el pipeline bloquea solo las CRITICAL con parche disponible. |
 | Docker Desktop perdio DNS varias veces durante las construcciones | Reintentos; `install-operators.sh` tolera que una politica tarde en quedar lista. |
 | En prod el boton Actualizar alternaba el total de notas (57 y 66) y la lista salia de la mas vieja a la mas nueva | Cada replica del backend guardaba su propio JSON en un `emptyDir` y el Service balanceaba entre ambas. Se agrego Redis como almacenamiento compartido (ids con `INCR`), `GET /notes` devuelve las mas nuevas primero, la readiness usa `/ready` y el CD verifica que 10 consultas a `/api/stats` den el mismo total. |
+| El CD posterior a la incorporacion de Redis termino en `context deadline exceeded` y Helm volvio a la revision anterior | El namespace `alumno-team9` lo comparten otras aplicaciones que consumen parte de la cuota (`limits.cpu 4/4`, `persistentvolumeclaims 3/3`, `requests.storage 5Gi/5Gi`). El PVC de Redis queda rechazado con `exceeded quota: student-quota` y los pods nuevos no tienen CPU disponible. En prod Redis pasa a `emptyDir`, se reducen los limites de CPU a 1.45 en total y el despliegue reemplaza pods en lugar de sumarlos (`maxSurge: 0`, Grafana `Recreate`). |
 | Prometheus exponia `/-/reload` y el frontend publicaba `/api/metrics` | Se quito `--web.enable-lifecycle` y nginx responde 404 en `/api/metrics` (Prometheus sigue leyendo `/metrics` por el Service headless). `helm test` lo verifica. |
 | En `docker compose` el frontend no escuchaba en 8080 | Los `tmpfs` se montaban como root y nginx (uid 101) no podia generar `default.conf`; ahora se montan con `uid=101,gid=101`. |
 
@@ -477,8 +480,11 @@ con reglas propias.
 
 Mejoras pendientes:
 
-- **Alta disponibilidad del almacenamiento.** Redis corre con una sola replica sobre un PVC
-  `ReadWriteOnce`; Redis Sentinel o una base gestionada evitaria el corte durante su reinicio.
+- **Alta disponibilidad y persistencia del almacenamiento.** Redis corre con una sola replica; en
+  prod sobre `emptyDir` porque la cuota de PVC del namespace compartido esta completa, por lo que
+  las notas se pierden si se recrea su pod. Con cuota disponible se vuelve a
+  `redis.persistence.enabled: true`; Redis Sentinel o una base gestionada evitaria el corte
+  durante su reinicio.
 - **Metricas del kubelet.** CPU y memoria por pod salen del proceso de Python; con `kube-state-metrics`
   y cAdvisor se tendria la vision del contenedor completo (requiere RBAC de cluster).
 - **Alertmanager y notificaciones.** Las alertas se evaluan en Prometheus pero no se envian a

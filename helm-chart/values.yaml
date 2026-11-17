@@ -15,6 +15,12 @@ image:
   pullSecrets: []
 
 backend:
+  # Sin capacidad libre en la quota conviene maxSurge: 0 y maxUnavailable: 1 (ver values-prod.yaml)
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
   enabled: true
   image:
     repository: notes-backend
@@ -54,6 +60,11 @@ backend:
     minAvailable: 1
 
 frontend:
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
   enabled: true
   image:
     repository: notes-frontend
@@ -135,6 +146,9 @@ monitoring:
       latencyP95Seconds: 0.5
       errorRatePercent: 5
   grafana:
+    # Recreate evita un segundo pod de Grafana durante el despliegue
+    strategy:
+      type: Recreate
     enabled: true
     image:
       repository: grafana/grafana

@@ -15,7 +15,7 @@ flowchart LR
     subgraph NS["Namespace del release (Helm chart notes)"]
         F[frontend<br/>nginx-unprivileged<br/>sirve el sitio y proxea /api]
         B[backend x2<br/>FastAPI + uvicorn<br/>/notes /stats /health /ready /metrics]
-        RD[(Redis<br/>notas compartidas<br/>AOF en PVC)]
+        RD[(Redis<br/>notas compartidas<br/>AOF: PVC en dev, emptyDir en prod)]
         H[(Service headless<br/>un registro A por pod)]
         P[Prometheus<br/>dns_sd sobre el headless<br/>reglas de alerta]
         G[Grafana<br/>datasource y dashboard<br/>aprovisionados]
@@ -71,5 +71,6 @@ flowchart LR
 | Exposicion en dev | Services `LoadBalancer` | Docker Desktop los publica en `localhost` sin ingress controller. |
 | Politicas de Kyverno | `ValidatingPolicy` (CEL) | Kyverno 1.20 ya no ejecuta `ClusterPolicy` (kyverno.io/v1). Las politicas se escriben una sola vez en CEL y se prueban con `kyverno test` y `kyverno apply` sobre los manifiestos renderizados. |
 | Kyverno y Falco en prod | No se instalan | Necesitan CRDs, ClusterRoles y DaemonSets privilegiados; la cuenta del equipo solo tiene permisos de namespace. Se validan en el cluster local y en CI. |
-| Datos de las notas | Redis 7.4 compartido, AOF sobre un PVC de 1Gi | Con un JSON por pod en `emptyDir` cada replica mostraba un total distinto. Redis da ids atomicos (`INCR`) y una sola vista para todas las replicas, entra en la cuota del namespace (Prometheus 2Gi + Redis 1Gi) y corre sin root ni capacidades. El JSON local queda como respaldo cuando no hay `REDIS_URL`. |
+| Datos de las notas | Redis 7.4 compartido, AOF sobre un PVC de 1Gi en dev y sobre `emptyDir` en prod | Con un JSON por pod en `emptyDir` cada replica mostraba un total distinto. Redis da ids atomicos (`INCR`) y una sola vista para todas las replicas y corre sin root ni capacidades. En prod no lleva PVC porque el namespace es compartido y su cuota de PVC (3) y de almacenamiento (5Gi) la ocupan otras aplicaciones. El JSON local queda como respaldo cuando no hay `REDIS_URL`. |
+| Despliegue en prod | Limites de CPU de 1.45 en total, `maxSurge: 0` y `maxUnavailable: 1` en backend y frontend, `Recreate` en Grafana, Prometheus y Redis | La cuota del namespace (4 CPU de limites) la comparten otras aplicaciones. Con estos valores el despliegue nunca crea pods adicionales: el pico de CPU no supera lo que el release ya tenia asignado. |
 | Imagenes | Multi-stage, Debian slim y nginx-unprivileged | Ver `reports/image-analysis.md`. |
