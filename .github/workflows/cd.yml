@@ -102,6 +102,13 @@ jobs:
           chmod 600 ~/.kube/config
           kubectl config current-context
           kubectl auth whoami
+      - name: Verificar contrasena de Grafana
+        env:
+          GRAFANA_PW: ${{ secrets.GRAFANA_ADMIN_PASSWORD }}
+        run: |
+          if [ -z "$GRAFANA_PW" ]; then
+            echo "::warning title=Grafana::Falta el secreto GRAFANA_ADMIN_PASSWORD: Grafana de prod queda con admin/admin"
+          fi
       - name: helm upgrade --install
         run: |
           helm upgrade --install "$RELEASE" helm-chart \
@@ -117,13 +124,20 @@ jobs:
           kubectl -n "$NAMESPACE" get pods,svc,apisixroute -l app.kubernetes.io/instance="$RELEASE"
       - name: helm test
         run: helm test "$RELEASE" -n "$NAMESPACE" --logs
-      - name: Prueba de humo publica
+      - name: Prueba de humo publica (ready y consistencia entre replicas)
         run: |
+          ok=0
           for _ in $(seq 1 20); do
-            if curl -fsS --max-time 10 https://notes-team9.reto-ucu.net/api/health; then echo; exit 0; fi
+            if curl -fsS --max-time 10 https://notes-team9.reto-ucu.net/api/ready; then echo; ok=1; break; fi
             sleep 6
           done
-          echo "la app no respondio por APISIX"; exit 1
+          [ "$ok" = 1 ] || { echo "la app no respondio por APISIX"; exit 1; }
+          # Todas las replicas deben ver las mismas notas (almacenamiento compartido)
+          totals=$(for _ in $(seq 1 10); do
+            curl -fsS --max-time 10 https://notes-team9.reto-ucu.net/api/stats | jq -r .total_notes
+          done | sort -u)
+          echo "total_notes observados: $totals"
+          [ "$(echo "$totals" | wc -l)" -eq 1 ] || { echo "las replicas devuelven totales distintos"; exit 1; }
       - name: Rollback automatico si fallo el despliegue
         if: failure()
         run: helm rollback "$RELEASE" -n "$NAMESPACE" --wait || true

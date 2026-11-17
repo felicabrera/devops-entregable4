@@ -30,9 +30,12 @@ Indice:
 El proyecto parte de la Notes API de los entregables anteriores (FastAPI, un archivo JSON como
 almacenamiento, metricas Prometheus) y la lleva a un sistema completo:
 
-- **backend** (`backend/`): FastAPI + uvicorn. Endpoints `GET /`, `GET /health`, `POST /notes`,
-  `GET /notes`, `GET /notes/{id}`, `DELETE /notes/{id}`, `GET /stats`, `GET /metrics`, mas los
+- **backend** (`backend/`): FastAPI + uvicorn. Endpoints `GET /`, `GET /health` (liveness),
+  `GET /ready` (readiness: verifica el almacenamiento), `POST /notes`, `GET /notes` (mas nuevas
+  primero), `GET /notes/{id}`, `DELETE /notes/{id}`, `GET /stats`, `GET /metrics`, mas los
   endpoints legacy `POST /add/{note}` y `GET /list`. Tests con pytest y lint con ruff.
+- **almacenamiento**: Redis compartido por todas las replicas del backend (`REDIS_URL`), con AOF
+  sobre un PVC. Sin `REDIS_URL` el backend usa un archivo JSON local (tests y desarrollo).
 - **frontend** (`frontend/`): sitio estatico (HTML, CSS, JS sin frameworks) servido por
   `nginx-unprivileged`, que proxea `/api/*` al backend para evitar CORS.
 - **monitoreo**: Prometheus con reglas de alerta y Grafana con un dashboard aprovisionado
@@ -75,6 +78,7 @@ flowchart LR
     R --> G[Grafana]
     R --> P[Prometheus]
     F -->|/api -> :8000| B[backend x2<br/>FastAPI]
+    B -->|:6379| RD[(Redis<br/>AOF en PVC)]
     B --- H[(Service headless)]
     P -->|dns_sd + scrape /metrics| H
     G -->|PromQL| P
@@ -83,7 +87,8 @@ flowchart LR
 ```
 
 Un release del chart crea: 2 Deployments de app (backend y frontend), 3 Services (backend,
-backend-headless, frontend), 1 ConfigMap de la app, Prometheus (ConfigMap + Deployment + Service +
+backend-headless, frontend), 1 ConfigMap de la app, Redis (Deployment + Service + PVC opcional +
+NetworkPolicy que solo admite al backend), Prometheus (ConfigMap + Deployment + Service +
 PVC opcional), Grafana (Secret + 2 ConfigMaps + Deployment + Service), una NetworkPolicy que solo
 deja entrar al backend desde pods del release, un `ApisixRoute` (prod) o `Ingress` (opcional), y
 un pod de `helm test` que verifica los cuatro componentes.
@@ -211,7 +216,7 @@ docker compose -f jenkins/docker-compose.yml down -v   # Jenkins y registry loca
 
 ### 3.8 Sin Kubernetes
 
-`docker compose up -d --build` levanta backend, frontend (http://localhost:8080), Prometheus
+`docker compose up -d --build` levanta backend, Redis, frontend (http://localhost:8080), Prometheus
 (http://localhost:9091) y Grafana (http://localhost:3001) con la misma configuracion de alertas y
 el mismo dashboard. `APP_URL=http://localhost:8080 scripts/populate.sh 60` genera trafico.
 
@@ -242,18 +247,20 @@ Escaneo con Trivy: ver seccion 8.3.
 
 | Template | Recurso |
 |---|---|
-| `backend-deployment.yaml`, `backend-service.yaml`, `backend-configmap.yaml` | Deployment (RollingUpdate `maxUnavailable: 0`, anti-afinidad, probes, `readOnlyRootFilesystem`, `emptyDir` en `/data`), Service ClusterIP + Service headless, ConfigMap con `API_TITLE`, `WELCOME_MESSAGE`, `HEALTH_PARAM`, `MAX_NOTE_LENGTH`, `APP_ENV` |
+| `backend-deployment.yaml`, `backend-service.yaml`, `backend-configmap.yaml` | Deployment (RollingUpdate `maxUnavailable: 0`, anti-afinidad, probes (`/health` liveness, `/ready` readiness), `readOnlyRootFilesystem`, `REDIS_URL`), Service ClusterIP + Service headless, ConfigMap con `API_TITLE`, `WELCOME_MESSAGE`, `HEALTH_PARAM`, `MAX_NOTE_LENGTH`, `APP_ENV` |
+| `redis-deployment.yaml`, `redis-service.yaml`, `redis-pvc.yaml` | Redis 7.4 (1 replica, `Recreate`, uid 999, raiz de solo lectura, AOF, `maxmemory` con `noeviction`), Service ClusterIP y PVC de 1Gi en dev y prod |
 | `backend-hpa.yaml`, `backend-pdb.yaml` | HPA y PDB opcionales |
 | `frontend-deployment.yaml`, `frontend-service.yaml` | Deployment de nginx (cache, tmp y conf en `emptyDir`) y Service |
 | `ingress.yaml`, `apisixroute.yaml` | Ingress (clase configurable) o ApisixRoute (cluster de la facultad) |
 | `prometheus-*.yaml` | ConfigMap (scrape + 4 reglas de alerta parametrizadas), Deployment, Service, PVC opcional |
 | `grafana-*.yaml` | Secret (admin), ConfigMaps de provisioning y dashboard, Deployment, Service |
-| `networkpolicy.yaml` | Solo pods del release pueden hablar con el backend |
+| `networkpolicy.yaml` | Solo pods del release pueden hablar con el backend; solo el backend puede hablar con Redis |
 | `tests/test-connection.yaml` | Pod de `helm test` que consulta backend, frontend, Prometheus y Grafana |
 
 `values.yaml` expone imagen (registry, repositorio, tag, pullPolicy), replicas, puertos, tipo de
 Service, recursos, probes, configuracion de la app, hosts, retencion y persistencia de Prometheus,
-umbrales de las alertas, credenciales de Grafana y contexto de seguridad.
+umbrales de las alertas, credenciales de Grafana, Redis (imagen, `maxmemory`, persistencia,
+recursos) y contexto de seguridad.
 
 | | `values-dev.yaml` | `values-prod.yaml` |
 |---|---|---|
@@ -261,6 +268,7 @@ umbrales de las alertas, credenciales de Grafana y contexto de seguridad.
 | Exposicion | Services `LoadBalancer` (localhost:80, 9091, 3001) | `ApisixRoute` con `notes-team9`, `grafana-team9`, `prometheus-team9.reto-ucu.net` |
 | Replicas | backend 2, frontend 1 | backend 2, frontend 2 |
 | Prometheus | retencion 2d, PVC 1Gi | retencion 7d, PVC 2Gi |
+| Redis | 1 replica, PVC 1Gi | 1 replica, PVC 1Gi (total 3Gi de 5Gi de cuota) |
 | NetworkPolicy | si | si |
 | PDB | no | no (la cuenta no puede crear PDB) |
 
@@ -423,7 +431,7 @@ RESULTADO: RECHAZADO
 
 Falco 0.45.2 (chart 9.2.2, driver `modern_ebpf`) con dos reglas propias en `falco/values.yaml`:
 `Lectura del archivo de notas por un proceso inesperado` (cualquier proceso que no sea el servidor
-abre `/data/notes.json`) y `Busqueda de credenciales en el contenedor` (`find`/`grep` buscando
+abre el AOF de Redis en `/data/appendonlydir` o el respaldo `/data/notes.json`) y `Busqueda de credenciales en el contenedor` (`find`/`grep` buscando
 claves o contrasenas).
 
 Acciones ejecutadas por `scripts/falco-trigger.sh` sin abrir una shell:
@@ -432,8 +440,8 @@ Acciones ejecutadas por `scripts/falco-trigger.sh` sin abrir una shell:
    defecto `Search Private Keys or Passwords` (prioridad Warning, tags `mitre_credential_access`,
    `T1552.001`). Como Falco usa `rule_matching: first`, la regla propia equivalente queda como
    respaldo.
-2. `kubectl exec <pod> -- cat /data/notes.json`: lectura del almacenamiento de la app por un proceso
-   ajeno. Dispara la regla propia `Lectura del archivo de notas por un proceso inesperado`.
+2. `kubectl exec <pod-redis> -- cat /data/appendonlydir/appendonly.aof.manifest`: lectura del
+   almacenamiento de la app por un proceso ajeno (sin Redis, `cat /data/notes.json` en el backend). Dispara la regla propia `Lectura del archivo de notas por un proceso inesperado`.
 
 `reports/falco-event.log` contiene las dos alertas en JSON con usuario (`uid 10001`), proceso,
 linea de comando, contenedor, imagen, pod y namespace.
@@ -455,6 +463,9 @@ linea de comando, contenedor, imagen, pod y namespace.
 | El puerto 5000 del registry local esta ocupado por AirPlay en macOS | El registry se publica en `localhost:5001`. |
 | Trivy encontro 2 CRITICAL sin parche en la base Debian del backend | Se aceptan documentadas (seccion 8.3) y el pipeline bloquea solo las CRITICAL con parche disponible. |
 | Docker Desktop perdio DNS varias veces durante las construcciones | Reintentos; `install-operators.sh` tolera que una politica tarde en quedar lista. |
+| En prod el boton Actualizar alternaba el total de notas (57 y 66) y la lista salia de la mas vieja a la mas nueva | Cada replica del backend guardaba su propio JSON en un `emptyDir` y el Service balanceaba entre ambas. Se agrego Redis como almacenamiento compartido (ids con `INCR`), `GET /notes` devuelve las mas nuevas primero, la readiness usa `/ready` y el CD verifica que 10 consultas a `/api/stats` den el mismo total. |
+| Prometheus exponia `/-/reload` y el frontend publicaba `/api/metrics` | Se quito `--web.enable-lifecycle` y nginx responde 404 en `/api/metrics` (Prometheus sigue leyendo `/metrics` por el Service headless). `helm test` lo verifica. |
+| En `docker compose` el frontend no escuchaba en 8080 | Los `tmpfs` se montaban como root y nginx (uid 101) no podia generar `default.conf`; ahora se montan con `uid=101,gid=101`. |
 
 ## 10. Conclusiones y oportunidades de mejora
 
@@ -466,9 +477,8 @@ con reglas propias.
 
 Mejoras pendientes:
 
-- **Persistencia real de las notas.** Hoy cada pod guarda su propio JSON en un `emptyDir`; dos
-  replicas no comparten datos. El siguiente paso es una base de datos (PostgreSQL con su chart) o
-  un PVC `ReadWriteMany`.
+- **Alta disponibilidad del almacenamiento.** Redis corre con una sola replica sobre un PVC
+  `ReadWriteOnce`; Redis Sentinel o una base gestionada evitaria el corte durante su reinicio.
 - **Metricas del kubelet.** CPU y memoria por pod salen del proceso de Python; con `kube-state-metrics`
   y cAdvisor se tendria la vision del contenedor completo (requiere RBAC de cluster).
 - **Alertmanager y notificaciones.** Las alertas se evaluan en Prometheus pero no se envian a

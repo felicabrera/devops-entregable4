@@ -34,8 +34,13 @@
       remove.className = "danger";
       remove.textContent = "Borrar";
       remove.addEventListener("click", async () => {
-        await request("/notes/" + note.id, { method: "DELETE" });
-        await load();
+        try {
+          await request("/notes/" + note.id, { method: "DELETE" });
+          await load();
+        } catch (error) {
+          await load();
+          status.textContent = "No se pudo borrar la nota: " + error.message;
+        }
       });
       item.append(text, when, remove);
       list.append(item);
@@ -59,12 +64,17 @@
     if (!text) {
       return;
     }
-    await request("/notes", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ text }),
-    });
-    input.value = "";
+    try {
+      await request("/notes", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text }),
+      });
+      input.value = "";
+    } catch (error) {
+      status.textContent = "No se pudo guardar la nota: " + error.message;
+      return;
+    }
     await load();
   });
   refresh.addEventListener("click", load);

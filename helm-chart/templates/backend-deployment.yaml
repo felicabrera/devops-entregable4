@@ -68,13 +68,19 @@ spec:
               value: {{ include "notes.imageTag" (dict "root" . "image" .Values.backend.image) | quote }}
             - name: DATA_DIR
               value: /data
+            {{- if .Values.redis.enabled }}
+            # Almacenamiento compartido entre replicas; sin Redis cada pod tendria sus propias notas
+            - name: REDIS_URL
+              value: {{ printf "redis://%s:6379/0" (include "notes.componentName" (dict "root" . "component" "redis")) | quote }}
+            {{- end }}
           securityContext:
             {{- toYaml .Values.securityContext.container | nindent 12 }}
           resources:
             {{- toYaml .Values.backend.resources | nindent 12 }}
           readinessProbe:
+            # /ready verifica el almacenamiento: sin Redis el pod sale del Service
             httpGet:
-              path: /health
+              path: /ready
               port: http
             initialDelaySeconds: {{ .Values.backend.probes.readiness.initialDelaySeconds }}
             periodSeconds: {{ .Values.backend.probes.readiness.periodSeconds }}

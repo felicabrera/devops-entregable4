@@ -28,11 +28,14 @@ spec:
         - |
           BACKEND=http://{{ include "notes.componentName" (dict "root" . "component" "backend") }}:{{ .Values.backend.service.port }}
           echo "GET $BACKEND/health"; curl -fsS "$BACKEND/health"; echo
+          echo "GET $BACKEND/ready"; curl -fsS "$BACKEND/ready"; echo
           echo "GET $BACKEND/metrics"; curl -fsS "$BACKEND/metrics" | grep -c '^http_request_duration_seconds'
           {{- if .Values.frontend.enabled }}
           FRONTEND=http://{{ include "notes.componentName" (dict "root" . "component" "frontend") }}:{{ .Values.frontend.service.port }}
           echo "GET $FRONTEND/healthz"; curl -fsS "$FRONTEND/healthz"
           echo "GET $FRONTEND/api/stats"; curl -fsS "$FRONTEND/api/stats"; echo
+          echo "GET $FRONTEND/api/metrics (debe ser 404)"
+          test "$(curl -s -o /dev/null -w '%{http_code}' "$FRONTEND/api/metrics")" = "404"
           {{- end }}
           {{- if .Values.monitoring.prometheus.enabled }}
           PROM=http://{{ include "notes.componentName" (dict "root" . "component" "prometheus") }}:{{ .Values.monitoring.prometheus.service.port }}

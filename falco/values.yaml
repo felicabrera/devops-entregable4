@@ -35,11 +35,13 @@ customRules:
   notes-rules.yaml: |-
     - rule: Lectura del archivo de notas por un proceso inesperado
       desc: >
-        Un proceso distinto del servidor de la API abrio el archivo de notas.
+        Un proceso distinto del dueno de los datos abrio el almacenamiento de notas:
+        el archivo JSON del backend (modo sin Redis) o los archivos AOF de Redis.
         Puede indicar exfiltracion de datos o manipulacion manual del almacenamiento.
       condition: >
-        open_read and container and fd.name = /data/notes.json
-        and not proc.name in (python, python3, python3.13, uvicorn)
+        open_read and container
+        and (fd.name = /data/notes.json or fd.directory = /data/appendonlydir)
+        and not proc.name in (python, python3, python3.13, uvicorn, redis-server, redis-check-aof)
       output: >
         Lectura inesperada del archivo de notas
         (user=%user.name user_uid=%user.uid proc=%proc.name cmdline=%proc.cmdline
